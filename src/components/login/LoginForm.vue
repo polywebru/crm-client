@@ -1,13 +1,11 @@
 <template>
   <div class="form-block">
+    <auth-loader :isLoading="isLoading" />
     <v-form class="login-form">
-      <div class="d-flex align-center justify-center mb-1">
-        <img src="../assets/img/logo.png" alt="logo" />
-        <h1 class="name ml-2">ВЕБ-СТУДИЯ</h1>
-      </div>
+      <logo-block />
       <h2 class="main-title text-center">Авторизация</h2>
       <div class="d-flex flex-column mt-6">
-        <div class="field-wrapper mb-1">
+        <div class="field-wrapper mb-2">
           <label for="email">Email</label>
           <v-text-field
             placeholder="Введите Email"
@@ -15,7 +13,8 @@
             v-model.trim="emailAddress"
             outlined
             type="email"
-            class="custom-input mt-1"
+            hide-details
+            class="custom-input login-input mt-1 mb-3"
             :class="{
               invalid: invalidEmail || error === 400,
             }"
@@ -30,7 +29,7 @@
             }}
           </span>
         </div>
-        <div class="field-wrapper mb-1">
+        <div class="field-wrapper mb-2">
           <label for="password">Пароль</label>
           <v-text-field
             placeholder="Введите пароль"
@@ -38,7 +37,8 @@
             v-model.trim="password"
             outlined
             type="password"
-            class="custom-input mt-1"
+            hide-details
+            class="custom-input login-input mt-1 mb-4"
             :class="{
               invalid: invalidPassword || error === 400,
             }"
@@ -77,12 +77,16 @@
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import AuthLoader from "../AuthLoader.vue";
+import LogoBlock from "../LogoBlock.vue";
 export default {
+  components: { LogoBlock, AuthLoader },
   data() {
     return {
       rememberMe: false,
       emailAddress: "",
       password: "",
+      isLoading: false,
     };
   },
   mixins: [validationMixin],
@@ -98,7 +102,6 @@ export default {
   computed: {
     ...mapGetters(["error"]),
     invalidEmail() {
-      console.log(this.$v.emailAddress.$dirty);
       return this.$v.emailAddress.$dirty && this.$v.emailAddress.$invalid;
     },
     invalidPassword() {
@@ -106,22 +109,22 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setFormPending", "setError"]),
+    ...mapMutations(["setError"]),
     ...mapActions(["login"]),
     async submitHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         try {
-          this.setFormPending(true);
+          this.isLoading = true;
           await this.login({
             email: this.emailAddress,
             password: this.password,
             rememberMe: +this.rememberMe,
           });
           await this.$router.push("/profile");
-          this.setFormPending(false);
+          this.isLoading = false;
         } catch (error) {
-          this.setFormPending(false);
+          this.isLoading = false;
         }
       }
     },

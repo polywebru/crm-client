@@ -15,7 +15,10 @@
 export default {
   props: {
     content: Object,
-    isLogin: Boolean,
+    isLogin: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     imgPath() {
@@ -24,32 +27,10 @@ export default {
   },
   methods: {
     toAuth() {
-      this.isLogin
-        ? this.$router.push("/register")
-        : this.$router.push("/login");
+      this.isLogin ? this.$router.push("/register") : this.$router.push("/");
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.content-block {
-  margin-right: 50px;
-  @media (max-width: 1140px) {
-    display: none;
-  }
-}
-.register-invite {
-  display: none;
-  @media (max-width: 1140px) {
-    display: block;
-  }
-  @media (max-width: 396px) {
-    font-size: 16px;
-  }
-  & > a {
-    @media (max-width: 396px) {
-      font-size: 16px;
-    }
-  }
-}
 </style>

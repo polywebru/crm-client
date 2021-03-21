@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex align-center justify-center">
-    <auth-loader />
     <div class="d-flex custom-container align-center justify-center">
       <content-block :content="loginContent" :isLogin="true" />
       <login-form />
@@ -9,11 +8,10 @@
 </template>
 
 <script>
-import AuthLoader from "../components/AuthLoader.vue";
 import ContentBlock from "../components/ContentBlock.vue";
-import LoginForm from "../components/LoginForm.vue";
+import LoginForm from "../components/login/LoginForm.vue";
 export default {
-  components: { ContentBlock, LoginForm, AuthLoader },
+  components: { ContentBlock, LoginForm },
   name: "Login",
   data() {
     return {

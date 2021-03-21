@@ -13,7 +13,15 @@ const routes = [
       layout: "auth",
     },
   },
-
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("../views/Register.vue"),
+    meta: {
+      layout: "auth",
+      page: "first",
+    },
+  },
   {
     path: "/profile",
     name: "Profile",
