@@ -1,5 +1,5 @@
 <template>
-  <div class="loader" v-if="formPending">
+  <div class="loader" v-if="isLoading">
     <v-progress-circular
       :size="50"
       color="primary"
@@ -8,9 +8,13 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 export default {
-  computed: mapState(["formPending"]),
+  props: {
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

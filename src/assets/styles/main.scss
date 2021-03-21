@@ -1,3 +1,4 @@
+@import "./variables";
 @font-face {
   font-family: "Open Sans";
   font-style: normal;
@@ -9,30 +10,33 @@
 * {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
-  color: #000;
+  color: $black;
 }
 
 a {
   text-decoration: none;
 }
-button {
+label {
+  font-size: 13.5px !important;
+}
+.btn {
   &::before {
-    background-color: #5688f0 !important;
+    background-color: $blue !important;
     opacity: 1 !important;
     transition: 0.3s !important;
     border-radius: 2px;
   }
   &:hover::before {
-    background-color: #fff !important;
+    background-color: $white !important;
     transition: 0.3s !important;
-    border: 2px solid #5688f0;
+    border: 2px solid $blue;
   }
 }
 .main-title {
   font-size: 30px;
   font-weight: 400;
   line-height: 54px;
-  color: #000;
+  color: $black;
   @media (max-width: 396px) {
     font-size: 25px;
     line-height: 39px;
@@ -42,14 +46,15 @@ button {
   font-weight: 400;
   font-size: 18px;
   line-height: 25px;
-  color: rgba(0, 0, 0, 0.72);
+  color: rgba($black, 0.72);
 }
 
 .btn {
-  color: #fff !important;
+  color: $white !important;
   height: unset !important;
   position: relative;
   transition: 0.3s;
+  max-width: 210px;
   & > span {
     font-size: 18px !important;
     line-height: 30px !important;
@@ -63,14 +68,11 @@ button {
   }
   &-login {
     padding: 8px 45px !important;
-    @media (max-width: 396px) {
-      padding: 13px 60px !important;
-    }
   }
 
   &:hover {
-    background-color: #fff !important;
-    color: #000 !important;
+    background-color: $white !important;
+    color: $black !important;
     transition: 0.3s;
     box-shadow: none !important;
   }
@@ -80,12 +82,13 @@ button {
   bottom: 70px;
 }
 .login-form {
-  background-color: #f5f5f5;
-  padding: 30px 40px;
-  max-height: 697px;
+  background-color: $form-bg;
+  padding: 30px 50px;
+  max-width: 500px;
   @media (max-width: 1140px) {
-    background-color: #fff;
-    padding: 160px 72px 246px;
+    background-color: $white;
+    padding: 60px 0 30px;
+    max-width: 520px;
   }
   h1 {
     font-size: 18px;
@@ -98,17 +101,57 @@ button {
   }
 }
 
-.custom-input {
-  min-width: 459px;
-  max-width: 659px;
+.abilities {
+  .v-input__control {
+    max-height: unset !important;
+  }
+  .v-input__icon.v-input__icon--append {
+    display: none !important;
+  }
+  fieldset {
+    z-index: 100;
+  }
+  .v-select__selections {
+    max-height: 50px;
+    overflow-y: auto;
+    @media (max-width: 1140px) {
+      max-height: 60px;
+      height: 60px;
+    }
+    &::-webkit-scrollbar {
+      width: 2px;
+      position: relative;
+      z-index: -1;
+    }
 
+    &::-webkit-scrollbar-thumb {
+      background-color: $blue;
+      position: relative;
+      z-index: -1;
+      border-radius: 1px;
+    }
+  }
+}
+.v-input__control {
+  max-height: 40px;
+  display: unset;
+  .v-input__append-inner {
+    margin-top: 10px !important;
+  }
+}
+.custom-input.login-input {
+  min-width: 386px;
   @media (max-width: 768px) {
     min-width: 0px;
   }
+}
+.custom-input {
+  max-width: 659px;
+
   .v-input__slot {
     border-radius: 0 !important;
     margin-bottom: 0;
-    min-height: 40px !important;
+    min-height: 50px !important;
   }
 }
 .v-text-field--outlined fieldset {
@@ -125,24 +168,26 @@ button {
 }
 .invalid {
   fieldset {
-    border: 3px solid rgba(214, 0, 0, 0.31) !important;
+    border: 3px solid $borderInvalid !important;
   }
 }
 .v-application--wrap {
   justify-content: center;
 }
 .v-text-field__details {
-  display: none;
+  margin-top: 3px;
 }
 .v-messages__message {
-  font-style: 14px;
-  line-height: 25px;
-  color: #d60000;
+  font-size: 13px;
+  display: block;
+  line-height: 14px;
+  max-height: 16px;
+  color: $messageInvalid;
   margin-top: 5px;
   padding-left: 5px;
   @media (max-width: 396px) {
-    font-size: 14px;
-    line-height: 19px;
+    font-size: 13px;
+    line-height: 14px;
     padding-top: 5px;
   }
   @media (max-width: 330px) {
@@ -151,4 +196,149 @@ button {
 }
 .hide {
   visibility: hidden;
+}
+.datepicker {
+  .v-input__slot {
+    padding: 0 !important;
+  }
+  .v-text-field__slot {
+    position: relative;
+    &::after {
+      content: url("../img/CalendarDate.svg");
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-right: 20px;
+      margin-top: 1px;
+      z-index: 2;
+    }
+  }
+  input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0 12px !important;
+    max-height: unset !important;
+    z-index: 3;
+  }
+}
+.content-block {
+  margin-right: 50px;
+  @media (max-width: 1140px) {
+    display: none;
+  }
+}
+.register-invite {
+  display: none;
+  @media (max-width: 1140px) {
+    display: block;
+  }
+  @media (max-width: 396px) {
+    font-size: 16px;
+  }
+  & > a {
+    @media (max-width: 396px) {
+      font-size: 16px;
+    }
+  }
+}
+
+.form-row {
+  display: flex;
+  max-width: 386px;
+  justify-content: space-between;
+
+  @media (max-width: 1140px) {
+    flex-direction: column;
+  }
+
+  &:not(:last-child) {
+    @media (max-width: 1140px) {
+      margin-bottom: 5px !important;
+    }
+  }
+
+  @media (max-width: 1140px) {
+    margin-bottom: 0 !important;
+  }
+  &:not(:last-child) {
+    margin-bottom: 31px;
+  }
+
+  &.second-page {
+    @media (max-width: 1140px) {
+      margin-bottom: -20px !important;
+    }
+    margin-bottom: 5px;
+  }
+  .form-item {
+    width: 30%;
+    @media (max-width: 1140px) {
+      width: 100%;
+      margin-bottom: 32px;
+    }
+    &.half {
+      width: 49%;
+      max-width: 193px;
+      @media (max-width: 1140px) {
+        width: 100%;
+        max-width: unset;
+      }
+    }
+    &.full {
+      width: 100%;
+    }
+  }
+}
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 1140px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .btn {
+    margin-top: 0;
+    &:nth-child(1) {
+      @media (max-width: 1140px) {
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+.custom-textarea {
+  .v-input__control {
+    max-height: unset !important;
+    height: 80px !important;
+  }
+  .v-input__slot {
+    height: inherit !important;
+  }
+}
+.v-label {
+  font-size: 13px;
+}
+.first-page {
+  max-width: 386px;
+}
+.v-menu__content {
+  z-index: 10000 !important;
+}
+.disabled {
+  .v-input__slot {
+    background-color: $form-bg !important;
+  }
+}
+.form-block {
+  position: relative !important;
+}
+.show-br {
+  display: none;
+  @media (max-width: 1140px) {
+    display: block;
+  }
 }
