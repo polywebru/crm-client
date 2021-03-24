@@ -106,10 +106,11 @@
       >
       <v-btn
         type="submit"
-        class="btn btn-login pl-8 pr-8"
-        @click.prevent="continueHandler"
-        >Продолжить</v-btn
+        class="btn btn-login pl-5 pr-5"
+        @click.prevent="registerHandler"
       >
+        Зарегистрироваться
+      </v-btn>
     </v-row>
   </div>
 </template>
@@ -176,10 +177,11 @@ export default {
     ...mapState({ USERNAME: (state) => state.auth.user.username }),
   },
   methods: {
-    continueHandler() {
+    registerHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.$emit("updateUserState", this.formData, this.page + 1);
+        this.$emit('updateUser', this.formData, this.page);
+        this.$emit("register", this.formData);
       }
     },
     backHandler() {
