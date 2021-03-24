@@ -14,9 +14,6 @@ export default {
         date_birth: "",
         username: "",
       },
-      specialities: [],
-      faculties: {},
-      study_durations: [],
     };
   },
   created() {

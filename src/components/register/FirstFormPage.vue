@@ -5,8 +5,10 @@
         <label for="secondName">Фамилия</label>
         <v-text-field
           v-model.trim="formData.last_name"
-          placeholder="Фамилия"
+          label="Фамилия"
           background-color="#fff"
+          single-line
+          required
           outlined
           type="text"
           :counter="255"
@@ -21,10 +23,12 @@
         <label for="firstName">Имя</label>
         <v-text-field
           v-model.trim="formData.first_name"
-          placeholder="Имя"
+          label="Имя"
           background-color="#fff"
+          single-line
           outlined
           type="text"
+          required
           :counter="255"
           class="custom-input mt-1"
           :class="{ invalid: firstNameInvalid }"
@@ -52,21 +56,27 @@
       <div class="form-item half">
         <label for="gender">Пол</label>
         <v-select
-          v-model="genderLetter"
+          v-model="genderType"
           outlined
           @change="setGender"
           background-color="#fff"
           placeholder="Пол"
           class="custom-input mt-1"
           id="gender"
-          :items="['М', 'Ж']"
+          :items="['Мужской', 'Женский']"
         ></v-select>
       </div>
       <div class="form-item half">
-        <date-picker
-          :nameDatePicker="'Дата рождения'"
-          @selectDate="setBirthDate"
-        />
+        <label for="date">Дата рождения</label>
+        <v-text-field
+          id="date"
+          v-model="birthDate"
+          class="custom-input mt-1 datepicker"
+          v-mask="'##.##.####'"
+          background-color="#fff"
+          outlined
+          placeholder="Дата рождения"
+        ></v-text-field>
       </div>
     </div>
     <v-row class="d-flex justify-center mt-4">
@@ -82,16 +92,18 @@
 <script>
 import DatePicker from "../DatePicker.vue";
 import { validationMixin } from "vuelidate";
-import userStateMixin from "../../mixins/userState.mixin";
+import formDataMixin from "../../mixins/formData.mixin";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
+
 export default {
   components: { DatePicker },
-  mixins: [validationMixin, userStateMixin],
+  mixins: [validationMixin, formDataMixin],
   data() {
     return {
       page: 0,
-      genderLetter: "",
+      genderType: "",
+      birthDate: "",
     };
   },
   validations: {
@@ -102,7 +114,8 @@ export default {
     },
   },
   created() {
-    this.genderLetter = this.getGenderLetter();
+    this.genderType = this.getGenderType;
+    this.birthDate = this.formatForClientBirthDate;
   },
   computed: {
     firstNameInvalid() {
@@ -122,32 +135,40 @@ export default {
         this.$v.formData.last_name.$invalid && this.$v.formData.last_name.$dirty
       );
     },
-    ...mapState({ USER_GENDER: (state) => state.auth.user?.gender }),
-  },
-  methods: {
-    setBirthDate(date) {
-      this.formData.date_birth = date;
+    formatForServerBirthDate() {
+      return this.birthDate?.split(".").reverse().join("-");
     },
-    setGender() {
-      this.formData.gender = this.genderLetter === "М" ? "male" : "female";
+    formatForClientBirthDate() {
+      return this.USER_BIRTHDATE?.split("-").reverse().join(".");
     },
-    getGenderLetter() {
+    getGenderType() {
       return this.USER_GENDER === "male"
-        ? "М"
+        ? "Мужской"
         : this.USER_GENDER === "female"
-        ? "Ж"
+        ? "Женский"
         : "";
     },
+    ...mapState({
+      USER_GENDER: (state) => state.auth.user?.gender,
+      USER_BIRTHDATE: (state) => state.auth.user?.date_birth,
+    }),
+  },
+  methods: {
+    setGender() {
+      this.formData.gender = this.genderType === "Мужской" ? "male" : "female";
+    },
+
     continueHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
+        this.formData.date_birth = this.formatForServerBirthDate;
         this.$emit("updateUserState", this.formData, this.page + 1);
       }
     },
   },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 .first-page {
   @media (min-width: 1141px) {
     width: 400px;

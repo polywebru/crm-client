@@ -15,7 +15,7 @@ export default {
         const response = await api.login(user);
         commit("setToken", response.headers.authorization);
       } catch (e) {
-        commit("setError", e.response.data.error.code);
+        commit("setError", e.response.data.error.errors);
         throw e;
       }
     },
@@ -25,7 +25,11 @@ export default {
         const response = await api.registerUser(user);
         commit("setToken", response.headers.authorization);
       } catch (error) {
-        commit("setError", error.response.data.error.errors);
+        if (error.response.status === 500) {
+          commit("setError", error.response.status);
+        } else {
+          commit("setError", error.response.data.error.errors);
+        }
         throw error;
       }
     },
