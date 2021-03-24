@@ -19,19 +19,7 @@ a {
 label {
   font-size: 13.5px !important;
 }
-.btn {
-  &::before {
-    background-color: $blue !important;
-    opacity: 1 !important;
-    transition: 0.3s !important;
-    border-radius: 2px;
-  }
-  &:hover::before {
-    background-color: $white !important;
-    transition: 0.3s !important;
-    border: 2px solid $blue;
-  }
-}
+
 .main-title {
   font-size: 30px;
   font-weight: 400;
@@ -55,12 +43,37 @@ label {
   position: relative;
   transition: 0.3s;
   max-width: 210px;
+  &::before {
+    background-color: $blue !important;
+    opacity: 1 !important;
+    transition: 0.3s !important;
+    border-radius: 2px;
+  }
+  &:hover::before {
+    background-color: $white !important;
+    transition: 0.3s !important;
+    border: 2px solid $blue;
+  }
+  &.register {
+    margin-left: 34px;
+    @media (max-width: 1140px) {
+      margin-left: 0;
+    }
+  }
+  &.back {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+    @media (max-width: 1140px) {
+      padding-left: 52px !important;
+      padding-right: 52px !important;
+    }
+  }
   & > span {
-    font-size: 18px !important;
+    font-size: 16px !important;
     line-height: 30px !important;
     text-transform: none !important;
     @media (max-width: 396px) {
-      font-size: 18px !important;
+      font-size: 16px !important;
     }
   }
   &-register {
@@ -100,7 +113,9 @@ label {
     }
   }
 }
-
+.v-label.theme--light {
+  color: #c4c4c4;
+}
 .abilities {
   .v-input__control {
     max-height: unset !important;
@@ -133,7 +148,7 @@ label {
   }
 }
 .v-input__control {
-  max-height: 40px;
+  max-height: 35px;
   display: unset;
   .v-input__append-inner {
     margin-top: 10px !important;
@@ -178,13 +193,12 @@ label {
   margin-top: 3px;
 }
 .v-messages__message {
-  font-size: 13px;
-  display: block;
+  font-size: 12px;
   line-height: 14px;
   max-height: 16px;
   color: $messageInvalid;
-  margin-top: 5px;
-  padding-left: 5px;
+  position: relative;
+  left: -10px;
   @media (max-width: 396px) {
     font-size: 13px;
     line-height: 14px;
@@ -216,8 +230,12 @@ label {
   }
   input {
     position: absolute;
+    display: flex;
+    align-items: center;
     left: 0;
     top: 0;
+    height: 100%;
+    width: 100%;
     bottom: 0;
     right: 0;
     padding: 0 12px !important;
@@ -245,7 +263,12 @@ label {
     }
   }
 }
-
+.form-wrapper {
+  @media (max-width: 1140px) {
+    width: 100%;
+    padding: 0 15px;
+  }
+}
 .form-row {
   display: flex;
   max-width: 386px;
@@ -253,52 +276,51 @@ label {
 
   @media (max-width: 1140px) {
     flex-direction: column;
+    margin-bottom: 30px;
   }
-
-  &:not(:last-child) {
-    @media (max-width: 1140px) {
-      margin-bottom: 5px !important;
-    }
-  }
-
-  @media (max-width: 1140px) {
-    margin-bottom: 0 !important;
-  }
-  &:not(:last-child) {
-    margin-bottom: 31px;
-  }
-
   &.second-page {
+    position: relative;
     @media (max-width: 1140px) {
-      margin-bottom: -20px !important;
+      margin-bottom: 25px;
     }
-    margin-bottom: 5px;
+  }
+  margin-bottom: 30px;
+  &.password {
+    @media (max-width: 1140px) {
+      margin-bottom: 25px;
+    }
   }
   .form-item {
-    width: 30%;
-    @media (max-width: 1140px) {
-      width: 100%;
-      margin-bottom: 32px;
-    }
     &.half {
-      width: 49%;
+      width: 48%;
       max-width: 193px;
       @media (max-width: 1140px) {
         width: 100%;
         max-width: unset;
       }
+      &:first-child {
+        @media (max-width: 1140px) {
+          margin-bottom: 30px;
+        }
+      }
+      &:nth-child(2) {
+        @media (max-width: 1140px) {
+          margin-bottom: 10px;
+        }
+      }
     }
     &.full {
       width: 100%;
+      max-width: 400px;
     }
   }
 }
 .button-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
   @media (max-width: 1140px) {
     flex-direction: column-reverse;
-    align-items: center;
   }
   .btn {
     margin-top: 0;
@@ -336,9 +358,40 @@ label {
 .form-block {
   position: relative !important;
 }
-.show-br {
-  display: none;
+.alert-custom {
+  cursor: pointer;
+  position: absolute !important;
+  z-index: 100;
+  bottom: 40px;
+  min-width: 326px;
+  max-height: 58px;
+  left: 100%;
+  border: 1px solid $messageInvalid;
   @media (max-width: 1140px) {
-    display: block;
+    bottom: unset;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -90px;
+  }
+  transition: 0.2s ease;
+  .v-alert__content {
+    span {
+      font-size: 14px;
+      color: $white;
+      font-weight: 700;
+      position: relative;
+      z-index: 200;
+      @media (max-width: 1140px) {
+        font-size: 13px;
+      }
+    }
+  }
+  &.show {
+    transition: 0.2s ease;
+    left: 70%;
+    @media (max-width: 1140px) {
+      left: 50%;
+      top: 30px;
+    }
   }
 }

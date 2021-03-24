@@ -33,6 +33,8 @@ export default {
 @media (max-width: 1140px) {
   .custom-container {
     flex-direction: column;
+    max-width: 386px !important;
+    width: 100%;
   }
 }
 </style>

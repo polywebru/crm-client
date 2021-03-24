@@ -1,67 +1,70 @@
 <template>
-  <div class="first-page d-flex flex-column mt-6">
+  <div class="first-page d-flex flex-column">
     <div class="form-row second-page">
-      <div class="form-item half">
+      <div class="form-item full">
         <label for="phone">Телефон</label>
         <v-text-field
           v-model="formData.phone"
-          placeholder="Телефон"
+          label="Телефон"
+          single-line
           v-mask="'+7 (###) ###-##-##'"
+          :error-messages="phoneInvalid"
           background-color="#fff"
           outlined
+          :class="{ invalid: phoneTakenError }"
           type="tel"
-          class="custom-input mt-1"
+          class="custom-input mt-1 mb-3"
           id="phone"
         ></v-text-field>
-      </div>
-      <div class="form-item half">
-        <label for="email">Email</label>
-        <v-text-field
-          v-model="formData.email"
-          placeholder="Email"
-          background-color="#fff"
-          outlined
-          hide-details
-          type="email"
-          class="custom-input mt-1 mb-3"
-          :class="{ invalid: emailInvalid || isEmailTaken }"
-          id="email"
-        ></v-text-field>
-        <span
-          :class="{ hide: !emailInvalid && !isEmailTaken }"
-          class="v-messages__message"
-        >
-          {{
-            emailInvalid ? "Некорректный email" : "Email уже зарегистрирован"
-          }}
-        </span>
       </div>
     </div>
     <div class="form-row second-page">
       <div class="form-item full">
-        <label for="username">Username</label>
+        <label for="email">Email</label>
         <v-text-field
-          v-model="formData.username"
-          placeholder="Username"
+          v-model="formData.email"
+          label="Email"
+          single-line
           background-color="#fff"
-          :counter="255"
+          required
+          :error-messages="emailInvalid"
           outlined
-          type="text"
+          type="email"
           class="custom-input mt-1 mb-3"
-          :class="{ invalid: usernameInvalid || isUsernameTaken }"
-          id="username"
+          :class="{ invalid: emailInvalid || emailTakenError }"
+          id="email"
         ></v-text-field>
-        <span :class="{ hide: !isUsernameTaken }" class="v-messages__message">
-          Username уже зарегистрирован
-        </span>
       </div>
     </div>
     <div class="form-row second-page">
+      <div class="form-item full">
+        <label for="username">Имя пользователя</label>
+        <v-text-field
+          v-model="formData.username"
+          label="Username"
+          background-color="#fff"
+          :counter="255"
+          required
+          single-line
+          :error-messages="usernameInvalid"
+          outlined
+          type="text"
+          class="custom-input mt-1 mb-3"
+          :class="{ invalid: usernameInvalid || usernameTakenError }"
+          id="username"
+        ></v-text-field>
+      </div>
+    </div>
+
+    <div class="form-row password second-page">
       <div class="form-item full">
         <label for="password">Пароль</label>
         <v-text-field
           v-model="formData.password"
-          placeholder="Пароль"
+          label="Пароль"
+          single-line
+          required
+          :error-messages="passwordInvalid"
           background-color="#fff"
           :counter="255"
           outlined
@@ -70,12 +73,6 @@
           :class="{ invalid: passwordInvalid }"
           id="password"
         ></v-text-field>
-        <span
-          :class="{ hide: !passwordInvalid }"
-          class="v-messages__message mb-2"
-        >
-          Минимальная длина пароля 5
-        </span>
       </div>
     </div>
     <div class="form-row second-page">
@@ -83,8 +80,11 @@
         <label for="repeatPassword">Повторите пароль</label>
         <v-text-field
           v-model="formData.password_confirmation"
-          placeholder="Повторите пароль"
+          label="Повторите пароль"
           background-color="#fff"
+          required
+          single-line
+          :error-messages="passwordConfirmationInvalid"
           outlined
           type="password"
           :counter="255"
@@ -92,26 +92,20 @@
           :class="{ invalid: passwordConfirmationInvalid }"
           id="repeatPassword"
         ></v-text-field>
-        <span
-          :class="{ hide: !passwordConfirmationInvalid }"
-          class="v-messages__message"
-        >
-          Пароли не совпадают
-        </span>
       </div>
     </div>
-    <v-row class="mt-4 button-row">
-      <v-btn class="btn btn-login pl-10 pr-10" @click="backHandler"
+    <div class="button-row mt-2">
+      <v-btn class="btn btn-login back mb-3" @click="backHandler"
         >Вернуться</v-btn
       >
       <v-btn
         type="submit"
-        class="btn btn-login pl-5 pr-5"
+        class="btn btn-login pl-3 pr-3 mb-3 register"
         @click.prevent="registerHandler"
       >
         Зарегистрироваться
       </v-btn>
-    </v-row>
+    </div>
   </div>
 </template>
 <script>
@@ -124,13 +118,14 @@ import {
   sameAs,
 } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
-import userStateMixin from "../../mixins/userState.mixin";
+import formDataMixin from "../../mixins/formData.mixin";
 
 export default {
-  mixins: [validationMixin, userStateMixin],
+  mixins: [validationMixin, formDataMixin],
   props: {
-    isEmailTaken: Boolean,
-    isUsernameTaken: Boolean,
+    emailTakenError: String,
+    usernameTakenError: String,
+    phoneTakenError: String,
   },
   data() {
     return {
@@ -156,23 +151,40 @@ export default {
   },
   computed: {
     emailInvalid() {
-      return this.$v.formData.email.$invalid && this.$v.formData.email.$dirty;
+      if (this.$v.formData.email.$invalid && this.$v.formData.email.$dirty) {
+        return ["Некорректный email"];
+      } else if (this.emailTakenError) {
+        return [this.emailTakenError];
+      }
+    },
+    phoneInvalid() {
+      return this.phoneTakenError && [this.phoneTakenError];
     },
     usernameInvalid() {
-      return (
-        this.$v.formData.username.$invalid && this.$v.formData.username.$dirty
-      );
+      if (
+        this.$v.formData.username.$invalid &&
+        this.$v.formData.username.$dirty
+      ) {
+        return [];
+      } else if (this.usernameTakenError) {
+        return [this.usernameTakenError];
+      }
     },
     passwordInvalid() {
-      return (
-        this.$v.formData.password.$invalid && this.$v.formData.password.$dirty
-      );
+      if (
+        this.$v.formData.password.$invalid &&
+        this.$v.formData.password.$dirty
+      ) {
+        return ["Минимальная длина 5 символов"];
+      }
     },
     passwordConfirmationInvalid() {
-      return (
+      if (
         this.$v.formData.password_confirmation.$invalid &&
         this.$v.formData.password_confirmation.$dirty
-      );
+      ) {
+        return ["Пароли не совпадают"];
+      }
     },
     ...mapState({ USERNAME: (state) => state.auth.user.username }),
   },
@@ -180,7 +192,7 @@ export default {
     registerHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.$emit('updateUser', this.formData, this.page);
+        this.$emit("updateUser", this.formData, this.page);
         this.$emit("register", this.formData);
       }
     },
