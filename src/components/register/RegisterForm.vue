@@ -3,7 +3,7 @@
     <auth-loader :isLoading="isLoading" />
     <v-form class="login-form">
       <logo-block />
-      <h2 class="main-title text-center">Заявка на ПД</h2>
+      <h2 class="main-title text-center">Регистрация</h2>
       <component
         @updateUserState="updateUserState"
         @register="registerUser"
@@ -23,7 +23,6 @@
 import LogoBlock from "../LogoBlock.vue";
 import FirstFormPage from "./FirstFormPage.vue";
 import SecondFormPage from "./SecondFormPage.vue";
-import ThirdFormPage from "./ThirdFormPage.vue";
 import AuthLoader from "../AuthLoader.vue";
 
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
@@ -33,7 +32,6 @@ export default {
     LogoBlock,
     FirstFormPage,
     SecondFormPage,
-    ThirdFormPage,
     AuthLoader,
   },
   data() {
@@ -77,14 +75,9 @@ export default {
         this.setLoading(false);
       } catch (error) {
         this.setLoading(false);
-        const pageNumber = Object.keys(this.pages).find(
-          (key) => this.pages[key] === this.currentPage
-        );
-        if ("email" in this.error) {
-          this.currentPage = this.pages[pageNumber - 1];
+        if (this.error && "email" in this.error) {
           this.isEmailTaken = true;
-        } else if ("username" in this.error) {
-          this.currentPage = this.pages[pageNumber - 1];
+        } else if (this.error && "username" in this.error) {
           this.isUsernameTaken = true;
         }
       }
