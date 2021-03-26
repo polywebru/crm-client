@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import ContentBlock from "../components/ContentBlock.vue";
-import LoginForm from "../components/login/LoginForm.vue";
+import ContentBlock from "@/components/ContentBlock.vue";
+import LoginForm from "@/components/login/LoginForm.vue";
 export default {
   components: { ContentBlock, LoginForm },
   name: "Login",

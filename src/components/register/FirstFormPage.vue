@@ -92,10 +92,9 @@
 <script>
 import DatePicker from "../DatePicker.vue";
 import { validationMixin } from "vuelidate";
-import formDataMixin from "../../mixins/formData.mixin";
+import formDataMixin from "@/mixins/formData.mixin";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
-
 export default {
   components: { DatePicker },
   mixins: [validationMixin, formDataMixin],
@@ -157,7 +156,6 @@ export default {
     setGender() {
       this.formData.gender = this.genderType === "Мужской" ? "male" : "female";
     },
-
     continueHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
@@ -168,7 +166,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" >
+<style lang="scss" scoped>
 .first-page {
   @media (min-width: 1141px) {
     width: 400px;

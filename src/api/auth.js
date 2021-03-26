@@ -1,14 +1,11 @@
 import baseApi from "./baseApi";
+import routes from "./routes";
+
 export default {
-  apiRoutes: {
-    login: "login",
-    register: "register",
-    logout: "logout",
-  },
   async login(user) {
-    return await baseApi.execute(this.apiRoutes.login, user, "post");
+    return await baseApi.execute(routes.login, user, "post");
   },
   async registerUser(user) {
-    return await baseApi.execute(this.apiRoutes.register, user, "post");
+    return await baseApi.execute(routes.register, user, "post");
   },
 };

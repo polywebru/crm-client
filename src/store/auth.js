@@ -10,10 +10,17 @@ export default {
     },
   },
   actions: {
-    async login({ commit }, user) {
+    async login({ commit, dispatch }, user) {
       try {
         const response = await api.login(user);
         commit("setToken", response.headers.authorization);
+        localStorage.setItem("auth", response.headers.authorization);
+
+        await dispatch("getUserInfo", response.headers.authorization);
+        await dispatch(
+          "getRolesAndPermissions",
+          response.headers.authorization
+        );
       } catch (e) {
         commit("setError", e.response.data.error.errors);
         throw e;

@@ -1,22 +1,15 @@
 import baseApi from "./baseApi";
+import routes from "./routes";
+
 const settings = {
-  apiRoutes: {
-    faculties: "faculties",
-    specialities: "specialities",
-    settings: "settings",
-  },
   async getFaculties() {
-    return await baseApi.execute(this.apiRoutes.faculties, null, "get");
+    return await baseApi.execute(routes.faculties, null, "get");
   },
   async getSpecialityById(id) {
-    return await baseApi.execute(
-      `${this.apiRoutes.faculties}/${id}/${this.apiRoutes.specialities}`,
-      null,
-      "get"
-    );
+    return await baseApi.execute(routes.specialitiesById(id), null, "get");
   },
   async getDuration() {
-    return await baseApi.execute(this.apiRoutes.settings, null, "get");
+    return await baseApi.execute(routes.settings, null, "get");
   },
 };
 export default settings;

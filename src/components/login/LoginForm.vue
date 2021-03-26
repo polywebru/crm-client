@@ -1,11 +1,8 @@
 <template>
   <div class="form-wrapper">
-    <server-error-alert
-      @dismissAlert="dismissAlert"
-      :showAlert="showAlert"
-    ></server-error-alert>
+    <server-error-alert :showAlert="showAlert"></server-error-alert>
     <div class="form-block">
-      <auth-loader :isLoading="isLoading" />
+      <auth-loader></auth-loader>
       <v-form class="login-form">
         <logo-block />
         <h2 class="main-title text-center">Авторизация</h2>
@@ -27,7 +24,7 @@
               id="email"
             ></v-text-field>
           </div>
-          <div class="field-wrapper mb-6">
+          <div class="field-wrapper password">
             <label for="password">Пароль</label>
             <v-text-field
               label="Введите пароль"
@@ -36,9 +33,12 @@
               v-model.trim="password"
               outlined
               type="password"
-              class="custom-input login-input mt-1 mb-4"
+              class="custom-input login-input mb-4"
+              :error-messages="invalidPassword"
               :class="{
-                invalid: invalidPassword || (error && 'email' in error),
+                invalid:
+                  invalidPassword ||
+                  (typeof error === 'object' && error && 'email' in error),
               }"
               id="password"
             ></v-text-field>
@@ -71,7 +71,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import AuthLoader from "../AuthLoader.vue";
 import LogoBlock from "../LogoBlock.vue";
 import ServerErrorAlert from "../ServerErrorAlert.vue";
@@ -89,7 +89,6 @@ export default {
       rememberMe: false,
       emailAddress: "",
       password: "",
-      isLoading: false,
       showAlert: false,
     };
   },
@@ -103,12 +102,17 @@ export default {
       required,
     },
   },
+
   computed: {
     ...mapGetters(["error"]),
     invalidEmail() {
       if (this.$v.emailAddress.$dirty && this.$v.emailAddress.$invalid) {
         return ["Некорректный email"];
-      } else if (this.error && "email" in this.error) {
+      } else if (
+        this.error &&
+        typeof this.error === "object" &&
+        "email" in this.error
+      ) {
         return this.error.email;
       }
     },
@@ -117,32 +121,34 @@ export default {
         return ["Введите пароль"];
       }
     },
+    ...mapState({ USERNAME: (state) => state.profile.userInfo.username }),
   },
   methods: {
-    ...mapMutations(["setError"]),
+    ...mapMutations(["setError", "setFormPending"]),
     ...mapActions(["login"]),
+
     async submitHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         try {
-          this.isLoading = true;
+          this.setFormPending(true);
           await this.login({
             email: this.emailAddress,
             password: this.password,
             rememberMe: +this.rememberMe,
           });
-          await this.$router.push("/profile");
-          this.isLoading = false;
+          await this.$router.push(`/user/${this.USERNAME}`);
+          this.setFormPending(false);
         } catch (error) {
-          this.isLoading = false;
+          this.setFormPending(false);
           if (error.response && error.response.status >= 500) {
             this.showAlert = true;
+            setTimeout(() => {
+              this.showAlert = false;
+            }, 1300);
           }
         }
       }
-    },
-    dismissAlert() {
-      this.showAlert = false;
     },
   },
   destroyed() {
@@ -157,5 +163,8 @@ export default {
   @media (max-width: 396px) {
     padding-top: 3px;
   }
+}
+.password {
+  margin: 15px 0 30px !important;
 }
 </style>
