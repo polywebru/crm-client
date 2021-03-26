@@ -4,7 +4,6 @@
     class="alert-custom"
     elevation="2"
     :class="{ show: showAlert }"
-    @click="dismissAlert"
   >
     <span>Упс! Кажется что-то пошло не так.</span>
   </v-alert>
@@ -15,11 +14,6 @@ export default {
     showAlert: {
       type: Boolean,
       default: false,
-    },
-  },
-  methods: {
-    dismissAlert() {
-      this.$emit("dismissAlert");
     },
   },
 };

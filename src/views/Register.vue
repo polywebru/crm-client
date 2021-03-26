@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex align-center justify-center">
-    <auth-loader />
     <div class="d-flex custom-container align-center justify-center">
       <register-form />
       <content-block :content="registerContent" />
@@ -8,9 +7,9 @@
   </div>
 </template>
 <script>
-import ContentBlock from "../components/ContentBlock.vue";
-import AuthLoader from "../components/AuthLoader.vue";
-import RegisterForm from "../components/register/RegisterForm.vue";
+import ContentBlock from "@/components/ContentBlock.vue";
+
+import RegisterForm from "@/components/register/RegisterForm.vue";
 export default {
   data() {
     return {
@@ -24,7 +23,6 @@ export default {
   },
   components: {
     ContentBlock,
-    AuthLoader,
     RegisterForm,
   },
 };

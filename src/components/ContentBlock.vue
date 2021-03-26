@@ -4,7 +4,11 @@
     <div class="content">
       <h2 class="main-title">{{ content.title }}</h2>
       <h4 class="subtitle mt-2">{{ content.subtitle }}</h4>
-      <v-btn @click="toAuth" class="btn btn-register mt-3">
+      <v-btn
+        :disabled="FORM_PENDING"
+        @click="toAuth"
+        class="btn btn-register mt-3"
+      >
         {{ content.btnText }}
       </v-btn>
     </div>
@@ -12,6 +16,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     content: Object,
@@ -24,6 +29,7 @@ export default {
     imgPath() {
       return require(`@/assets/img/${this.content.imgUrl}`);
     },
+    ...mapState({ FORM_PENDING: (state) => state.formPending }),
   },
   methods: {
     toAuth() {

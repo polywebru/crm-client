@@ -37,7 +37,7 @@ export default {
     async getDuration({ commit }) {
       try {
         const response = await api.getDuration();
-        commit("setDuration", response.data.data.study_durations);
+        commit("setDuration", response.data.data.user_study_durations);
       } catch (error) {
         commit("setError", error);
       }

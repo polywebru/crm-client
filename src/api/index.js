@@ -1,5 +1,6 @@
 import auth from "./auth";
 import settings from "./facsAndSpecs";
+import profile from "./profile";
 export default {
   async login(user) {
     return await auth.login(user);
@@ -15,5 +16,11 @@ export default {
   },
   async registerUser(user) {
     return await auth.registerUser(user);
+  },
+  async getInfo(token, lastModified = null) {
+    return await profile.getInfo(token, lastModified);
+  },
+  async getRolesAndPermissions(token, lastModified = null) {
+    return await profile.getRolesAndPermissions(token, lastModified);
   },
 };
