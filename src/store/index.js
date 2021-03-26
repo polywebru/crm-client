@@ -3,14 +3,16 @@ import Vuex from "vuex";
 
 import auth from "./auth";
 import settings from "./settings";
-
+import mainLayout from "./mainLayout";
+import profile from "./profile";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     error: null,
-    token: "",
+    token: null,
     formPending: false,
+    isShowLoadMenu: false,
   },
   mutations: {
     setError(state, error) {
@@ -22,6 +24,9 @@ export default new Vuex.Store({
     setFormPending(state, formPending) {
       state.formPending = formPending;
     },
+    setShowLoadMenu(state, showLoadMenu) {
+      state.isShowLoadMenu = showLoadMenu;
+    },
   },
   actions: {},
   getters: {
@@ -31,5 +36,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     settings,
+    mainLayout,
+    profile,
   },
 });

@@ -118,8 +118,7 @@ import {
   sameAs,
 } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
-import formDataMixin from "../../mixins/formData.mixin";
-
+import formDataMixin from "@/mixins/formData.mixin";
 export default {
   mixins: [validationMixin, formDataMixin],
   props: {

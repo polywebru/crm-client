@@ -1,13 +1,12 @@
 <template>
   <div>
-    <v-app>
-      <component :is="layout"></component>
-    </v-app>
+    <component :is="layout"></component>
   </div>
 </template>
 
 <script>
-import AuthLayout from "./layouts/auth-layout.vue";
+import AuthLayout from "@/layouts/AuthLayout.vue";
+import MainLayout from "@/layouts/MainLayout.vue";
 export default {
   name: "App",
   computed: {
@@ -15,6 +14,6 @@ export default {
       return `${this.$route.meta.layout || "auth"}-layout`;
     },
   },
-  components: { AuthLayout },
+  components: { AuthLayout, MainLayout },
 };
 </script>
