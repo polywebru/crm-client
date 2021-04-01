@@ -5,7 +5,7 @@
         <label for="secondName">Фамилия</label>
         <v-text-field
           v-model.trim="formData.last_name"
-          label="Фамилия"
+          placeholder="Фамилия"
           background-color="#fff"
           single-line
           required
@@ -23,7 +23,7 @@
         <label for="firstName">Имя</label>
         <v-text-field
           v-model.trim="formData.first_name"
-          label="Имя"
+          placeholder="Имя"
           background-color="#fff"
           single-line
           outlined
