@@ -1,8 +1,6 @@
 <template>
   <div class="profile-wrapper">
-    <skeleton-loader
-      v-if="IS_LOADING || LAST_MODIFIED_STATUS === 200"
-    ></skeleton-loader>
+    <skeleton-loader v-if="IS_LOADING"></skeleton-loader>
     <div v-else>
       <div class="profile-head">
         <div class="profile-avatar">
@@ -151,6 +149,8 @@ export default {
       if (e === 401) {
         localStorage.clear();
         this.$router.push("/");
+      } else if (e >= 500) {
+        this.$emit("showAlert");
       }
     }
   },
@@ -197,7 +197,6 @@ export default {
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
       USER_INFO: (state) => state.profile.userInfo,
       IS_LOADING: (state) => state.profile.isLoading,
-      LAST_MODIFIED_STATUS: (state) => state.profile.lastModifiedStatus,
     }),
     ...mapGetters({ HAS_ROLES_AND_PERMISSIONS: ["hasRolesAndPermissions"] }),
   },

@@ -21,6 +21,13 @@ export default {
       state.roles = roles;
       state.permissions = permissions;
     },
+    resetProfile(state) {
+      state.userInfo = {};
+      state.roles = [];
+      state.permissions = [];
+      state.isLoading = false;
+      state.lastModified = null;
+    },
   },
   actions: {
     async getUserInfo({ rootState, commit, state }) {
