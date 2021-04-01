@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import store from "../store";
+import logout from "../store/logout";
 Vue.use(VueRouter);
 
 const routes = [
@@ -12,13 +13,6 @@ const routes = [
     meta: {
       layout: "auth",
     },
-    beforeEnter: (_, __, next) => {
-      if (localStorage.getItem("auth")) {
-        next({ path: `/user/${localStorage.getItem("username")}` });
-      } else {
-        next();
-      }
-    },
   },
   {
     path: "/register",
@@ -28,15 +22,6 @@ const routes = [
       layout: "auth",
       page: "first",
     },
-    beforeEnter: (_, __, next) => {
-      if (store.state.formPending) {
-        next({ path: "/" });
-      } else if (localStorage.getItem("auth")) {
-        next({ path: `/user/${localStorage.getItem("username")}` });
-      } else {
-        next();
-      }
-    },
   },
   {
     path: "/user/:username",
@@ -45,13 +30,6 @@ const routes = [
     meta: {
       layout: "main",
     },
-    beforeEnter: (to, _, next) => {
-      if (to.params.username === localStorage.getItem("username")) {
-        next();
-      } else {
-        next({ name: "Login" });
-      }
-    },
   },
 ];
 
@@ -59,6 +37,23 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, _, next) => {
+  if (
+    to.name !== "Login" &&
+    to.name !== "Register" &&
+    !localStorage.getItem("auth")
+  ) {
+    next({ name: "Login" });
+  } else if (
+    (to.name === "Login" || to.name === "Register") &&
+    localStorage.getItem("auth")
+  ) {
+    next({ path: `/user/${localStorage.getItem("username")}` });
+  } else {
+    next();
+  }
 });
 
 export default router;

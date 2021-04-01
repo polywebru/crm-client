@@ -365,13 +365,15 @@ label {
 .alert-custom {
   cursor: pointer;
   position: absolute !important;
-  z-index: 100;
+  z-index: -100;
   bottom: 40px;
   min-width: 326px;
   max-height: 58px;
   left: 70%;
   opacity: 0;
   border: 1px solid $messageInvalid;
+  background-color: $messageInvalid !important;
+  color: #fff !important;
   @media (max-width: 1140px) {
     bottom: unset;
     left: 50%;
@@ -392,6 +394,7 @@ label {
     }
   }
   &.show {
+    z-index: 100;
     opacity: 1;
     transition: 0.2s ease;
   }

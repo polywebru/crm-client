@@ -7,7 +7,6 @@ export default {
       { title: "Задачи", path: "/tasks" },
       { title: "Профиль", path: `/user/${localStorage.getItem("username")}` },
       { title: "Настройки", path: "/settings" },
-      { title: "Выход", path: "/" },
     ],
   },
   getters: {

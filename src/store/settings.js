@@ -16,6 +16,11 @@ export default {
     setDuration(state, duration) {
       state.duration = duration;
     },
+    resetSettings(state) {
+      state.faculties = null;
+      state.specialities = null;
+      state.duration = null;
+    },
   },
   actions: {
     async getFaculties({ commit }) {

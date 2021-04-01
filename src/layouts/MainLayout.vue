@@ -1,8 +1,12 @@
 <template>
-  <div data-app="true" @click="IS_SHOW_LOAD_MENU && setShowLoadMenu(false)">
-    <skeleton-laoder
-      v-show="IS_LOADING || LAST_MODIFIED_STATUS === 200"
-    ></skeleton-laoder>
+  <div
+    class="wrap"
+    data-app="true"
+    @click="IS_SHOW_LOAD_MENU && setShowLoadMenu(false)"
+  >
+    <auth-loader></auth-loader>
+    <server-error-alert :showAlert="showAlert"></server-error-alert>
+    <skeleton-laoder v-show="IS_LOADING"></skeleton-laoder>
     <header class="header" v-show="!IS_LOADING">
       <div class="header__info" v-once>
         <div class="header__logo">
@@ -54,11 +58,15 @@
               exact
               exact-active-class="header__menu-link--active"
               class="header__menu-link menu-item"
-              :class="{ logout: index === HEADER_LINKS(false).length - 1 }"
               :to="link.path"
               >{{ link.title }}</router-link
             >
           </v-list-item>
+          <div>
+            <button @click.stop="logoutUser" class="menu-item logout">
+              Выйти
+            </button>
+          </div>
         </v-list>
       </v-menu>
     </header>
@@ -66,15 +74,22 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapGetters, mapState } from "vuex";
+import { mapMutations, mapGetters, mapState, mapActions } from "vuex";
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import SkeletonLaoder from "./SkeletonLaoder.vue";
+import AuthLoader from "@/components/AuthLoader.vue";
+import ServerErrorAlert from "@/components/ServerErrorAlert.vue";
 
 export default {
-  components: { BurgerMenu, SkeletonLaoder },
   data() {
-    return {};
+    return {
+      showAlert: false,
+    };
   },
+  mounted() {
+    this.$on("showAlert", this.visibleAlert);
+  },
+  components: { BurgerMenu, SkeletonLaoder, AuthLoader, ServerErrorAlert },
   computed: {
     getFullName() {
       return `${this.LAYOUT_INFO.firstName} ${this.LAYOUT_INFO.lastName}`;
@@ -82,24 +97,58 @@ export default {
     getUsername() {
       return this.LAYOUT_INFO.username;
     },
-
     ...mapGetters({
       HEADER_LINKS: ["mainLayout/links"],
       LAYOUT_INFO: ["mainLayoutInfo"],
     }),
     ...mapState({
       IS_LOADING: (state) => state.profile.isLoading,
-      LAST_MODIFIED_STATUS: (state) => state.profile.lastModifiedStatus,
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
     }),
   },
   methods: {
+    async logoutUser() {
+      try {
+        await this.logout();
+        await this.$router.push("/");
+      } catch (error) {
+        if (error.response.status >= 500) {
+          this.visibleAlert();
+        }
+      }
+    },
+    visibleAlert() {
+      this.showAlert = true;
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 1300);
+    },
     ...mapMutations(["setShowLoadMenu"]),
+    ...mapActions(["logout"]),
   },
 };
 </script>
 <style lang="scss"  >
 @import "@/assets/styles/_variables.scss";
+.wrap {
+  position: relative;
+}
+.loader {
+  display: block;
+  .v-progress-circular {
+    @media (max-width: 780px) {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 30% !important;
+    }
+  }
+}
+.alert-custom {
+  top: 50px;
+  left: 50% !important;
+  transform: translateX(-50%);
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -247,7 +296,6 @@ export default {
 .menu-avatar {
   margin-right: 10px;
 }
-
 .role {
   color: $white;
   margin-right: 30px;
@@ -267,7 +315,6 @@ export default {
   }
   margin-top: 0;
   max-width: 300px !important;
-
   @media (max-width: 480px) {
     left: 0 !important;
     max-width: unset !important;
@@ -275,5 +322,15 @@ export default {
 }
 .logout {
   color: rgb(255, 65, 65);
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  padding: 15px 20px;
+  outline: none;
+  transition: 0.3s;
+  &:hover {
+    background-color: #f6f6f6;
+    transition: 0.3s;
+  }
 }
 </style>

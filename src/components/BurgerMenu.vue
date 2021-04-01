@@ -19,16 +19,18 @@
           exact-active-class="header__menu-link--active"
           class="header__menu-link menu-item"
           :to="link.path"
-          :class="{ logout: index === links.length - 1 }"
           >{{ link.title }}</router-link
         >
       </v-list-item>
+      <div>
+        <button @click.stop="logoutUser" class="menu-item logout">Выйти</button>
+      </div>
     </v-list>
   </v-menu>
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
+import { createNamespacedHelpers, mapActions } from "vuex";
 
 const { mapGetters } = createNamespacedHelpers("mainLayout");
 
@@ -43,6 +45,15 @@ export default {
     links() {
       return [...this.LINKS(true), ...this.LINKS(false)];
     },
+  },
+  methods: {
+    async logoutUser() {
+      try {
+        await this.logout();
+        await this.$router.push("/");
+      } catch (error) {}
+    },
+    ...mapActions(["logout"]),
   },
 };
 </script>
