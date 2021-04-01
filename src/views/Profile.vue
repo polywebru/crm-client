@@ -1,7 +1,13 @@
 <template>
   <div class="profile-wrapper">
-    <skeleton-loader v-if="IS_LOADING"></skeleton-loader>
-    <div v-else>
+    <cat-loader v-show="IS_LOADING && !USER_INFO.is_active"></cat-loader>
+    <skeleton-loader
+      v-show="IS_LOADING && USER_INFO.is_active"
+    ></skeleton-loader>
+    <in-active-user
+      v-show="!USER_INFO.is_active && !IS_LOADING"
+    ></in-active-user>
+    <div v-show="USER_INFO.is_active && !IS_LOADING">
       <div class="profile-head">
         <div class="profile-avatar">
           <div
@@ -73,9 +79,12 @@ import UserActivity from "@/components/profile/UserActivity.vue";
 import Contacts from "@/components/profile/Contacts";
 import Links from "@/components/profile/UserLinks";
 import PhotoEdit from "@/components/PhotoEdit";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import userDataMixin from "@/mixins/userData.mixin";
+import CatLoader from "@/components/CatLoader.vue";
 
 export default {
+  mixins: [userDataMixin],
   data() {
     return {
       projects: [
@@ -141,7 +150,6 @@ export default {
 
   async created() {
     try {
-      await this.getUserInfo();
       if (!this.HAS_ROLES_AND_PERMISSIONS) {
         await this.getRolesAndPermissions();
       }
@@ -151,6 +159,7 @@ export default {
         this.$router.push("/");
       } else if (e >= 500) {
         this.$emit("showAlert");
+        await this.$router.push("/");
       }
     }
   },
@@ -193,11 +202,7 @@ export default {
     getUserEmail() {
       return this.USER_INFO?.email;
     },
-    ...mapState({
-      IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
-      USER_INFO: (state) => state.profile.userInfo,
-      IS_LOADING: (state) => state.profile.isLoading,
-    }),
+
     ...mapGetters({ HAS_ROLES_AND_PERMISSIONS: ["hasRolesAndPermissions"] }),
   },
   methods: {
@@ -211,12 +216,22 @@ export default {
     Contacts,
     Links,
     PhotoEdit,
+    CatLoader,
   },
 };
 </script>
-<style lang="scss" >
+<style lang="scss">
 @import "@/assets/styles/_variables.scss";
-
+.v-spinner {
+  position: absolute !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.profile-wrapper {
+  position: relative;
+  height: 90vh;
+}
 .profile-head {
   position: relative;
   padding-top: 0;
