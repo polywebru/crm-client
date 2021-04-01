@@ -5,6 +5,7 @@ import auth from "./auth";
 import settings from "./settings";
 import mainLayout from "./mainLayout";
 import profile from "./profile";
+import logout from "./logout";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     setShowLoadMenu(state, showLoadMenu) {
       state.isShowLoadMenu = showLoadMenu;
     },
+    removeToken(state) {
+      state.token = "";
+    },
   },
   actions: {},
   getters: {
@@ -38,5 +42,6 @@ export default new Vuex.Store({
     settings,
     mainLayout,
     profile,
+    logout,
   },
 });
