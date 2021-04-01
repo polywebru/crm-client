@@ -1,8 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
-import store from "../store";
-import logout from "../store/logout";
 Vue.use(VueRouter);
 
 const routes = [

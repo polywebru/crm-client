@@ -6,7 +6,6 @@
         <v-text-field
           v-model="formData.phone"
           placeholder="Телефон"
-          single-line
           v-mask="'+7 (###) ###-##-##'"
           :error-messages="phoneInvalid"
           background-color="#fff"
@@ -24,7 +23,6 @@
         <v-text-field
           v-model="formData.email"
           placeholder="Email"
-          single-line
           background-color="#fff"
           required
           :error-messages="emailInvalid"
@@ -45,7 +43,6 @@
           background-color="#fff"
           :counter="255"
           required
-          single-line
           :error-messages="usernameInvalid"
           outlined
           type="text"
@@ -62,13 +59,13 @@
         <v-text-field
           v-model="formData.password"
           placeholder="Пароль"
-          single-line
           required
           :error-messages="passwordInvalid"
           background-color="#fff"
           :counter="255"
           outlined
           type="password"
+          autocomplete="on"
           class="custom-input mt-1 mb-3"
           :class="{ invalid: passwordInvalid }"
           id="password"
@@ -83,8 +80,8 @@
           placeholder="Повторите пароль"
           background-color="#fff"
           required
-          single-line
           :error-messages="passwordConfirmationInvalid"
+          autocomplete="on"
           outlined
           type="password"
           :counter="255"

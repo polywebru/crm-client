@@ -4,15 +4,11 @@
       <div class="header__logo">
         <img src="@/assets/img/logo.png" alt="logo" />
       </div>
-      <nav class="header__nav">
-        <router-link
-          class="header__link"
-          v-for="(link, index) in HEADER_LINKS(true)"
-          :key="index"
-          :to="link.path"
-          >{{ link.title }}</router-link
-        >
-      </nav>
+      <div class="header__loaders">
+        <v-skeleton-loader type="text"></v-skeleton-loader>
+        <v-skeleton-loader type="text"></v-skeleton-loader>
+        <v-skeleton-loader type="text"></v-skeleton-loader>
+      </div>
     </div>
     <div>
       <v-skeleton-loader type="button"></v-skeleton-loader>
@@ -30,3 +26,19 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.header {
+  min-height: 60px;
+}
+.header__loaders {
+  min-width: 100px;
+  display: flex;
+  & div {
+    min-width: 100px;
+    margin-right: 20px;
+  }
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+</style>

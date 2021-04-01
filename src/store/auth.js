@@ -31,6 +31,7 @@ export default {
       try {
         const response = await api.registerUser(user);
         commit("setToken", response.headers.authorization);
+        localStorage.setItem("auth", response.headers.authorization);
       } catch (error) {
         if (error.response.status === 500) {
           commit("setError", error.response.status);
