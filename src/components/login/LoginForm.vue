@@ -10,7 +10,7 @@
           <div class="field-wrapper mb-6">
             <label for="email">Email</label>
             <v-text-field
-              label="Введите Email"
+              placeholder="Введите Email"
               background-color="#fff"
               v-model.trim="emailAddress"
               outlined
@@ -27,7 +27,7 @@
           <div class="field-wrapper password">
             <label for="password">Пароль</label>
             <v-text-field
-              label="Введите пароль"
+              placeholder="Введите пароль"
               single-line
               background-color="#fff"
               v-model.trim="password"

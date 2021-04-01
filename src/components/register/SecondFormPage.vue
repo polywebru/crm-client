@@ -5,7 +5,7 @@
         <label for="phone">Телефон</label>
         <v-text-field
           v-model="formData.phone"
-          label="Телефон"
+          placeholder="Телефон"
           single-line
           v-mask="'+7 (###) ###-##-##'"
           :error-messages="phoneInvalid"
@@ -23,7 +23,7 @@
         <label for="email">Email</label>
         <v-text-field
           v-model="formData.email"
-          label="Email"
+          placeholder="Email"
           single-line
           background-color="#fff"
           required
@@ -41,7 +41,7 @@
         <label for="username">Имя пользователя</label>
         <v-text-field
           v-model="formData.username"
-          label="Username"
+          placeholder="Username"
           background-color="#fff"
           :counter="255"
           required
@@ -61,7 +61,7 @@
         <label for="password">Пароль</label>
         <v-text-field
           v-model="formData.password"
-          label="Пароль"
+          placeholder="Пароль"
           single-line
           required
           :error-messages="passwordInvalid"
@@ -80,7 +80,7 @@
         <label for="repeatPassword">Повторите пароль</label>
         <v-text-field
           v-model="formData.password_confirmation"
-          label="Повторите пароль"
+          placeholder="Повторите пароль"
           background-color="#fff"
           required
           single-line
