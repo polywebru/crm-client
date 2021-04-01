@@ -74,6 +74,8 @@
           class="custom-input mt-1 datepicker"
           v-mask="'##.##.####'"
           background-color="#fff"
+          :error-messages="dateBirthError && [dateBirthError]"
+          :class="{ invalid: dateBirthError }"
           outlined
           placeholder="Дата рождения"
         ></v-text-field>
@@ -98,6 +100,11 @@ import { mapState } from "vuex";
 export default {
   components: { DatePicker },
   mixins: [validationMixin, formDataMixin],
+  props: {
+    dateBirthError: {
+      type: String,
+    },
+  },
   data() {
     return {
       page: 0,

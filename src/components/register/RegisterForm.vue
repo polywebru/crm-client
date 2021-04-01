@@ -2,17 +2,17 @@
   <div class="form-wrapper">
     <server-error-alert :showAlert="showAlert"></server-error-alert>
     <div class="form-block">
-      <auth-loader></auth-loader>
+      <auth-loader v-if="FORM_PENDING"></auth-loader>
       <v-form class="login-form">
         <logo-block></logo-block>
         <h2 class="main-title text-center">Регистрация</h2>
         <component
           @updateUserState="updateUserState"
           @register="registerUser"
-          @setLoading="setLoading"
           :emailTakenError="emailTakenError"
           :usernameTakenError="usernameTakenError"
           :phoneTakenError="phoneTakenError"
+          :dateBirthError="dateBirthError"
           :is="pageForm"
         ></component>
         <p class="text-center mt-5 register-invite pb-5">
@@ -52,6 +52,7 @@ export default {
       usernameTakenError: "",
       phoneTakenError: "",
       showAlert: false,
+      dateBirthError: "",
     };
   },
   created() {
@@ -61,7 +62,10 @@ export default {
     pageForm() {
       return `${this.currentPage}-form-page`;
     },
-    ...mapState({ USER_STATE: (state) => state.auth.user }),
+    ...mapState({
+      USER_STATE: (state) => state.auth.user,
+      FORM_PENDING: (state) => state.formPending,
+    }),
     ...mapGetters(["error"]),
   },
   methods: {
@@ -76,20 +80,19 @@ export default {
       }
       this.currentPage = this.pages[pageNumber];
     },
-    setLoading(isLoading) {
-      this.isLoading = isLoading;
-    },
     async registerUser(user) {
       try {
         this.setFormPending(true);
         await this.register(user);
         this.setFormPending(false);
+        await this.$router.push(`/user/${user.username}`);
       } catch (error) {
         this.setFormPending(false);
         if (this.error && typeof this.error === "object") {
           this.emailTakenError = this.error.email?.toString() || "";
           this.usernameTakenError = this.error.username?.toString() || "";
           this.phoneTakenError = this.error.phone?.toString() || "";
+          this.dateBirthError = this.error.date_birth?.toString() || "";
         } else if (this.error >= 500) {
           this.showAlert = true;
           setTimeout(() => {

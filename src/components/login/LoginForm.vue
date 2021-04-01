@@ -2,7 +2,7 @@
   <div class="form-wrapper">
     <server-error-alert :showAlert="showAlert"></server-error-alert>
     <div class="form-block">
-      <auth-loader></auth-loader>
+      <auth-loader v-if="FORM_PENDING"></auth-loader>
       <v-form class="login-form">
         <logo-block />
         <h2 class="main-title text-center">Авторизация</h2>
@@ -121,7 +121,10 @@ export default {
         return ["Введите пароль"];
       }
     },
-    ...mapState({ USERNAME: (state) => state.profile.userInfo.username }),
+    ...mapState({
+      USERNAME: (state) => state.profile.userInfo.username,
+      FORM_PENDING: (state) => state.formPending,
+    }),
   },
   methods: {
     ...mapMutations(["setError", "setFormPending"]),

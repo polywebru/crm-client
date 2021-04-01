@@ -4,15 +4,18 @@
     data-app="true"
     @click="IS_SHOW_LOAD_MENU && setShowLoadMenu(false)"
   >
-    <auth-loader></auth-loader>
+    <div class="loader-wrap" v-if="isLogout">
+      <cat-loader></cat-loader>
+    </div>
+
     <server-error-alert :showAlert="showAlert"></server-error-alert>
     <skeleton-laoder v-show="IS_LOADING"></skeleton-laoder>
     <header class="header" v-show="!IS_LOADING">
-      <div class="header__info" v-once>
-        <div class="header__logo">
+      <div class="header__info">
+        <router-link class="header__logo" :to="'/'">
           <img src="@/assets/img/logo.png" alt="logo" />
-        </div>
-        <nav class="header__nav">
+        </router-link>
+        <nav class="header__nav" v-if="IS_USER_ACTIVE">
           <router-link
             class="header__link"
             v-for="(link, index) in HEADER_LINKS(true)"
@@ -22,7 +25,12 @@
           >
         </nav>
       </div>
-      <burger-menu :name="getFullName" :username="getUsername"></burger-menu>
+      <burger-menu
+        @changeIsLogout="changeIsLogout"
+        :isActiveUser="IS_USER_ACTIVE"
+        :name="getFullName"
+        :username="getUsername"
+      ></burger-menu>
       <v-menu tile max-width="300px" offset-y left>
         <template v-slot:activator="{ attrs, on }">
           <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
@@ -50,18 +58,20 @@
             <div class="header__name">{{ getFullName }}</div>
             <div class="header__username">{{ getUsername }}</div>
           </div>
-          <v-list-item
-            v-for="(link, index) in HEADER_LINKS(false)"
-            :key="index"
-          >
-            <router-link
-              exact
-              exact-active-class="header__menu-link--active"
-              class="header__menu-link menu-item"
-              :to="link.path"
-              >{{ link.title }}</router-link
+          <div v-if="IS_USER_ACTIVE">
+            <v-list-item
+              v-for="(link, index) in HEADER_LINKS(false)"
+              :key="index"
             >
-          </v-list-item>
+              <router-link
+                exact
+                exact-active-class="header__menu-link--active"
+                class="header__menu-link menu-item"
+                :to="link.path"
+                >{{ link.title }}</router-link
+              >
+            </v-list-item>
+          </div>
           <div>
             <button @click.stop="logoutUser" class="menu-item logout">
               Выйти
@@ -70,26 +80,33 @@
         </v-list>
       </v-menu>
     </header>
-    <router-view />
+    <router-view></router-view>
   </div>
 </template>
 <script>
 import { mapMutations, mapGetters, mapState, mapActions } from "vuex";
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import SkeletonLaoder from "./SkeletonLaoder.vue";
-import AuthLoader from "@/components/AuthLoader.vue";
 import ServerErrorAlert from "@/components/ServerErrorAlert.vue";
-
+import InActiveUser from "@/components/InActiveUser.vue";
+import CatLoader from "@/components/CatLoader.vue";
 export default {
   data() {
     return {
       showAlert: false,
+      isLogout: false,
     };
   },
   mounted() {
     this.$on("showAlert", this.visibleAlert);
   },
-  components: { BurgerMenu, SkeletonLaoder, AuthLoader, ServerErrorAlert },
+  components: {
+    BurgerMenu,
+    SkeletonLaoder,
+    ServerErrorAlert,
+    InActiveUser,
+    CatLoader,
+  },
   computed: {
     getFullName() {
       return `${this.LAYOUT_INFO.firstName} ${this.LAYOUT_INFO.lastName}`;
@@ -104,16 +121,26 @@ export default {
     ...mapState({
       IS_LOADING: (state) => state.profile.isLoading,
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
+      IS_USER_ACTIVE: (state) => state.profile.userInfo.is_active,
     }),
   },
   methods: {
+    changeIsLogout() {
+      console.log("ok");
+      this.isLogout = true;
+    },
     async logoutUser() {
+      this.isLogout = true;
       try {
         await this.logout();
         await this.$router.push("/");
+        this.isLogout = false;
       } catch (error) {
+        this.isLogout = false;
+
         if (error.response.status >= 500) {
           this.visibleAlert();
+          this.$router.push("/");
         }
       }
     },
@@ -130,20 +157,16 @@ export default {
 </script>
 <style lang="scss"  >
 @import "@/assets/styles/_variables.scss";
-.wrap {
-  position: relative;
+.loader-wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba($color: #fff, $alpha: 0.5);
 }
-.loader {
-  display: block;
-  .v-progress-circular {
-    @media (max-width: 780px) {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 30% !important;
-    }
-  }
-}
+
 .alert-custom {
   top: 50px;
   left: 50% !important;
@@ -152,13 +175,14 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 10px 33px 0px;
+  padding: 0 30px;
   align-items: center;
+  max-height: 60px;
   background-color: $layout-bg;
   position: relative;
   z-index: 1;
   @media (max-width: 480px) {
-    padding-bottom: 10px;
+    padding: 5px 30px;
   }
   &__nav {
     align-self: flex-start;

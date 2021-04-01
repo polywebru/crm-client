@@ -374,6 +374,9 @@ label {
   border: 1px solid $messageInvalid;
   background-color: $messageInvalid !important;
   color: #fff !important;
+  @media (max-width: 480px) {
+    min-width: 200px;
+  }
   @media (max-width: 1140px) {
     bottom: unset;
     left: 50%;
@@ -384,10 +387,18 @@ label {
   .v-alert__content {
     span {
       font-size: 14px;
+      line-height: 19px;
       color: $white;
       font-weight: 700;
+      margin-left: 20px;
       position: relative;
       z-index: 200;
+      @media (max-width: 480px) {
+        text-align: center;
+        display: inline-block;
+        bottom: 3px !important;
+        font-size: 12px !important;
+      }
       @media (max-width: 1140px) {
         font-size: 13px;
       }

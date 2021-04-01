@@ -13,17 +13,19 @@
           {{ username }}
         </div>
       </div>
-      <v-list-item v-for="(link, index) in links" :key="index">
-        <router-link
-          exact
-          exact-active-class="header__menu-link--active"
-          class="header__menu-link menu-item"
-          :to="link.path"
-          >{{ link.title }}</router-link
-        >
-      </v-list-item>
+      <div v-if="isActiveUser">
+        <v-list-item v-for="(link, index) in links" :key="index">
+          <router-link
+            exact
+            exact-active-class="header__menu-link--active"
+            class="header__menu-link menu-item"
+            :to="link.path"
+            >{{ link.title }}</router-link
+          >
+        </v-list-item>
+      </div>
       <div>
-        <button @click.stop="logoutUser" class="menu-item logout">Выйти</button>
+        <button @click="logoutUser" class="menu-item logout">Выйти</button>
       </div>
     </v-list>
   </v-menu>
@@ -39,6 +41,7 @@ export default {
     name: String,
     username: String,
     role: String,
+    isActiveUser: Boolean,
   },
   computed: {
     ...mapGetters({ LINKS: ["links"] }),
@@ -48,6 +51,7 @@ export default {
   },
   methods: {
     async logoutUser() {
+      this.$emit("changeIsLogout");
       try {
         await this.logout();
         await this.$router.push("/");
