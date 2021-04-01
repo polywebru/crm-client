@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  crm-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '8201:80'
