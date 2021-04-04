@@ -68,7 +68,7 @@ export default {
   height: 40px;
   position: relative;
   outline: none;
-  @media (max-width: 480px) {
+  @media (max-width: 540px) {
     display: flex;
     flex-direction: column;
     align-items: center;

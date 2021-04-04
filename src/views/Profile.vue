@@ -1,13 +1,12 @@
 <template>
-  <div class="profile-wrapper">
-    <cat-loader v-show="IS_LOADING && !USER_INFO.is_active"></cat-loader>
-    <skeleton-loader
-      v-show="IS_LOADING && USER_INFO.is_active"
-    ></skeleton-loader>
+  <div class="profile-wrapper" :class="{ inactive: !USER_INFO.is_active }">
+    <skeleton-loader v-if="IS_LOADING && USER_INFO.is_active"></skeleton-loader>
+    <cat-loader v-else-if="IS_LOADING && !USER_INFO.is_active"></cat-loader>
+
     <in-active-user
-      v-show="!USER_INFO.is_active && !IS_LOADING"
+      v-else-if="!USER_INFO.is_active && !IS_LOADING"
     ></in-active-user>
-    <div v-show="USER_INFO.is_active && !IS_LOADING">
+    <div v-else class="profile-bg">
       <div class="profile-head">
         <div class="profile-avatar">
           <div
@@ -79,7 +78,7 @@ import UserActivity from "@/components/profile/UserActivity.vue";
 import Contacts from "@/components/profile/Contacts";
 import Links from "@/components/profile/UserLinks";
 import PhotoEdit from "@/components/PhotoEdit";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import userDataMixin from "@/mixins/userData.mixin";
 import CatLoader from "@/components/CatLoader.vue";
 
@@ -222,6 +221,9 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/styles/_variables.scss";
+.profile-bg {
+  background-color: var(--main-bg);
+}
 .v-spinner {
   position: absolute !important;
   left: 50%;
@@ -230,12 +232,20 @@ export default {
 }
 .profile-wrapper {
   position: relative;
-  height: 90vh;
+  height: 100vh;
+  background-color: var(--main-bg);
+  &.inactive {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
 }
 .profile-head {
   position: relative;
   padding-top: 0;
-  background-color: $layout-bg;
+  background-color: var(--layout-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,6 +291,10 @@ export default {
 .profile-info {
   margin-top: 76px;
   text-align: center;
+  h2,
+  h3 {
+    color: var(--text-color);
+  }
 }
 .profile-full-name {
   font-weight: bold;
@@ -326,6 +340,10 @@ export default {
   }
   .profile-contacts {
     display: flex;
+
+    div {
+      color: var(--text-color);
+    }
   }
   @media (max-width: 480px) {
     justify-content: space-around;

@@ -45,7 +45,7 @@ export default {
         commit("setIsLoading", false);
       } catch (error) {
         commit("setIsLoading", false);
-
+        console.log(error.response.status);
         throw error.response.status;
       }
     },

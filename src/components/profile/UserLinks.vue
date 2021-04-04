@@ -13,7 +13,7 @@
             >
               <path
                 d="M0.0441427 2.20165L1.40498 0.909147L7.49998 6.73915L13.595 0.909147L14.9558 2.20165L7.49998 9.33331L0.0441427 2.20165Z"
-                fill="black"
+                class="vector"
               />
             </svg>
           </div>
@@ -31,7 +31,7 @@
           </a>
         </li>
       </ul>
-      <span class="no-links" v-else>Ссылок пока нет</span>
+      <div class="no-links" v-else>Ссылок пока нет</div>
     </v-menu>
   </div>
 </template>
@@ -61,6 +61,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
 .links {
   margin-right: 42px;
   @media (max-width: 480px) {
@@ -95,21 +97,26 @@ export default {
     align-items: center;
     padding: 10px 10px 5px;
     transition: 0.3s;
-    &:hover {
-      background-color: #f5f5f5;
-      transition: 0.3s;
+    span {
+      color: var(--text-color);
+      &:nth-child(2) {
+        margin-left: 20px;
+        align-self: flex-start;
+        margin-top: 3px;
+      }
     }
-    span:nth-child(2) {
-      margin-left: 20px;
-      align-self: flex-start;
-      margin-top: 3px;
+    &:hover {
+      background-color: var(--link-hover);
+      transition: 0.3s;
     }
   }
   &-items {
     list-style: none;
+    background-color: var(--menu-bg);
   }
 }
 .v-menu__content {
+  margin-top: 10px;
   max-width: 200px !important;
   @media (max-width: 480px) {
     left: 66% !important;
@@ -117,7 +124,8 @@ export default {
   }
 }
 .no-links {
-  display: inline-block;
   padding: 20px;
+  color: var(--text-color);
+  background-color: var(--menu-bg);
 }
 </style>
