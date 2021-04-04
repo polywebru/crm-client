@@ -2,7 +2,9 @@
   <div class="form-wrapper">
     <server-error-alert :showAlert="showAlert"></server-error-alert>
     <div class="form-block">
-      <auth-loader v-if="FORM_PENDING"></auth-loader>
+      <div class="spinner" v-if="FORM_PENDING">
+        <pacman-loader :color="'#5688f0'"></pacman-loader>
+      </div>
       <v-form class="login-form">
         <logo-block />
         <h2 class="main-title text-center">Авторизация</h2>
@@ -72,12 +74,11 @@
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
-import AuthLoader from "../AuthLoader.vue";
 import LogoBlock from "../LogoBlock.vue";
 import ServerErrorAlert from "../ServerErrorAlert.vue";
-
+import PacmanLoader from "vue-spinner/src/PacmanLoader.vue";
 export default {
-  components: { LogoBlock, AuthLoader, ServerErrorAlert },
+  components: { LogoBlock, PacmanLoader, ServerErrorAlert },
   metaInfo: {
     title: "Авторизация",
     htmlAttrs: {

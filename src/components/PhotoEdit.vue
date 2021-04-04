@@ -19,15 +19,19 @@ export default {
     photoChangeTitle() {
       return this.USER_AVATAR ? "Изменить" : "Загрузить";
     },
-    ...mapState({ USER_AVATAR: (state) => state.profile.userInfo.avatar }),
+    ...mapState({
+      USER_AVATAR: (state) => state.profile.userInfo.avatar,
+    }),
   },
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
 .upload-photo {
   cursor: pointer;
   font-weight: 600;
   font-size: 14px !important;
+  color: var(--text-color);
 }
 .file-input {
   opacity: 0;
@@ -41,7 +45,7 @@ export default {
   &.show {
     display: flex;
   }
-  background-color: #fff;
+  background-color: var(--menu-bg);
   position: absolute;
   z-index: 1000;
   display: none;

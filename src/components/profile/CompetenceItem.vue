@@ -17,6 +17,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
 .competence-item {
   max-height: 120px;
   padding: 0 10px;
@@ -25,6 +26,10 @@ export default {
   transition: all 0.3s;
   display: flex;
   align-items: center;
+  background-color: var(--main-bg);
+  div {
+    color: var(--text-color);
+  }
 
   justify-content: space-between;
   &--grid {

@@ -2,7 +2,9 @@
   <div class="form-wrapper">
     <server-error-alert :showAlert="showAlert"></server-error-alert>
     <div class="form-block">
-      <auth-loader v-if="FORM_PENDING"></auth-loader>
+      <div class="spinner" v-if="FORM_PENDING">
+        <pacman-loader :color="'#5688f0'"></pacman-loader>
+      </div>
       <v-form class="login-form">
         <logo-block></logo-block>
         <h2 class="main-title text-center">Регистрация</h2>
@@ -27,7 +29,8 @@
 import LogoBlock from "../LogoBlock.vue";
 import FirstFormPage from "./FirstFormPage.vue";
 import SecondFormPage from "./SecondFormPage.vue";
-import AuthLoader from "../AuthLoader.vue";
+import PacmanLoader from "vue-spinner/src/PacmanLoader.vue";
+
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 import ServerErrorAlert from "../ServerErrorAlert.vue";
 export default {
@@ -41,7 +44,7 @@ export default {
     LogoBlock,
     FirstFormPage,
     SecondFormPage,
-    AuthLoader,
+    PacmanLoader,
     ServerErrorAlert,
   },
   data() {

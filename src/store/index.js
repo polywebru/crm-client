@@ -14,6 +14,7 @@ export default new Vuex.Store({
     token: null,
     formPending: false,
     isShowLoadMenu: false,
+    isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")) || false,
   },
   mutations: {
     setError(state, error) {
@@ -30,6 +31,10 @@ export default new Vuex.Store({
     },
     removeToken(state) {
       state.token = "";
+    },
+    setIsThemeDark(state, isThemeDark) {
+      localStorage.setItem("isThemeDark", isThemeDark);
+      state.isThemeDark = isThemeDark;
     },
   },
   actions: {},

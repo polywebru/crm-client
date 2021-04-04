@@ -11,14 +11,20 @@
     </div>
   </div>
 </template>
+
 <style lang="scss" >
+@import "@/assets/styles/_variables.scss";
 .inactive {
-  height: 85vh;
   display: flex;
   padding: 10px;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  background-color: var(--main-bg);
+  p {
+    color: var(--text-color);
+  }
+
   &__inner {
     display: flex;
     flex-direction: column;

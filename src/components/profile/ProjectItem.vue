@@ -26,10 +26,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
 .project-item {
   max-height: 160px;
   margin: 18px auto;
   padding: 10px;
+  background-color: var(--main-bg) !important;
+  div {
+    color: var(--text-color) !important;
+  }
   @media (max-width: 1140px) {
     text-align: center;
   }

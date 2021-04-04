@@ -33,6 +33,7 @@ export default {
         commit("setToken", response.headers.authorization);
         localStorage.setItem("auth", response.headers.authorization);
       } catch (error) {
+        console.log(error.response.status);
         if (error.response.status === 500) {
           commit("setError", error.response.status);
         } else {
