@@ -30,7 +30,12 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 .user-activity {
-  background-color: $form-bg;
+  background-color: var(--activities-bg);
+
+  h3 {
+    color: var(--text-color);
+  }
+
   &::-webkit-scrollbar {
     width: 4px;
 
@@ -54,7 +59,7 @@ export default {
   }
 
   @media (max-width: 780px) {
-    border: 2px solid #a5a5a5;
+    border: var(--activities-border);
     flex-direction: column;
   }
   &__title {

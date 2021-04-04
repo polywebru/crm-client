@@ -25,62 +25,65 @@
           >
         </nav>
       </div>
-      <burger-menu
-        @changeIsLogout="changeIsLogout"
-        :isActiveUser="IS_USER_ACTIVE"
-        :name="getFullName"
-        :username="getUsername"
-      ></burger-menu>
-      <v-menu tile max-width="300px" offset-y left>
-        <template v-slot:activator="{ attrs, on }">
-          <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
-            <div class="menu-avatar">
-              <img src="@/assets/img/no_avatar.png" alt="" />
+      <div class="right-menu">
+        <theme-switcher class="theme-switcher"></theme-switcher>
+        <burger-menu
+          @changeIsLogout="changeIsLogout"
+          :isActiveUser="IS_USER_ACTIVE"
+          :name="getFullName"
+          :username="getUsername"
+        ></burger-menu>
+        <v-menu tile max-width="300px" offset-y left>
+          <template v-slot:activator="{ attrs, on }">
+            <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
+              <div class="menu-avatar">
+                <img src="@/assets/img/no_avatar.png" alt="" />
+              </div>
+              <div class="arrow">
+                <svg
+                  width="15"
+                  height="10"
+                  viewBox="0 0 15 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.0441427 2.20165L1.40498 0.909147L7.49998 6.73915L13.595 0.909147L14.9558 2.20165L7.49998 9.33331L0.0441427 2.20165Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
             </div>
-            <div class="arrow">
-              <svg
-                width="15"
-                height="10"
-                viewBox="0 0 15 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0.0441427 2.20165L1.40498 0.909147L7.49998 6.73915L13.595 0.909147L14.9558 2.20165L7.49998 9.33331L0.0441427 2.20165Z"
-                  fill="white"
-                />
-              </svg>
+          </template>
+          <v-list>
+            <div class="header__private-info menu-item">
+              <div class="header__name">{{ getFullName }}</div>
+              <div class="header__username">{{ getUsername }}</div>
             </div>
-          </div>
-        </template>
-        <v-list>
-          <div class="header__private-info menu-item">
-            <div class="header__name">{{ getFullName }}</div>
-            <div class="header__username">{{ getUsername }}</div>
-          </div>
-          <div v-if="IS_USER_ACTIVE">
-            <v-list-item
-              v-for="(link, index) in HEADER_LINKS(false)"
-              :key="index"
-            >
-              <router-link
-                exact
-                exact-active-class="header__menu-link--active"
-                class="header__menu-link menu-item"
-                :to="link.path"
-                >{{ link.title }}</router-link
+            <div v-if="IS_USER_ACTIVE">
+              <v-list-item
+                v-for="(link, index) in HEADER_LINKS(false)"
+                :key="index"
               >
-            </v-list-item>
-          </div>
-          <div>
-            <button @click.stop="logoutUser" class="menu-item logout">
-              Выйти
-            </button>
-          </div>
-        </v-list>
-      </v-menu>
+                <router-link
+                  exact
+                  exact-active-class="header__menu-link--active"
+                  class="header__menu-link menu-item"
+                  :to="link.path"
+                  >{{ link.title }}</router-link
+                >
+              </v-list-item>
+            </div>
+            <div>
+              <button @click.stop="logoutUser" class="menu-item logout">
+                Выйти
+              </button>
+            </div>
+          </v-list>
+        </v-menu>
+      </div>
     </header>
-    <router-view></router-view>
+    <router-view @showAlert="visibleAlert"></router-view>
   </div>
 </template>
 <script>
@@ -90,6 +93,7 @@ import SkeletonLaoder from "./SkeletonLaoder.vue";
 import ServerErrorAlert from "@/components/ServerErrorAlert.vue";
 import InActiveUser from "@/components/InActiveUser.vue";
 import CatLoader from "@/components/CatLoader.vue";
+import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 export default {
   data() {
     return {
@@ -97,15 +101,13 @@ export default {
       isLogout: false,
     };
   },
-  mounted() {
-    this.$on("showAlert", this.visibleAlert);
-  },
   components: {
     BurgerMenu,
     SkeletonLaoder,
     ServerErrorAlert,
     InActiveUser,
     CatLoader,
+    ThemeSwitcher,
   },
   computed: {
     getFullName() {
@@ -126,7 +128,6 @@ export default {
   },
   methods: {
     changeIsLogout() {
-      console.log("ok");
       this.isLogout = true;
     },
     async logoutUser() {
@@ -157,6 +158,10 @@ export default {
 </script>
 <style lang="scss"  >
 @import "@/assets/styles/_variables.scss";
+.right-menu {
+  display: flex;
+  align-items: center;
+}
 .loader-wrap {
   position: absolute;
   left: 0;
@@ -178,7 +183,7 @@ export default {
   padding: 0 30px;
   align-items: center;
   max-height: 60px;
-  background-color: $layout-bg;
+  background-color: var(--layout-bg);
   position: relative;
   z-index: 1;
   @media (max-width: 480px) {
@@ -187,7 +192,7 @@ export default {
   &__nav {
     align-self: flex-start;
     margin-top: 7px;
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
       display: none;
     }
   }
@@ -235,7 +240,11 @@ export default {
     }
   }
   &__private-info {
-    background-color: #fff;
+    background-color: var(--layout-bg);
+    border-bottom: 2px solid var(--main-bg);
+    & > div {
+      color: var(--text-color);
+    }
     padding: 20px 10px 15px;
     padding-left: 20px;
     border-bottom: 2px solid #c4c4c4;
@@ -260,6 +269,7 @@ export default {
 }
 .menu-item {
   font-weight: 600;
+  background-color: var(--menu-bg);
   font-size: 16px;
   line-height: 19px;
   &.header__menu-link {
@@ -271,11 +281,13 @@ export default {
     right: 0;
     bottom: 0;
     padding: 15px 20px;
+    color: var(--text-color);
+
     &--active {
-      background-color: #f6f6f6;
+      background-color: var(--link-hover);
     }
     &:hover {
-      background-color: #f6f6f6;
+      background-color: var(--link-hover);
       transition: 0.3s;
     }
   }
@@ -284,7 +296,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  @media (max-width: 480px) {
+  @media (max-width: 540px) {
     display: none;
   }
   .arrow {
@@ -320,13 +332,7 @@ export default {
 .menu-avatar {
   margin-right: 10px;
 }
-.role {
-  color: $white;
-  margin-right: 30px;
-  @media (max-width: 480px) {
-    display: none;
-  }
-}
+
 .v-menu__content {
   box-shadow: none;
   border: 1px solid #b0b0b0;
@@ -352,9 +358,13 @@ export default {
   padding: 15px 20px;
   outline: none;
   transition: 0.3s;
+  background-color: var(--menu-bg);
   &:hover {
-    background-color: #f6f6f6;
+    background-color: var(--link-hover);
     transition: 0.3s;
   }
+}
+.vector {
+  fill: var(--text-color);
 }
 </style>

@@ -6,7 +6,11 @@ export default {
   },
   beforeRouteEnter(_, __, next) {
     next(async (vm) => {
-      await vm.getUserInfo();
+      try {
+        await vm.getUserInfo();
+      } catch (e) {
+        vm.$emit("showAlert");
+      }
     });
   },
   computed: {
