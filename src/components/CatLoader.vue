@@ -54,7 +54,7 @@
 
 %cat-img {
   @include fill-full;
-  animation: rotating 2.79s cubic-bezier(0.65, 0.54, 0.12, 0.93) infinite;
+  animation: rotating 3s cubic-bezier(0.65, 0.54, 0.12, 0.93) infinite;
 
   &::before {
     content: "";
@@ -75,7 +75,7 @@
     right: 0;
     background-position: 100% 0%;
     transform-origin: 0% 100%;
-    transform: rotate(83deg);
+    transform: rotate(80deg);
   }
 }
 
@@ -88,7 +88,7 @@
     bottom: 0;
     background-position: 0% 100%;
     transform-origin: 100% 0%;
-    transform: rotate(-30deg);
+    transform: rotate(-48deg);
   }
 }
 

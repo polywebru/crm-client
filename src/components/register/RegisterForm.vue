@@ -98,6 +98,7 @@ export default {
           this.dateBirthError = this.error.date_birth?.toString() || "";
         } else if (this.error >= 500) {
           this.showAlert = true;
+          localStorage.clear();
           setTimeout(() => {
             this.showAlert = false;
           }, 1300);
