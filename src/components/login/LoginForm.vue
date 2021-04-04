@@ -125,6 +125,7 @@ export default {
     ...mapState({
       USERNAME: (state) => state.profile.userInfo.username,
       FORM_PENDING: (state) => state.formPending,
+      ERROR: (state) => state.error,
     }),
   },
   methods: {
@@ -145,11 +146,15 @@ export default {
           this.setFormPending(false);
         } catch (error) {
           this.setFormPending(false);
-          if (error.response && error.response.status >= 500) {
+          if (
+            (error.response && error.response.status >= 500) ||
+            this.ERROR >= 500
+          ) {
+            localStorage.clear();
             this.showAlert = true;
             setTimeout(() => {
               this.showAlert = false;
-            }, 1300);
+            }, 2000);
           }
         }
       }

@@ -44,8 +44,11 @@ export default {
         }
         commit("setIsLoading", false);
       } catch (error) {
-        commit("setIsLoading", false);
-        console.log(error.response.status);
+        if (error.response.status >= 500) {
+          commit("setError", error.response.status);
+        } else {
+          commit("setIsLoading", false);
+        }
         throw error.response.status;
       }
     },

@@ -1,5 +1,5 @@
 import InActiveUser from "@/components/InActiveUser";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     InActiveUser,
@@ -9,7 +9,13 @@ export default {
       try {
         await vm.getUserInfo();
       } catch (e) {
-        vm.$emit("showAlert");
+        if (e === 401) {
+          localStorage.clear();
+          vm.$router.push("/");
+        } else if (e >= 500) {
+          vm.$emit("showAlert");
+          vm.setIsLoading(true);
+        }
       }
     });
   },
@@ -19,5 +25,8 @@ export default {
       USER_INFO: (state) => state.profile.userInfo,
       IS_LOADING: (state) => state.profile.isLoading,
     }),
+  },
+  methods: {
+    ...mapMutations(["setIsLoading"]),
   },
 };
