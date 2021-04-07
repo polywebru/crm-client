@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
+import AdminUsers from "../views/AdminUsers.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -28,6 +29,26 @@ const routes = [
     meta: {
       layout: "main",
     },
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    meta: {
+      layout: "admin",
+    },
+    redirect: {
+      path: "/admin/users",
+    },
+    component: () => import("../views/Admin.vue"),
+    children: [
+      {
+        path: "users",
+        component: () => import("../views/AdminUsers.vue"),
+        meta: {
+          layout: "admin",
+        },
+      },
+    ],
   },
 ];
 

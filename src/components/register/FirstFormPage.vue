@@ -92,13 +92,11 @@
   </div>
 </template>
 <script>
-import DatePicker from "../DatePicker.vue";
 import { validationMixin } from "vuelidate";
 import formDataMixin from "@/mixins/formData.mixin";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
 export default {
-  components: { DatePicker },
   mixins: [validationMixin, formDataMixin],
   props: {
     dateBirthError: {

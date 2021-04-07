@@ -12,4 +12,9 @@ export default {
     return this.faculties + id + "specialities";
   },
   rolesAndPermissions: `${mainPrefix}user/roles-and-permissions`,
+  adminUsers: `${adminPrefix}users`,
+
+  adminUsersAction(uid, action) {
+    return `${adminPrefix}users/${uid}/${action}`;
+  },
 };

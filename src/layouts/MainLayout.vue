@@ -18,7 +18,7 @@
         <nav class="header__nav" v-if="IS_USER_ACTIVE">
           <router-link
             class="header__link"
-            v-for="(link, index) in HEADER_LINKS(true)"
+            v-for="(link, index) in headerLinks"
             :key="index"
             :to="link.path"
             >{{ link.title }}</router-link
@@ -31,6 +31,7 @@
           @changeIsLogout="changeIsLogout"
           :isActiveUser="IS_USER_ACTIVE"
           :name="getFullName"
+          :links="[...headerLinks, ...menuLinks]"
           :username="getUsername"
         ></burger-menu>
         <v-menu tile max-width="300px" offset-y left>
@@ -61,10 +62,7 @@
               <div class="header__username">{{ getUsername }}</div>
             </div>
             <div v-if="IS_USER_ACTIVE">
-              <v-list-item
-                v-for="(link, index) in HEADER_LINKS(false)"
-                :key="index"
-              >
+              <v-list-item v-for="(link, index) in menuLinks" :key="index">
                 <router-link
                   exact
                   exact-active-class="header__menu-link--active"
@@ -75,7 +73,7 @@
               </v-list-item>
             </div>
             <div>
-              <button @click.stop="logoutUser" class="menu-item logout">
+              <button @click="logoutUser" class="menu-item logout">
                 Выйти
               </button>
             </div>
@@ -99,6 +97,11 @@ export default {
     return {
       showAlert: false,
       isLogout: false,
+      headerLinks: [
+        { title: "Проекты", path: "/porjects" },
+        { title: "Команды", path: "/teams" },
+        { title: "Задачи", path: "/tasks" },
+      ],
     };
   },
   components: {
@@ -109,6 +112,7 @@ export default {
     CatLoader,
     ThemeSwitcher,
   },
+
   computed: {
     getFullName() {
       return `${this.LAYOUT_INFO.firstName} ${this.LAYOUT_INFO.lastName}`;
@@ -116,9 +120,20 @@ export default {
     getUsername() {
       return this.LAYOUT_INFO.username;
     },
+    menuLinks() {
+      const links = [
+        { title: "Профиль", path: `/user/${localStorage.getItem("username")}` },
+        { title: "Настройки", path: "/settings" },
+      ];
+      if (this.HAS_ADMIN_ROLE) {
+        links.push({ title: "Admin панель", path: "/admin" });
+        return links;
+      }
+      return links;
+    },
     ...mapGetters({
-      HEADER_LINKS: ["mainLayout/links"],
       LAYOUT_INFO: ["mainLayoutInfo"],
+      HAS_ADMIN_ROLE: ["hasAdminRole"],
     }),
     ...mapState({
       IS_LOADING: (state) => state.profile.isLoading,
