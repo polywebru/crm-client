@@ -7,7 +7,7 @@
     </template>
 
     <v-list>
-      <div class="header__private-info menu-item">
+      <div class="header__private-info menu-item" v-if="name && username">
         <div>{{ name }}</div>
         <div class="header__username">
           {{ username }}
@@ -32,23 +32,17 @@
 </template>
 
 <script>
-import { createNamespacedHelpers, mapActions } from "vuex";
-
-const { mapGetters } = createNamespacedHelpers("mainLayout");
+import { mapActions } from "vuex";
 
 export default {
   props: {
+    links: Array,
     name: String,
     username: String,
     role: String,
     isActiveUser: Boolean,
   },
-  computed: {
-    ...mapGetters({ LINKS: ["links"] }),
-    links() {
-      return [...this.LINKS(true), ...this.LINKS(false)];
-    },
-  },
+  computed: {},
   methods: {
     async logoutUser() {
       this.$emit("changeIsLogout");

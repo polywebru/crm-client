@@ -2,6 +2,7 @@ import auth from "./auth";
 import settings from "./facsAndSpecs";
 import profile from "./profile";
 import logout from "./logout";
+import admin from "./admin";
 export default {
   async login(user) {
     return await auth.login(user);
@@ -26,5 +27,20 @@ export default {
   },
   async logout(token) {
     return await logout(token);
+  },
+  async getAdminUsers(token, dataTablesSettings = null) {
+    return await admin.getUsers(token, dataTablesSettings);
+  },
+  async activate(token, uid) {
+    return await admin.activateUser(token, uid);
+  },
+  async deActivate(token, uid) {
+    return await admin.deActivateUser(token, uid);
+  },
+  async delete(token, uid) {
+    return await admin.deleteUser(token, uid);
+  },
+  async changeStatus(token, uid, status) {
+    return await admin.changeStatus(token, uid, status);
   },
 };

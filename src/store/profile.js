@@ -73,5 +73,7 @@ export default {
     }),
     hasRolesAndPermissions: (state) =>
       state.roles.length && state.permissions.length,
+    hasAdminRole: (state) =>
+      !!state.roles.find((role) => role.name === "admin"),
   },
 };

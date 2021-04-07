@@ -17,6 +17,7 @@ export default {
       Accept: "application/json",
       "Content-Type": "application/json",
       "X-Requested-With": "XMLHttpRequest",
+      "Cache-Control": "no-cache",
     };
     if (authToken) {
       requestHeaders.Authorization = authToken;

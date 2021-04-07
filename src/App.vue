@@ -7,6 +7,7 @@
 <script>
 import AuthLayout from "@/layouts/AuthLayout.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
+import AdminLayout from "@/layouts/AdminLayout.vue";
 import { mapState } from "vuex";
 export default {
   name: "App",
@@ -16,6 +17,6 @@ export default {
     },
     ...mapState({ IS_THEME_DARK: (state) => state.isThemeDark }),
   },
-  components: { AuthLayout, MainLayout },
+  components: { AuthLayout, MainLayout, AdminLayout },
 };
 </script>

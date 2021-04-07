@@ -3,9 +3,10 @@ import Vuex from "vuex";
 
 import auth from "./auth";
 import settings from "./settings";
-import mainLayout from "./mainLayout";
+
 import profile from "./profile";
 import logout from "./logout";
+import admin from "./admin";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -45,8 +46,9 @@ export default new Vuex.Store({
   modules: {
     auth,
     settings,
-    mainLayout,
+
     profile,
     logout,
+    admin,
   },
 });
