@@ -48,8 +48,8 @@
             </button>
           </div>
           <div class="profile-contacts">
-            <contacts :hasUserPhone="true">
-              <template #phone>{{ getUserPhone }}</template>
+            <contacts :hasUserPhone="hasUserPhone">
+              <template #phone>{{ getUserPhone | phoneFilter }}</template>
               <template #email>{{ getUserEmail }}</template>
             </contacts>
             <links :links="USER_INFO.links"></links>
@@ -78,18 +78,18 @@ import UserActivity from "@/components/profile/UserActivity.vue";
 import Contacts from "@/components/profile/Contacts";
 import Links from "@/components/profile/UserLinks";
 import PhotoEdit from "@/components/PhotoEdit";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import userDataMixin from "@/mixins/userData.mixin";
 import CatLoader from "@/components/CatLoader.vue";
 
 export default {
-  metaInfo(){ 
-    return{
-      title: `${this.getFullName || "CRM"}-PolyWeb`,
+  metaInfo() {
+    return {
+      title: `${this.getFullName || "CRM"} - PolyWeb`,
       htmlAttrs: {
         lang: "ru",
       },
-    }
+    };
   },
   mixins: [userDataMixin],
   data() {
@@ -172,9 +172,9 @@ export default {
   },
   computed: {
     getFullName() {
-      if(Object.keys(this.USER_INFO).length){
-      return `${this.USER_INFO?.last_name || ""} 
-              ${this.USER_INFO?.first_name || ""} 
+      if (Object.keys(this.USER_INFO).length) {
+        return `${this.USER_INFO?.last_name || ""}
+              ${this.USER_INFO?.first_name || ""}
               ${this.USER_INFO?.middle_name || ""}`;
       }
       return null;
@@ -191,24 +191,15 @@ export default {
     hasUserPhone() {
       return !!this.USER_INFO?.phone;
     },
+    getUserPhone() {
+      return this.hasUserPhone && this.USER_INFO?.phone;
+    },
     hasSkills() {
       if (this.USER_INFO?.skills) {
         return Object.keys(this.USER_INFO?.skills).length;
       }
     },
-    getUserPhone() {
-      return this.hasUserPhone
-        ? `+${this.USER_INFO?.phone.slice(0, 1)} (${this.USER_INFO?.phone.slice(
-            1,
-            4
-          )}) ${this.USER_INFO?.phone.slice(
-            4,
-            7
-          )}-${this.USER_INFO?.phone.slice(7, 9)}-${this.USER_INFO?.phone.slice(
-            9
-          )}`
-        : "";
-    },
+
     getUserEmail() {
       return this.USER_INFO?.email;
     },
