@@ -344,7 +344,7 @@ export default {
     padding: 0;
   }
   margin-top: 0;
-  max-width: 300px !important;
+  max-width: 225px !important;
   @media (max-width: 480px) {
     left: 0 !important;
     max-width: unset !important;
