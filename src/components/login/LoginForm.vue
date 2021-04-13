@@ -79,12 +79,6 @@ import ServerErrorAlert from "../ServerErrorAlert.vue";
 import PacmanLoader from "vue-spinner/src/PacmanLoader.vue";
 export default {
   components: { LogoBlock, PacmanLoader, ServerErrorAlert },
-  metaInfo: {
-    title: "Авторизация",
-    htmlAttrs: {
-      lang: "ru",
-    },
-  },
   data() {
     return {
       rememberMe: false,

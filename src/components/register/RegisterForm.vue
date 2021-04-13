@@ -34,12 +34,6 @@ import PacmanLoader from "vue-spinner/src/PacmanLoader.vue";
 import { mapMutations, mapState, mapActions, mapGetters } from "vuex";
 import ServerErrorAlert from "../ServerErrorAlert.vue";
 export default {
-  metaInfo: {
-    title: "Регистрация",
-    htmlAttrs: {
-      lang: "ru",
-    },
-  },
   components: {
     LogoBlock,
     FirstFormPage,

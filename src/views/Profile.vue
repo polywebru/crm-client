@@ -83,6 +83,14 @@ import userDataMixin from "@/mixins/userData.mixin";
 import CatLoader from "@/components/CatLoader.vue";
 
 export default {
+  metaInfo(){ 
+    return{
+      title: `${this.getFullName || "CRM"}-PolyWeb`,
+      htmlAttrs: {
+        lang: "ru",
+      },
+    }
+  },
   mixins: [userDataMixin],
   data() {
     return {

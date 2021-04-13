@@ -11,6 +11,12 @@ import ContentBlock from "@/components/ContentBlock.vue";
 
 import RegisterForm from "@/components/register/RegisterForm.vue";
 export default {
+  metaInfo: {
+    title: "Регистрация",
+    htmlAttrs: {
+      lang: "ru",
+    },
+  },
   data() {
     return {
       registerContent: {

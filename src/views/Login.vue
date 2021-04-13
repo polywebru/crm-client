@@ -13,6 +13,12 @@ import LoginForm from "@/components/login/LoginForm.vue";
 export default {
   components: { ContentBlock, LoginForm },
   name: "Login",
+  metaInfo: {
+    title: "Авторизация",
+    htmlAttrs: {
+      lang: "ru",
+    },
+  },
   data() {
     return {
       loginContent: {
