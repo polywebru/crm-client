@@ -172,9 +172,12 @@ export default {
   },
   computed: {
     getFullName() {
-      return `${this.USER_INFO?.last_name} ${this.USER_INFO?.first_name} ${
-        this.USER_INFO?.middle_name ?? ""
-      }`;
+      if(Object.keys(this.USER_INFO).length){
+      return `${this.USER_INFO?.last_name || ""} 
+              ${this.USER_INFO?.first_name || ""} 
+              ${this.USER_INFO?.middle_name || ""}`;
+      }
+      return null;
     },
     getFacultyName() {
       return this.USER_INFO?.faculty?.name;
