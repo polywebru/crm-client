@@ -15,5 +15,12 @@ export default {
         }
       });
     };
+    Vue.prototype.$watchClickRow = function(elemClass, router) {
+      document.querySelectorAll(elemClass).forEach((el) => {
+        el.addEventListener("click", () => {
+          router.push({ path: `/user/${el.children[1].innerText}` });
+        });
+      });
+    };
   },
 };

@@ -30,17 +30,28 @@ export default {
     },
   },
   actions: {
-    async getUserInfo({ rootState, commit, state }) {
+    async getUserInfo(
+      { rootState, commit, state },
+      { isFirstView = true, username = null }
+    ) {
       commit("setIsLoading", true);
       try {
-        const response = await api.getInfo(
-          rootState.token || localStorage.getItem("auth"),
-          state.lastModified
-        );
+        const response =
+          // waiting for response after auth/register
+          (isFirstView &&
+            (await api.getInfo(rootState.token, state.lastModified))) ||
+          // or waiting response after any query
+          (await api.viewProfiles(rootState.token, username));
         if (response.status === 200) {
           commit("setUserInfo", response.data.data);
           commit("setLastModified", response.data.data.updated_at);
-          localStorage.setItem("username", response.data.data.username);
+          if (isFirstView) {
+            localStorage.setItem(
+              "fullName",
+              `${response.data.data.first_name} ${response.data.data.last_name}`
+            );
+            localStorage.setItem("username", response.data.data.username);
+          }
         }
         commit("setIsLoading", false);
       } catch (error) {
@@ -54,9 +65,7 @@ export default {
     },
     async getRolesAndPermissions({ rootState, commit }) {
       try {
-        const response = await api.getRolesAndPermissions(
-          rootState.token || localStorage.getItem("auth")
-        );
+        const response = await api.getRolesAndPermissions(rootState.token);
         if (response.status === 200) {
           commit("setRolesAndPermissions", response.data);
         }

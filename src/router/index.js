@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
-import AdminUsers from "../views/AdminUsers.vue";
+import Profile from "../views/Profile.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -25,7 +25,7 @@ const routes = [
   {
     path: "/user/:username",
     name: "Profile",
-    component: () => import("../views/Profile.vue"),
+    component: Profile,
     meta: {
       layout: "main",
     },

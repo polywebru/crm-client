@@ -3,6 +3,7 @@ import settings from "./facsAndSpecs";
 import profile from "./profile";
 import logout from "./logout";
 import admin from "./admin";
+import usersProfiles from "./viewUsersProfile";
 export default {
   async login(user) {
     return await auth.login(user);
@@ -42,5 +43,8 @@ export default {
   },
   async changeStatus(token, uid, status) {
     return await admin.changeStatus(token, uid, status);
+  },
+  async viewProfiles(token, username) {
+    return await usersProfiles.viewUsersProfile(token, username);
   },
 };
