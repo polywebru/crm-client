@@ -54,7 +54,7 @@
                   <clip-loader
                     v-show="user.isChanging"
                     :loading="true"
-                    :size="'15px'"
+                    :size="'20px'"
                     :color="'#fff'"
                   ></clip-loader>
                 </button>
@@ -254,9 +254,12 @@
 </template>
 <script>
 import ClipLoader from "vue-spinner/src/ClipLoader.vue";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapState, createNamespacedHelpers } from "vuex";
 import { format } from "date-fns";
 import UsersSkeleton from "./UsersSkeleton.vue";
+const { mapActions, mapGetters, mapMutations } = createNamespacedHelpers(
+  "users"
+);
 export default {
   props: {
     isFiltering: Boolean,
@@ -347,6 +350,7 @@ export default {
       this.menu = false;
       if (!date) {
         this.filters.createdAt = "";
+        this.menu = true;
         return format(new Date(), "yyyy-MM-dd");
       }
       const [day, month, year] = date.split(".");
@@ -609,6 +613,9 @@ export default {
 .data-tatable table > thead > tr > th:last-child {
   z-index: 199;
 }
+.v-data-table--fixed-header > .v-data-table__wrapper > table > thead > tr > th {
+  top: -1px !important;
+}
 .v-data-table__mobile-table-row
   > td:last-child
   > .v-data-table__mobile-row__header {
@@ -804,16 +811,22 @@ table {
   margin-right: 42px;
   width: 140px;
   height: 100%;
-  max-height: 30px;
+  max-height: 30px !important;
   display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
   &.deny-btn {
+    padding: 15px 35px;
+    position: relative;
     margin-right: 0;
   }
   &.custom-btn {
-    padding: 5px 35px;
+    padding: 15px 35px;
+    position: relative;
+    max-height: 34px !important;
+    height: 34px !important;
+    box-sizing: border-box;
     max-width: 138px !important;
     width: 100%;
     margin: 18px auto;

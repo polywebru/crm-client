@@ -551,6 +551,12 @@ label {
   div, td, th, span, i, input{
     color: var(--text-color)!important;
   }
+  span.sortable > .v-chip__content{
+    color: #000!important;
+  }
+  span.sortable i{
+    color: #000!important;
+  }
   button.table__delete--mobile{
     span{
       color: #fff!important;

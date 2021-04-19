@@ -20,11 +20,11 @@ export default {
   async registerUser(user) {
     return await auth.registerUser(user);
   },
-  async getInfo(token, lastModified = null) {
-    return await profile.getInfo(token, lastModified);
+  async getInfo(token) {
+    return await profile.getInfo(token);
   },
-  async getRolesAndPermissions(token, lastModified = null) {
-    return await profile.getRolesAndPermissions(token, lastModified);
+  async getRolesAndPermissions(token) {
+    return await profile.getRolesAndPermissions(token);
   },
   async logout(token) {
     return await logout(token);
