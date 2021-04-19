@@ -13,7 +13,7 @@
           {{ username }}
         </div>
       </div>
-      <div v-if="isActiveUser">
+      <div>
         <v-list-item v-for="(link, index) in links" :key="index">
           <router-link
             exact
@@ -40,7 +40,6 @@ export default {
     name: String,
     username: String,
     role: String,
-    isActiveUser: Boolean,
   },
   computed: {},
   methods: {

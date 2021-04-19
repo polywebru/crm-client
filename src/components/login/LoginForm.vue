@@ -136,7 +136,7 @@ export default {
             password: this.password,
             rememberMe: +this.rememberMe,
           });
-          await this.$router.push(`/user/${this.USERNAME}`);
+          await this.$router.push(`/users/${this.USERNAME}`);
           this.setFormPending(false);
         } catch (error) {
           this.setFormPending(false);

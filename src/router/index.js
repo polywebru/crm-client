@@ -23,7 +23,7 @@ const routes = [
     },
   },
   {
-    path: "/user/:username",
+    path: "/users/:username",
     name: "Profile",
     component: Profile,
     meta: {
@@ -69,7 +69,7 @@ router.beforeEach((to, _, next) => {
     (to.name === "Login" || to.name === "Register") &&
     localStorage.getItem("auth")
   ) {
-    next({ path: `/user/${localStorage.getItem("username")}` });
+    next({ path: `/users/${localStorage.getItem("username")}` });
   } else {
     next();
   }

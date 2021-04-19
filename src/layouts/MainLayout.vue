@@ -121,7 +121,10 @@ export default {
     },
     menuLinks() {
       const links = [
-        { title: "Профиль", path: `/user/${localStorage.getItem("username")}` },
+        {
+          title: "Профиль",
+          path: `/users/${localStorage.getItem("username")}`,
+        },
         { title: "Настройки", path: "/settings" },
       ];
       if (this.HAS_ADMIN_ROLE) {
