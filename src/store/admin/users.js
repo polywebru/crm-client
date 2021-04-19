@@ -141,7 +141,7 @@ export default {
     async getUsers({ commit, rootState, state }) {
       try {
         const response = await api.getAdminUsers(
-          rootState.token || localStorage.getItem("auth"),
+          rootState.token,
           state.tableSettings
         );
         commit("setUsers", response.data.data);
@@ -152,10 +152,7 @@ export default {
     },
     async activateUser({ commit, rootState }, uid) {
       try {
-        const response = await api.activate(
-          rootState.token || localStorage.getItem("auth"),
-          uid
-        );
+        const response = await api.activate(rootState.token, uid);
         commit("updateUsers", response.data.data);
       } catch (error) {
         console.log(error);
@@ -163,30 +160,19 @@ export default {
     },
     async deActivateUser({ commit, rootState }, uid) {
       try {
-        const response = await api.deActivate(
-          rootState.token || localStorage.getItem("auth"),
-          uid
-        );
+        const response = await api.deActivate(rootState.token, uid);
         commit("updateUsers", response.data.data);
       } catch (error) {}
     },
     async deleteUser({ rootState, dispatch }, uid) {
       try {
-        await api.delete(
-          rootState.token || localStorage.getItem("auth"),
-          uid,
-          status
-        );
+        await api.delete(rootState.token, uid, status);
         await dispatch("getUsers");
       } catch (error) {}
     },
     async changeStatus({ commit, rootState }, { id: uid, status }) {
       try {
-        const response = await api.changeStatus(
-          rootState.token || localStorage.getItem("auth"),
-          uid,
-          status
-        );
+        const response = await api.changeStatus(rootState.token, uid, status);
         commit("updateUsers", response.data.data);
       } catch (error) {}
     },

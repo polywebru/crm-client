@@ -17,4 +17,7 @@ export default {
   adminUsersAction(uid, action) {
     return `${adminPrefix}users/${uid}/${action}`;
   },
+  viewUsersProfile(username) {
+    return `${mainPrefix}users/${username}`;
+  },
 };

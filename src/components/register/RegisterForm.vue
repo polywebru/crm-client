@@ -82,7 +82,7 @@ export default {
         this.setFormPending(true);
         await this.register(user);
         this.setFormPending(false);
-        await this.$router.push(`/user/${user.username}`);
+        await this.$router.push(`/users/${user.username}`);
       } catch (error) {
         this.setFormPending(false);
         if (this.error && typeof this.error === "object") {

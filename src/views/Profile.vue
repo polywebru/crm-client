@@ -1,11 +1,7 @@
 <template>
-  <div class="profile-wrapper" :class="{ inactive: !USER_INFO.is_active }">
+  <div class="profile-wrapper">
     <skeleton-loader v-if="IS_LOADING && USER_INFO.is_active"></skeleton-loader>
     <cat-loader v-else-if="IS_LOADING && !USER_INFO.is_active"></cat-loader>
-
-    <in-active-user
-      v-else-if="!USER_INFO.is_active && !IS_LOADING"
-    ></in-active-user>
     <div v-else class="profile-bg">
       <div class="profile-head">
         <div class="profile-avatar">
