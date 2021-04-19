@@ -2,13 +2,7 @@ import axios from "axios";
 
 export default {
   host: process.env.VUE_APP_API_URL,
-  async execute(
-    url,
-    params,
-    method = "post",
-    authToken = "",
-    lastModified = null
-  ) {
+  async execute(url, params, method = "post", authToken = "") {
     if (typeof params !== "object") {
       params = {};
     }
@@ -22,9 +16,7 @@ export default {
     if (authToken) {
       requestHeaders.Authorization = authToken;
     }
-    if (lastModified) {
-      requestHeaders["Last-Modified"] = lastModified;
-    }
+
     const parameters = params || {};
     const requestUrl = this.host + url;
     const request = {

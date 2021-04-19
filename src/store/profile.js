@@ -5,7 +5,6 @@ export default {
     roles: [],
     permissions: [],
     isLoading: false,
-    lastModified: null,
   },
   mutations: {
     setUserInfo(state, info) {
@@ -26,20 +25,18 @@ export default {
       state.roles = [];
       state.permissions = [];
       state.isLoading = false;
-      state.lastModified = null;
     },
   },
   actions: {
     async getUserInfo(
-      { rootState, commit, state },
+      { rootState, commit },
       { isFirstView = true, username = null }
     ) {
       commit("setIsLoading", true);
       try {
         const response =
           // waiting for response after auth/register
-          (isFirstView &&
-            (await api.getInfo(rootState.token, state.lastModified))) ||
+          (isFirstView && (await api.getInfo(rootState.token))) ||
           // or waiting response after any query
           (await api.viewProfiles(rootState.token, username));
         if (response.status === 200) {

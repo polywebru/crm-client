@@ -20,12 +20,13 @@
 <script>
 import Users from "@/components/admin/Users.vue";
 import UsersSkeleton from "@/components/admin/UsersSkeleton.vue";
-import { mapActions, mapMutations } from "vuex";
-import routerHooks from "@/mixins/routerHooks.mixin";
+import { mapMutations, mapState, createNamespacedHelpers } from "vuex";
 import { debounce } from "lodash";
-
+const { mapActions } = createNamespacedHelpers("users");
 export default {
-  mixins: [routerHooks],
+  metaInfo() {
+    return { title: this.getTitle };
+  },
   data() {
     return {
       isLoadingUsers: false,
@@ -41,12 +42,33 @@ export default {
         await vm.getUsers();
         vm.setAdminLoading(false);
       } catch (e) {
-        if (e === 403) {
-          vm.setHasAccess(false);
+        switch (e) {
+          case 403:
+            vm.setHasAccess(false);
+            break;
+          case 401:
+            localStorage.clear();
+            vm.$router.push("/");
+            break;
+          default:
+            vm.$emit("showAlert");
+            vm.setIsLoading(true);
+            break;
         }
         vm.setAdminLoading(false);
       }
     });
+  },
+  destroyed() {
+    this["users/resetTableSettings"]();
+  },
+  computed: {
+    getTitle() {
+      return (
+        (this.HAS_ACCESS && "Пользователи - PolyWeb Admin") || "CRM - PolyWeb"
+      );
+    },
+    ...mapState({ HAS_ACCESS: (state) => state.admin.hasAccess }),
   },
   methods: {
     updateUsers: debounce(async function () {
@@ -65,6 +87,7 @@ export default {
       "setPage",
       "setHasAccess",
       "setAdminLoading",
+      "users/resetTableSettings",
     ]),
   },
   watch: {

@@ -4,12 +4,61 @@
       <h1 class="admin__logo">PolyWeb Admin</h1>
       <div class="admin__toolkits">
         <theme-switcher></theme-switcher>
-        <div class="admin__avatar">
-          <img src="@/assets/img/no_avatar.png" alt="Аватар" />
-        </div>
+        <burger-menu
+          @changeIsLogout="logoutUser"
+          :name="getFullName"
+          :links="links"
+          :username="getUsername"
+        ></burger-menu>
+        <v-menu tile max-width="300px" offset-y left>
+          <template v-slot:activator="{ attrs, on }">
+            <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
+              <div class="menu-avatar">
+                <img src="@/assets/img/no_avatar.png" alt="" />
+              </div>
+              <div class="arrow">
+                <svg
+                  width="15"
+                  height="10"
+                  viewBox="0 0 15 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0.0441427 2.20165L1.40498 0.909147L7.49998 6.73915L13.595 0.909147L14.9558 2.20165L7.49998 9.33331L0.0441427 2.20165Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+            </div>
+          </template>
+          <v-list>
+            <div class="header__private-info menu-item">
+              <div class="header__name">{{ getFullName }}</div>
+              <div class="header__username">{{ getUsername }}</div>
+            </div>
+            <div>
+              <v-list-item>
+                <router-link
+                  exact
+                  exact-active-class="header__menu-link--active"
+                  class="header__menu-link menu-item"
+                  :to="'/'"
+                  >Профиль</router-link
+                >
+              </v-list-item>
+            </div>
+            <div>
+              <button @click="logoutUser" class="menu-item logout">
+                Выйти
+              </button>
+            </div>
+          </v-list>
+        </v-menu>
       </div>
     </header>
-    <cat-loader v-if="ADMIN_LOADING"></cat-loader>
+
+    <cat-loader v-if="ADMIN_LOADING || isLogout"></cat-loader>
     <div class="admin__inner" v-else>
       <div
         class="dashboard"
@@ -49,22 +98,50 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import NoAccess from "../components/admin/NoAccess.vue";
-import ThemeSwitcher from "../components/ThemeSwitcher.vue";
+import { mapState, mapActions } from "vuex";
+import NoAccess from "@/components/admin/NoAccess.vue";
+import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import CatLoader from "@/components/CatLoader.vue";
+import BurgerMenu from "@/components/BurgerMenu.vue";
+
 export default {
   data() {
     return {
       sidebarHide: false,
+      isLogout: false,
       links: [{ title: "Пользователи", path: "/admin/users" }],
     };
   },
-  computed: mapState({
-    HAS_ACCESS: (state) => state.admin.hasAccess,
-    ADMIN_LOADING: (state) => state.admin.adminLoading,
-  }),
-  components: { ThemeSwitcher, NoAccess, CatLoader },
+  computed: {
+    getFullName() {
+      return localStorage.getItem("fullName");
+    },
+    getUsername() {
+      return localStorage.getItem("username");
+    },
+    ...mapState({
+      HAS_ACCESS: (state) => state.admin.hasAccess,
+      ADMIN_LOADING: (state) => state.admin.adminLoading,
+    }),
+  },
+  methods: {
+    async logoutUser() {
+      try {
+        this.isLogout = true;
+        await this.logout();
+        await this.$router.push("/");
+        this.isLogout = false;
+      } catch (error) {
+        this.isLogout = false;
+
+        if (error.response.status >= 500) {
+          this.$router.push("/");
+        }
+      }
+    },
+    ...mapActions(["logout"]),
+  },
+  components: { ThemeSwitcher, NoAccess, CatLoader, BurgerMenu },
 };
 </script>
 <style lang="scss">
@@ -132,6 +209,7 @@ export default {
     align-items: center;
     background-color: var(--layout-bg);
     padding: 14px 37px;
+    max-height: 55px;
   }
   &__logo {
     color: #fff;
