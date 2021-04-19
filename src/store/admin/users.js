@@ -1,104 +1,107 @@
 import api from "@/api";
+import { cloneDeep } from "lodash";
+const usersTable = {
+  columns: [
+    {
+      data: "id",
+      name: "",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Логин",
+      name: "username",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Имя",
+      name: "first_name",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Фамилия",
+      name: "last_name",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Email",
+      name: "email",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Телефон",
+      name: "phone",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Статус",
+      name: "status",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+    {
+      data: "Зарегистрирован",
+      name: "created_at",
+      orderable: true,
+      searchable: true,
+      search: {
+        value: "",
+        regex: "",
+      },
+    },
+  ],
+  order: [
+    {
+      column: 0,
+      dir: "asc",
+    },
+  ],
+  start: 0,
+  length: 25,
+  search: {
+    value: "",
+    regex: false,
+  },
+};
 export default {
+  namespaced: true,
   state: {
     users: [],
 
-    tableSettings: {
-      columns: [
-        {
-          data: "id",
-          name: "",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Логин",
-          name: "username",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Имя",
-          name: "first_name",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Фамилия",
-          name: "last_name",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Email",
-          name: "email",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Телефон",
-          name: "phone",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Статус",
-          name: "status",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-        {
-          data: "Зарегистрирован",
-          name: "created_at",
-          orderable: true,
-          searchable: true,
-          search: {
-            value: "",
-            regex: "",
-          },
-        },
-      ],
-      order: [
-        {
-          column: 0,
-          dir: "asc",
-        },
-      ],
-      start: 0,
-      length: 25,
-      search: {
-        value: "",
-        regex: false,
-      },
-    },
+    tableSettings: cloneDeep(usersTable),
     recordsFiltered: null,
     page: 1,
   },
@@ -135,6 +138,9 @@ export default {
     },
     setPage(state, page) {
       state.page = page;
+    },
+    resetTableSettings(state) {
+      state.tableSettings = cloneDeep(usersTable);
     },
   },
   actions: {

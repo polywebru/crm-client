@@ -28,7 +28,7 @@
       <div class="right-menu">
         <theme-switcher class="theme-switcher"></theme-switcher>
         <burger-menu
-          @changeIsLogout="changeIsLogout"
+          @changeIsLogout="logoutUser"
           :name="getFullName"
           :links="[...headerLinks, ...menuLinks]"
           :username="getUsername"

@@ -17,14 +17,22 @@ export default {
     };
     Vue.prototype.$watchClickRow = function(elemClass, router) {
       document.querySelectorAll(elemClass).forEach((el) => {
-        el.addEventListener("click", () => {
+        el.addEventListener("click", async () => {
           const tableUserName = el.children[1];
           if (tableUserName.children.length) {
-            router.push({
-              path: `/users/${tableUserName.children[1].innerText}`,
-            });
+            try {
+              await router.push({
+                path: `/users/${tableUserName.children[1].innerText}`,
+              });
+            } catch (e) {
+              console.log(e);
+            }
           } else {
-            router.push({ path: `/users/${tableUserName.innerText}` });
+            try {
+              await router.push({ path: `/users/${tableUserName.innerText}` });
+            } catch (e) {
+              console.log(e);
+            }
           }
         });
       });

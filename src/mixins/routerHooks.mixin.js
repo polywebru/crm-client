@@ -20,14 +20,14 @@ export default {
           from.name === "Login" ||
           to.name !== "Profile"
         ) {
-          await this.getUserInfo();
+          await this.getUserInfo({});
         } else {
           await this.getUserInfo({
             isFirstView: false,
             username: to.params.username,
           });
         }
-        if (!HAS_ROLES_AND_PERMISSIONS) {
+        if (!this.HAS_ROLES_AND_PERMISSIONS) {
           await this.getRolesAndPermissions();
         }
       } catch (e) {

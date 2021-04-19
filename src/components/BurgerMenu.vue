@@ -39,16 +39,11 @@ export default {
     links: Array,
     name: String,
     username: String,
-    role: String,
   },
   computed: {},
   methods: {
-    async logoutUser() {
+    logoutUser() {
       this.$emit("changeIsLogout");
-      try {
-        await this.logout();
-        await this.$router.push("/");
-      } catch (error) {}
     },
     ...mapActions(["logout"]),
   },
