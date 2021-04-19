@@ -9,12 +9,12 @@ import VueMeta from "vue-meta";
 import "./registerServiceWorker";
 import "./assets/styles/main.scss";
 import phoneFilter from "@/filters/phone.filter.js";
-import scrollPlugin from "@/plugins/scroll.plugin.js";
+import watchersPlugin from "@/plugins/watchers.plugin.js";
 Vue.use(VueMask);
 Vue.use(VueMeta, {
   refreshOnceOnNavigation: true,
 });
-Vue.use(scrollPlugin);
+Vue.use(watchersPlugin);
 
 Vue.filter("phoneFilter", phoneFilter);
 

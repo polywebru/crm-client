@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
-import AdminUsers from "../views/AdminUsers.vue";
+import Profile from "../views/Profile.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -23,9 +23,9 @@ const routes = [
     },
   },
   {
-    path: "/user/:username",
+    path: "/users/:username",
     name: "Profile",
-    component: () => import("../views/Profile.vue"),
+    component: Profile,
     meta: {
       layout: "main",
     },
@@ -69,7 +69,7 @@ router.beforeEach((to, _, next) => {
     (to.name === "Login" || to.name === "Register") &&
     localStorage.getItem("auth")
   ) {
-    next({ path: `/user/${localStorage.getItem("username")}` });
+    next({ path: `/users/${localStorage.getItem("username")}` });
   } else {
     next();
   }

@@ -12,7 +12,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     error: null,
-    token: null,
+    token: localStorage.getItem("auth") || null,
     formPending: false,
     isShowLoadMenu: false,
     isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")) || false,

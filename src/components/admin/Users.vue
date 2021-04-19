@@ -5,6 +5,7 @@
       :items="USERS"
       locale="ru-RU"
       :page="PAGE"
+      :item-class="() => 'data-table-row'"
       :items-per-page="PERPAGE"
       :server-items-length="FILTERED"
       fixed-header
@@ -27,7 +28,7 @@
       <template v-slot:[`item.status`]="{ item: user }">
         <v-dialog transition="dialog-bottom-transition" max-width="434">
           <template v-slot:activator="{ on, attrs }">
-            <button class="status-btn" v-bind="attrs" v-on="on">
+            <button class="status-btn" v-bind="attrs" v-on.stop="on">
               {{ user.status | statusFormat }}
             </button>
           </template>
@@ -76,7 +77,7 @@
             content-class="activate-dialog"
           >
             <template v-slot:activator="{ on, attrs }">
-              <button class="users-btn" v-on="on" v-bind="attrs">
+              <button class="users-btn" v-on.stop="on" v-bind="attrs">
                 <span>{{
                   user.isActive ? "Деактивировать" : "Активировать"
                 }}</span>
@@ -125,7 +126,7 @@
             content-class="activate-dialog"
           >
             <template v-slot:activator="{ on, attrs }">
-              <button v-on="on" v-bind="attrs" class="table__delete">
+              <button v-on.stop="on" v-bind="attrs" class="table__delete">
                 <svg
                   width="19"
                   height="24"
@@ -143,7 +144,11 @@
                   />
                 </svg>
               </button>
-              <button v-on="on" v-bind="attrs" class="table__delete--mobile">
+              <button
+                v-on.stop="on"
+                v-bind="attrs"
+                class="table__delete--mobile"
+              >
                 <span> Удалить </span>
               </button>
             </template>
@@ -318,8 +323,12 @@ export default {
       PAGE: (state) => state.admin.users.page,
     }),
   },
+  updated() {
+    this.$watchClickRow(".data-table-row", this.$router);
+  },
   mounted() {
     this.$watchScroll(".v-data-table__wrapper");
+    this.$watchClickRow(".data-table-row", this.$router);
   },
   filters: {
     dateFormat(date) {
@@ -564,6 +573,9 @@ export default {
       }
     }
   }
+}
+.data-table-row {
+  cursor: pointer !important;
 }
 .v-data-table__wrapper > table > thead > tr > th:last-child,
 .v-data-table__wrapper > table > tbody > tr > td:last-child,

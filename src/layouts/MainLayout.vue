@@ -15,7 +15,7 @@
         <router-link class="header__logo" :to="'/'">
           <img src="@/assets/img/logo.png" alt="logo" />
         </router-link>
-        <nav class="header__nav" v-if="IS_USER_ACTIVE">
+        <nav class="header__nav">
           <router-link
             class="header__link"
             v-for="(link, index) in headerLinks"
@@ -29,7 +29,6 @@
         <theme-switcher class="theme-switcher"></theme-switcher>
         <burger-menu
           @changeIsLogout="changeIsLogout"
-          :isActiveUser="IS_USER_ACTIVE"
           :name="getFullName"
           :links="[...headerLinks, ...menuLinks]"
           :username="getUsername"
@@ -61,7 +60,7 @@
               <div class="header__name">{{ getFullName }}</div>
               <div class="header__username">{{ getUsername }}</div>
             </div>
-            <div v-if="IS_USER_ACTIVE">
+            <div>
               <v-list-item v-for="(link, index) in menuLinks" :key="index">
                 <router-link
                   exact
@@ -115,14 +114,17 @@ export default {
 
   computed: {
     getFullName() {
-      return `${this.LAYOUT_INFO.firstName} ${this.LAYOUT_INFO.lastName}`;
+      return localStorage.getItem("fullName");
     },
     getUsername() {
-      return this.LAYOUT_INFO.username;
+      return localStorage.getItem("username");
     },
     menuLinks() {
       const links = [
-        { title: "Профиль", path: `/user/${localStorage.getItem("username")}` },
+        {
+          title: "Профиль",
+          path: `/users/${localStorage.getItem("username")}`,
+        },
         { title: "Настройки", path: "/settings" },
       ];
       if (this.HAS_ADMIN_ROLE) {
@@ -138,7 +140,6 @@ export default {
     ...mapState({
       IS_LOADING: (state) => state.profile.isLoading,
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
-      IS_USER_ACTIVE: (state) => state.profile.userInfo.is_active,
     }),
   },
   methods: {

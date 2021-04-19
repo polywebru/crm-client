@@ -1,11 +1,11 @@
 import InActiveUser from "@/components/InActiveUser";
 import { mapState, mapMutations } from "vuex";
-import errorsMixin from "./errors.mixin";
+import routerHooks from "./routerHooks.mixin";
 export default {
   components: {
     InActiveUser,
   },
-  mixins: [errorsMixin],
+  mixins: [routerHooks],
   computed: {
     ...mapState({
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,

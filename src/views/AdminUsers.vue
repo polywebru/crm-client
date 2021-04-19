@@ -21,11 +21,11 @@
 import Users from "@/components/admin/Users.vue";
 import UsersSkeleton from "@/components/admin/UsersSkeleton.vue";
 import { mapActions, mapMutations } from "vuex";
-import errorsMixin from "@/mixins/errors.mixin";
+import routerHooks from "@/mixins/routerHooks.mixin";
 import { debounce } from "lodash";
 
 export default {
-  mixins: [errorsMixin],
+  mixins: [routerHooks],
   data() {
     return {
       isLoadingUsers: false,
