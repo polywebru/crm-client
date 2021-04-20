@@ -7,10 +7,10 @@
     <div class="loader-wrap" v-if="isLogout">
       <cat-loader></cat-loader>
     </div>
-
+    <auth-loader v-show="INFO_CHANGING"></auth-loader>
     <server-error-alert :showAlert="showAlert"></server-error-alert>
-    <skeleton-laoder v-show="IS_LOADING"></skeleton-laoder>
-    <header class="header" v-show="!IS_LOADING">
+    <skeleton-loader v-if="IS_LOADING"></skeleton-loader>
+    <header class="header" v-else>
       <div class="header__info">
         <router-link class="header__logo" :to="'/'">
           <img src="@/assets/img/logo.png" alt="logo" />
@@ -29,11 +29,11 @@
         <theme-switcher class="theme-switcher"></theme-switcher>
         <burger-menu
           @changeIsLogout="logoutUser"
-          :name="getFullName"
+          :name="FULL_NAME"
           :links="[...headerLinks, ...menuLinks]"
-          :username="getUsername"
+          :username="USERNAME"
         ></burger-menu>
-        <v-menu tile max-width="300px" offset-y left>
+        <v-menu tile content-class="header-content-menu" offset-y>
           <template v-slot:activator="{ attrs, on }">
             <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
               <div class="menu-avatar">
@@ -57,8 +57,8 @@
           </template>
           <v-list>
             <div class="header__private-info menu-item">
-              <div class="header__name">{{ getFullName }}</div>
-              <div class="header__username">{{ getUsername }}</div>
+              <div class="header__name">{{ FULL_NAME }}</div>
+              <div class="header__username">{{ USERNAME }}</div>
             </div>
             <div>
               <v-list-item v-for="(link, index) in menuLinks" :key="index">
@@ -86,7 +86,8 @@
 <script>
 import { mapMutations, mapGetters, mapState, mapActions } from "vuex";
 import BurgerMenu from "@/components/BurgerMenu.vue";
-import SkeletonLaoder from "./SkeletonLaoder.vue";
+import AuthLoader from "@/components/AuthLoader.vue";
+import SkeletonLoader from "./SkeletonLoader.vue";
 import ServerErrorAlert from "@/components/ServerErrorAlert.vue";
 import InActiveUser from "@/components/InActiveUser.vue";
 import CatLoader from "@/components/CatLoader.vue";
@@ -105,27 +106,22 @@ export default {
   },
   components: {
     BurgerMenu,
-    SkeletonLaoder,
+    SkeletonLoader,
     ServerErrorAlert,
     InActiveUser,
     CatLoader,
     ThemeSwitcher,
+    AuthLoader,
   },
 
   computed: {
-    getFullName() {
-      return localStorage.getItem("fullName");
-    },
-    getUsername() {
-      return localStorage.getItem("username");
-    },
     menuLinks() {
       const links = [
         {
           title: "Профиль",
-          path: `/users/${localStorage.getItem("username")}`,
+          path: `/users/${this.USERNAME}`,
         },
-        { title: "Настройки", path: "/settings" },
+        { title: "Настройки", path: "/settings/main-info" },
       ];
       if (this.HAS_ADMIN_ROLE) {
         links.push({ title: "Admin панель", path: "/admin" });
@@ -139,7 +135,10 @@ export default {
     }),
     ...mapState({
       IS_LOADING: (state) => state.profile.isLoading,
+      FULL_NAME: (state) => state.fullName,
+      USERNAME: (state) => state.username,
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
+      INFO_CHANGING: (state) => state.profile.infoChanging,
     }),
   },
   methods: {
@@ -202,6 +201,9 @@ export default {
   background-color: var(--layout-bg);
   position: relative;
   z-index: 1;
+  &-content-menu {
+    min-width: 225px !important;
+  }
   @media (max-width: 480px) {
     padding: 5px 30px;
   }
@@ -361,9 +363,11 @@ export default {
   }
   margin-top: 0;
   max-width: 225px !important;
-  @media (max-width: 480px) {
-    left: 0 !important;
-    max-width: unset !important;
+  &:not(.settings__menu) {
+    @media (max-width: 480px) {
+      left: 0 !important;
+      max-width: unset !important;
+    }
   }
 }
 .logout {

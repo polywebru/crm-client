@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import auth from "./auth";
-import settings from "./settings";
+import universityInfo from "./universityInfo";
 
 import profile from "./profile";
 import logout from "./logout";
@@ -11,15 +11,27 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    error: null,
+    error: {},
     token: localStorage.getItem("auth") || null,
+    fullName: localStorage.getItem("fullName") || "",
+    username: localStorage.getItem("username") || "",
     formPending: false,
     isShowLoadMenu: false,
     isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")) || false,
+    validationErrors: {
+      required: ["Это обязательное поле"],
+      email: ["Неверный email"],
+      maxLength: ["Максимальное количество символов 255"],
+      minLengthPassword: ["Минимальная длина пароля 5"],
+      passwordsNotMatch: ["Пароли не совпадают"],
+    },
   },
   mutations: {
     setError(state, error) {
-      state.error = error;
+      state.error = { ...state.error, ...error };
+    },
+    removeErrors(state) {
+      state.error = {};
     },
     setToken(state, token) {
       state.token = token;
@@ -33,6 +45,14 @@ export default new Vuex.Store({
     removeToken(state) {
       state.token = "";
     },
+    setFullName(state, fullName) {
+      localStorage.setItem("fullName", fullName);
+      state.fullName = fullName;
+    },
+    setUsername(state, username) {
+      localStorage.setItem("username", username);
+      state.username = username;
+    },
     setIsThemeDark(state, isThemeDark) {
       localStorage.setItem("isThemeDark", isThemeDark);
       state.isThemeDark = isThemeDark;
@@ -45,8 +65,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
-    settings,
-
+    universityInfo,
     profile,
     logout,
     admin,

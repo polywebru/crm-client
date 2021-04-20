@@ -1,5 +1,5 @@
 <template>
-  <div class="root" :data-dark="IS_THEME_DARK">
+  <div class="root" data-app="true" :data-dark="IS_THEME_DARK">
     <component :is="layout"></component>
   </div>
 </template>

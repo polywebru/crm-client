@@ -34,6 +34,7 @@ export default {
       searchUser: "",
     };
   },
+
   components: { Users, UsersSkeleton },
   beforeRouteEnter(_, __, next) {
     next(async (vm) => {

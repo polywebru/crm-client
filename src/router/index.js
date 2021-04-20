@@ -31,6 +31,59 @@ const routes = [
     },
   },
   {
+    path: "/settings",
+    name: "Settings",
+    component: () => import("@/views/ProfileSettings.vue"),
+    meta: {
+      layout: "main",
+    },
+    redirect: "/settings/main-info",
+    children: [
+      {
+        path: "main-info",
+        component: () => import("@/components/profileSettings/Main.vue"),
+        meta: {
+          layout: "main",
+        },
+      },
+      {
+        path: "contact-info",
+        component: () => import("@/components/profileSettings/Contacts.vue"),
+        meta: {
+          layout: "main",
+        },
+      },
+      {
+        path: "additional-info",
+        component: () => import("@/components/profileSettings/Additional.vue"),
+        meta: {
+          layout: "main",
+        },
+      },
+      {
+        path: "password",
+        component: () => import("@/components/profileSettings/Password.vue"),
+        meta: {
+          layout: "main",
+        },
+      },
+      {
+        path: "links",
+        component: () => import("@/components/profileSettings/Links.vue"),
+        meta: {
+          layout: "main",
+        },
+      },
+      {
+        path: "skills",
+        component: () => import("@/components/profileSettings/Skills.vue"),
+        meta: {
+          layout: "main",
+        },
+      },
+    ],
+  },
+  {
     path: "/admin",
     name: "Admin",
     meta: {

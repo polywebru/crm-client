@@ -37,6 +37,7 @@ export default {
   opacity: 0;
   position: absolute;
   z-index: -1;
+  width: 0;
 }
 .delete-photo {
   margin-top: 15px;
@@ -52,7 +53,7 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   padding: 20px 15px;
-  max-width: 241px;
+  width: 191px;
   border: 1px solid #aaaaaa;
   border-radius: 10px;
   top: 100%;

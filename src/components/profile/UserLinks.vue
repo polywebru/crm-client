@@ -27,7 +27,7 @@
                 :src="require(`@/assets/img/link_icons/${link.type}.svg`)"
                 :alt="`${link.type}`"
             /></span>
-            <span>{{ getLinkName[index] }}</span>
+            <span class="links-name">{{ getLinkName[index] }}</span>
           </a>
         </li>
       </ul>
@@ -67,6 +67,12 @@ export default {
   margin-right: 42px;
   @media (max-width: 480px) {
     margin-right: 0;
+  }
+  &-name {
+    max-width: 188px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   &-opener {
     display: flex;

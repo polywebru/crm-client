@@ -10,7 +10,7 @@
           :links="links"
           :username="getUsername"
         ></burger-menu>
-        <v-menu tile max-width="300px" offset-y left>
+        <v-menu tile content-class="header-content-menu" offset-y left>
           <template v-slot:activator="{ attrs, on }">
             <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
               <div class="menu-avatar">
