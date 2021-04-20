@@ -1,6 +1,6 @@
 <template>
   <div class="contacts">
-    <v-menu max-width="300px" offset-y>
+    <v-menu max-width="300px" offset-y  :close-on-content-click="false">
       <template v-slot:activator="{ attrs, on }">
         <div class="contacts-opener" v-bind="attrs" v-on="on">
           <div class="menu-title">Контактная информация</div>
@@ -20,7 +20,7 @@
         </div>
       </template>
       <!-- Using v-once directive -->
-      <ul class="contacts-items">
+      <ul class="contacts-items" @click="menu = true">
         <li class="contacts-item" v-if="hasUserPhone">
           <div class="contacts-icon">
             <svg
@@ -39,7 +39,7 @@
               />
             </svg>
           </div>
-          <div class="phone" @click="copyText($event.target)">
+          <div class="phone" @click="copyText($event.target)" >
             <slot name="phone"></slot>
           </div>
         </li>
@@ -85,7 +85,8 @@ export default {
     };
   },
   methods: {
-    copyText(element) {
+    copyText(element, e) {
+      console.log(element)
       const range = document.createRange();
       range.selectNode(element);
       window.getSelection().removeAllRanges();
@@ -122,7 +123,7 @@ export default {
           width: 9px;
           height: 7px;
         }
-      }
+      }  
     }
     &[aria-expanded="true"] {
       .arrow {
@@ -149,7 +150,6 @@ export default {
     }
   }
 }
-
 .phone,
 .mail {
   font-size: 14px;
@@ -182,4 +182,8 @@ export default {
     transform: translateX(-50%);
   }
 }
+.show{
+    z-index: 30000;
+    top: -40px;
+  }
 </style>
