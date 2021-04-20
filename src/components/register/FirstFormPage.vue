@@ -2,7 +2,7 @@
   <div class="first-page d-flex flex-column mt-6">
     <div class="form-row">
       <div class="form-item full">
-        <label for="secondName">Фамилия</label>
+        <label for="secondName">Фамилия <span class="star">*</span></label>
         <v-text-field
           v-model.trim="formData.last_name"
           placeholder="Фамилия"
@@ -20,7 +20,7 @@
     </div>
     <div class="form-row">
       <div class="form-item full">
-        <label for="firstName">Имя</label>
+        <label for="firstName">Имя <span class="star">*</span></label>
         <v-text-field
           v-model.trim="formData.first_name"
           placeholder="Имя"
@@ -178,5 +178,9 @@ export default {
   @media (min-width: 1141px) {
     width: 400px;
   }
+}
+.star{
+  color: rgb(200, 0, 0);
+  font-size: 13px;
 }
 </style>
