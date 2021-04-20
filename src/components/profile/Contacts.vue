@@ -20,7 +20,7 @@
         </div>
       </template>
       <!-- Using v-once directive -->
-      <ul class="contacts-items" @click="menu = true">
+      <ul class="contacts-items">
         <li class="contacts-item" v-if="hasUserPhone">
           <div class="contacts-icon">
             <svg
@@ -85,8 +85,7 @@ export default {
     };
   },
   methods: {
-    copyText(element, e) {
-      console.log(element)
+    copyText(element) {
       const range = document.createRange();
       range.selectNode(element);
       window.getSelection().removeAllRanges();
