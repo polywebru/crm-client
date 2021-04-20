@@ -21,7 +21,7 @@
       </template>
       <ul class="links-items" v-if="links && links.length > 0">
         <li v-for="(link, index) in links" :key="index">
-          <a :href="`${link.url}`" class="links-item">
+          <a :href="`${link.url}`" class="links-item" target="_blank">
             <span v-once
               ><img
                 :src="require(`@/assets/img/link_icons/${link.type}.svg`)"
