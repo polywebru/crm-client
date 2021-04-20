@@ -3,17 +3,30 @@
     <label class="upload-photo" for="file-input">
       {{ photoChangeTitle }} фотографию
     </label>
-    <input type="file" class="file-input" id="file-input" />
+    <input type="file" class="file-input" id="file-input" @change="onFile"/>
     <button class="delete-photo" v-if="USER_AVATAR">
       <span>Удалить фотографию</span>
     </button>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations, } from "vuex";
 export default {
+  data() {
+    return{
+      foto: null,
+    }
+  },
   props: {
     showMenu: Boolean,
+  },
+  methods: {
+    onFile(event){
+      console.log(event.target.files)
+      this.foto = event.target.files[0]
+      this.setFoto(this.foto)
+    },
+    ...mapMutations(["setFoto"])
   },
   computed: {
     photoChangeTitle() {

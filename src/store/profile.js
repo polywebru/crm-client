@@ -11,6 +11,9 @@ export default {
     setUserInfo(state, info) {
       state.userInfo = info;
     },
+    setFoto(state, file) {
+      state.userInfo.avatar = file;
+    },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
     },
