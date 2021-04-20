@@ -19,7 +19,7 @@
     </div>
     <div class="form-row second-page">
       <div class="form-item full">
-        <label for="email">Email</label>
+        <label for="email" class="required-line">Email</label>
         <v-text-field
           v-model="formData.email"
           placeholder="Email"
@@ -36,7 +36,7 @@
     </div>
     <div class="form-row second-page">
       <div class="form-item full">
-        <label for="username">Имя пользователя</label>
+        <label for="username" class="required-line">Имя пользователя</label>
         <v-text-field
           v-model="formData.username"
           placeholder="Username"
@@ -55,7 +55,7 @@
 
     <div class="form-row password second-page">
       <div class="form-item full">
-        <label for="password">Пароль</label>
+        <label for="password" class="required-line">Пароль</label>
         <v-text-field
           v-model="formData.password"
           placeholder="Пароль"
@@ -74,7 +74,7 @@
     </div>
     <div class="form-row second-page">
       <div class="form-item full">
-        <label for="repeatPassword">Повторите пароль</label>
+        <label for="repeatPassword" class="required-line">Повторите пароль</label>
         <v-text-field
           v-model="formData.password_confirmation"
           placeholder="Повторите пароль"
@@ -208,3 +208,16 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.required-line{ 
+  position: relative;
+  &::after{
+    position: absolute;
+    content: "*";
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(100% + 5px);
+    color: rgb(200, 0, 0);
+  }
+}
+</style>

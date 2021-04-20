@@ -2,7 +2,7 @@
   <div class="first-page d-flex flex-column mt-6">
     <div class="form-row">
       <div class="form-item full">
-        <label for="secondName">Фамилия</label>
+        <label for="secondName" class="required-line">Фамилия</label>
         <v-text-field
           v-model.trim="formData.last_name"
           placeholder="Фамилия"
@@ -20,7 +20,7 @@
     </div>
     <div class="form-row">
       <div class="form-item full">
-        <label for="firstName">Имя</label>
+        <label for="firstName" class="required-line">Имя</label>
         <v-text-field
           v-model.trim="formData.first_name"
           placeholder="Имя"
@@ -175,6 +175,17 @@ export default {
 .first-page {
   @media (min-width: 1141px) {
     width: 400px;
+  }
+}
+.required-line{ 
+  position: relative;
+  &::after{
+    position: absolute;
+    content: "*";
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%;
+    color: rgb(200, 0, 0);
   }
 }
 </style>
