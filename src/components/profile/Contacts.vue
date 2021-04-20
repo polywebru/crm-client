@@ -1,6 +1,6 @@
 <template>
   <div class="contacts">
-    <v-menu max-width="300px" offset-y>
+    <v-menu max-width="300px" offset-y  :close-on-content-click="false">
       <template v-slot:activator="{ attrs, on }">
         <div class="contacts-opener" v-bind="attrs" v-on="on">
           <div class="menu-title">Контактная информация</div>
@@ -39,7 +39,7 @@
               />
             </svg>
           </div>
-          <div class="phone" @click="copyText($event.target)">
+          <div class="phone" @click="copyText($event.target)" >
             <slot name="phone"></slot>
           </div>
         </li>
@@ -122,7 +122,7 @@ export default {
           width: 9px;
           height: 7px;
         }
-      }
+      }  
     }
     &[aria-expanded="true"] {
       .arrow {
@@ -149,7 +149,6 @@ export default {
     }
   }
 }
-
 .phone,
 .mail {
   font-size: 14px;
@@ -182,4 +181,8 @@ export default {
     transform: translateX(-50%);
   }
 }
+.show{
+    z-index: 30000;
+    top: -40px;
+  }
 </style>
