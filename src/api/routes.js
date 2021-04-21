@@ -4,6 +4,7 @@ export default {
   login: "login",
   register: "register",
   logout: "logout",
+  forgotPassword: "forgotPassword",
   settings: `${mainPrefix}settings`,
   faculties: `${mainPrefix}faculties`,
   specialities: `${mainPrefix}specialities`,

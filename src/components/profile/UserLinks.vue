@@ -31,7 +31,7 @@
           </a>
         </li>
       </ul>
-      <div class="no-links" v-else>Ссылок пока нет</div>
+      <div class="no-links" v-else>Ссылок пока нет {{}}</div>
     </v-menu>
   </div>
 </template>

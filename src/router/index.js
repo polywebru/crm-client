@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import AdminUsers from "../views/AdminUsers.vue";
 import ResetPassword from "../views/ResetPassword";
+import ForgotPassword from "@/views/ForgotPassword";
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,14 @@ const routes = [
         meta: {
             layout: "auth",
             page: "first",
+        },
+    },
+    {
+        path: "/forgot-password",
+        name: "ForgotPassword",
+        component: () => import("../views/ForgotPassword.vue"),
+        meta: {
+            layout: "auth",
         },
     },
     {
@@ -72,6 +81,7 @@ router.beforeEach((to, _, next) => {
     if (
         to.name !== "Login" &&
         to.name !== "Register" &&
+        to.name !== "ForgotPassword" &&
         to.name !== "ResetPassword" &&
         !localStorage.getItem("auth")
     ) {
