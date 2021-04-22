@@ -115,21 +115,23 @@ export default {
     },
   },
   methods:{
-    ...mapMutations(["setError", "setFormPending"]),
+    ...mapMutations(["setError"]),
     ...mapActions(["resetPassword"]),
 
     async submitHandler() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         try {
-          this.setFormPending(true);
+          // this.setFormPending(true);
           await this.resetPassword({
+            token: this.token,
             password: this.password,
+            password_confirmation: this.password_confirmation
           });
           // await this.$router.push(`/reset-password`);
-          this.setFormPending(false);
+          // this.setFormPending(false);
         } catch (error) {
-          this.setFormPending(false);
+          // this.setFormPending(false);
           if (
               (error.response && error.response.status >= 500) ||
               this.ERROR >= 500
