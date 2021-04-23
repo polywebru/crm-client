@@ -110,10 +110,6 @@ export default {
             setTimeout(() => {
               this.showAlert = false;
             }, 2000);
-          } else if (
-              (error.response && error.response.status === 200)
-          ) {
-
           }
         }
       }
