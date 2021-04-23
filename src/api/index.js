@@ -3,7 +3,7 @@ import settings from "./facsAndSpecs";
 import profile from "./profile";
 import logout from "./logout";
 import admin from "./admin";
-import forgot from "@/api/forgotPassword";
+import forgot from "./forgotPassword";
 import reset from "./resetPassword"
 
 export default {

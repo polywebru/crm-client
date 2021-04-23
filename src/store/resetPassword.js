@@ -7,9 +7,9 @@ export default {
         password_confirmation: null,
     },
     actions: {
-        async resetPassword({ commit }, data) {
+        async resetPassword({commit}, data) {
             try {
-                const response = await api.resetPassword(data);
+                await api.resetPassword(data);
             } catch (e) {
                 commit("setError", e.response.data.error.errors);
                 throw e;

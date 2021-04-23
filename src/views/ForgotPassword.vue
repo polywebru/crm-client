@@ -58,7 +58,7 @@ export default {
   components: {ServerErrorAlert, LogoBlock, CloseIcon},
   name: "ForgotPassword",
   metaInfo: {
-    title: "Забыл пароль",
+    title: "Забыл пароль - PolyWeb",
     htmlAttrs: {
       lang: "ru",
     },
@@ -92,7 +92,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setError"]),
     ...mapActions(["forgotPassword"]),
 
     async submitHandler() {
@@ -102,28 +101,24 @@ export default {
           await this.forgotPassword({
             email: this.emailAddress,
           });
+          this.showAlertEmail = true;
         } catch (error) {
           if (
-              (error.response && error.response.status >= 500) ||
-              this.ERROR >= 500
+              (error.response && error.response.status >= 500)
           ) {
-            localStorage.clear();
             this.showAlert = true;
             setTimeout(() => {
               this.showAlert = false;
             }, 2000);
-          }
-          else if (
-              (error.response && error.response.status === 200) ||
-              this.ERROR === 200
+          } else if (
+              (error.response && error.response.status === 200)
           ) {
-            localStorage.clear();
-            this.showAlertEmail = true;
+
           }
         }
       }
     },
-    closeEmail(){
+    closeEmail() {
       this.showAlertEmail = false
       this.$router.push('/')
     },

@@ -5,9 +5,9 @@ export default {
         email: null,
     },
     actions: {
-        async forgotPassword({ commit }, email) {
+        async forgotPassword({commit}, email) {
             try {
-                const response = await api.forgotPassword(email);
+                await api.forgotPassword(email);
             } catch (e) {
                 commit("setError", e.response.data.error.errors);
                 throw e;

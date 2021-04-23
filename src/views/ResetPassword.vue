@@ -81,13 +81,13 @@ export default {
   components: {LogoBlock, ServerErrorAlert, CloseIcon},
   name: "ResetPassword",
   metaInfo: {
-    title: "Забыл пароль",
+    title: "Восстановление пароля - PolyWeb",
     htmlAttrs: {
       lang: "ru",
     },
   },
-  data (){
-    return{
+  data() {
+    return {
       password_confirmation: "",
       password: "",
       token: "",
@@ -97,17 +97,17 @@ export default {
   },
   mixins: [validationMixin],
   validations: {
-      password: {
-        required,
-        maxLength: maxLength(255),
-        minLength: minLength(5),
-      },
-      password_confirmation: {
-        required,
-        sameAs: sameAs(function () {
-          return this.password;
-        }),
-      },
+    password: {
+      required,
+      maxLength: maxLength(255),
+      minLength: minLength(5),
+    },
+    password_confirmation: {
+      required,
+      sameAs: sameAs(function () {
+        return this.password;
+      }),
+    },
   },
   computed: {
     ...mapGetters(["error"]),
@@ -128,8 +128,7 @@ export default {
       }
     },
   },
-  methods:{
-    ...mapMutations(["setError"]),
+  methods: {
     ...mapActions(["resetPassword"]),
 
     async submitHandler() {
@@ -141,28 +140,20 @@ export default {
             password: this.password,
             password_confirmation: this.password_confirmation
           });
+          this.showAlertEmail = true;
         } catch (error) {
           if (
-              (error.response && error.response.status >= 500) ||
-              this.ERROR >= 500
+              (error.response && error.response.status >= 500)
           ) {
-            localStorage.clear();
             this.showAlert = true;
             setTimeout(() => {
               this.showAlert = false;
             }, 2000);
           }
-          else if (
-              (error.response && error.response.status === 200) ||
-              this.ERROR === 200
-          ) {
-            localStorage.clear();
-            this.showAlertEmail = true;
-          }
         }
       }
     },
-    closeReset(){
+    closeReset() {
       this.showAlertEmail = false
       this.$router.push('/')
     }
