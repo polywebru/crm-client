@@ -3,6 +3,9 @@ import settings from "./facsAndSpecs";
 import profile from "./profile";
 import logout from "./logout";
 import admin from "./admin";
+import forgot from "@/api/forgotPassword";
+import reset from "./resetPassword"
+
 export default {
   async login(user) {
     return await auth.login(user);
@@ -43,4 +46,10 @@ export default {
   async changeStatus(token, uid, status) {
     return await admin.changeStatus(token, uid, status);
   },
+  async forgotPassword(email){
+    return await forgot.forgotPassword(email)
+  },
+  async resetPassword(data){
+    return await reset.resetPassword(data)
+  }
 };

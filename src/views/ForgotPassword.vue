@@ -2,7 +2,8 @@
   <div class="form-wrapper">
     <server-error-alert :show-alert="showAlert"></server-error-alert>
     <v-card class="mx-auto my-auto d-flex" elevation="3" max-width="600" min-height="112" v-if="showAlertEmail">
-      <v-card-text style="color: black;" class="text-center align-self-center">Ссылка для восстановления пароля
+      <v-card-text style="color: black;" class="text-center align-self-center">
+        Ссылка для восстановления пароля
         отправлена на почту
       </v-card-text>
       <v-btn icon absolute @click="closeEmail">
@@ -91,7 +92,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setError", "setFormPending"]),
+    ...mapMutations(["setError"]),
     ...mapActions(["forgotPassword"]),
 
     async submitHandler() {
@@ -112,23 +113,12 @@ export default {
               this.showAlert = false;
             }, 2000);
           }
-              // else if (
-              //     (error.response && error.response.status === 400) ||
-              //     this.ERROR === 400
-              // ){
-              //   localStorage.clear();
-              //   this.showAlertEmail = true;
-              //   setTimeout(() => {
-              //     this.showAlertEmail = false;
-              //   }, 2000);
-          // }
           else if (
               (error.response && error.response.status === 200) ||
               this.ERROR === 200
           ) {
             localStorage.clear();
             this.showAlertEmail = true;
-
           }
         }
       }
@@ -141,7 +131,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-card__text {
   font-weight: 600;
 }

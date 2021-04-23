@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import auth from "./auth";
 import settings from "./settings";
 import resetPassword from "./resetPassword";
+import forgotPassword from "./forgotPassword";
 
 import profile from "./profile";
 import logout from "./logout";
@@ -49,6 +50,7 @@ export default new Vuex.Store({
         auth,
         settings,
         resetPassword,
+        forgotPassword,
         profile,
         logout,
         admin,

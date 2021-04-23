@@ -2,14 +2,12 @@ import api from "../api";
 
 export default {
     state: {
-        token: null,
-        password: null,
-        password_confirmation: null,
+        email: null,
     },
     actions: {
-        async resetPassword({ commit }, data) {
+        async forgotPassword({ commit }, email) {
             try {
-                const response = await api.resetPassword(data);
+                const response = await api.forgotPassword(email);
             } catch (e) {
                 commit("setError", e.response.data.error.errors);
                 throw e;
