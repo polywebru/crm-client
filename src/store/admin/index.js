@@ -8,6 +8,9 @@ export default {
     setHasAccess(state, hasAccess) {
       state.hasAccess = hasAccess;
     },
+    resetHasAccess(state) {
+      state.hasAccess = true;
+    },
     setAdminLoading(state, adminLoading) {
       state.adminLoading = adminLoading;
     },

@@ -7,6 +7,7 @@
           v-model="formData.phone"
           placeholder="Телефон"
           v-mask="'+7 (###) ###-##-##'"
+          append-icon="mdi-cellphone"
           :error-messages="phoneInvalid"
           background-color="#fff"
           outlined
@@ -24,10 +25,13 @@
           v-model="formData.email"
           placeholder="Email"
           background-color="#fff"
+          append-icon="mdi-email"
           required
           :error-messages="emailInvalid"
           outlined
           type="email"
+          maxLength="255"
+          :counter="255"
           class="custom-input mt-1 mb-3"
           :class="{ invalid: emailInvalid || emailTakenError }"
           id="email"
@@ -40,8 +44,10 @@
         <v-text-field
           v-model="formData.username"
           placeholder="Username"
+          append-icon="mdi-account"
           background-color="#fff"
           :counter="255"
+          maxLength="255"
           required
           :error-messages="usernameInvalid"
           outlined
@@ -59,10 +65,12 @@
         <v-text-field
           v-model="formData.password"
           placeholder="Пароль"
+          append-icon="mdi-lock"
           required
           :error-messages="passwordInvalid"
           background-color="#fff"
           :counter="255"
+          maxLength="255"
           outlined
           type="password"
           autocomplete="on"
@@ -74,10 +82,13 @@
     </div>
     <div class="form-row second-page">
       <div class="form-item full">
-        <label for="repeatPassword" class="required-line">Повторите пароль</label>
+        <label for="repeatPassword" class="required-line"
+          >Повторите пароль</label
+        >
         <v-text-field
           v-model="formData.password_confirmation"
           placeholder="Повторите пароль"
+          append-icon="mdi-lock-check"
           background-color="#fff"
           required
           :error-messages="passwordConfirmationInvalid"
@@ -85,6 +96,7 @@
           outlined
           type="password"
           :counter="255"
+          maxLength="255"
           class="custom-input mt-1 mb-3"
           :class="{ invalid: passwordConfirmationInvalid }"
           id="repeatPassword"
@@ -114,7 +126,7 @@ import {
   maxLength,
   sameAs,
 } from "vuelidate/lib/validators";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import formDataMixin from "@/mixins/formData.mixin";
 export default {
   mixins: [validationMixin, formDataMixin],
@@ -195,6 +207,7 @@ export default {
     backHandler() {
       this.$emit("updateUserState", this.formData, this.page - 1);
     },
+    ...mapMutations(["removeErrors"]),
   },
   watch: {
     "formData.email"() {
@@ -206,12 +219,15 @@ export default {
       }
     },
   },
+  destroyed() {
+    this.removeErrors();
+  },
 };
 </script>
 <style lang="scss" scoped>
-.required-line{ 
+.required-line {
   position: relative;
-  &::after{
+  &::after {
     position: absolute;
     content: "*";
     top: 50%;

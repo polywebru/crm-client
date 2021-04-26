@@ -17,6 +17,7 @@
               v-model.trim="emailAddress"
               outlined
               single-line
+              append-icon="mdi-email"
               type="email"
               class="custom-input login-input mt-1 mb-3"
               :class="{
@@ -34,6 +35,7 @@
               background-color="#fff"
               v-model.trim="password"
               outlined
+              append-icon="mdi-lock"
               type="password"
               class="custom-input login-input mb-4"
               :error-messages="invalidPassword"
@@ -123,7 +125,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations(["setError", "setFormPending"]),
+    ...mapMutations(["setError", "setFormPending", "removeErrors"]),
     ...mapActions(["login"]),
 
     async submitHandler() {
@@ -136,6 +138,7 @@ export default {
             password: this.password,
             rememberMe: +this.rememberMe,
           });
+          this.removeErrors();
           await this.$router.push(`/users/${this.USERNAME}`);
           this.setFormPending(false);
         } catch (error) {
@@ -156,7 +159,7 @@ export default {
   },
   destroyed() {
     this.$v.$reset();
-    this.setError(null);
+    this.removeErrors();
   },
 };
 </script>
