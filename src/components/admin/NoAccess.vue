@@ -4,7 +4,7 @@
       <img src="@/assets/img/no_access.jpg" alt="Нет доступа" />
     </div>
     <h2 class="no-access__text">У вас нет доступа к этому разделу</h2>
-    <a  class="no-access__link" @click="hasHistory() ? $router.go(-1) : $router.push('/') ">На главную</a>
+    <a  class="no-access__link" @click="hasHistory() ? $router.go(-1) : $router.push('/') ">Назад</a>
   </div>
 </template>
 
