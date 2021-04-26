@@ -11,6 +11,14 @@
     U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F,
     U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+html, body, .root{
+  height: 100%!important;
+}
+.root{
+  background-color: var(--main-bg);
+  position: relative;
+}
+
 :root {
   --layout-bg: #414dbb;
   --text-color: #000;
@@ -27,6 +35,15 @@
   --table-hover-row: #eee;
   --box-shadow: rgb(0 0 0 / 12%);;
   --table-border: rgba(0,0,0, 0.5);
+  --loader-bg: rgba(255, 255, 255, 0.5);
+  --link-sidebar-bg: #f5f5f5;
+  .datepicker{
+    .v-text-field__slot {
+      &::after {
+        content: url("../img/CalendarDate.svg");
+      }
+    }
+  }
     input.date{
         background:var(--main-bg) url("../img/CalendarDate.svg")  97% 50% no-repeat ;
         cursor: text;
@@ -59,8 +76,18 @@
   --table-hover-row: #1d2c3c;
   --box-shadow:rgba(255,255,255,0.5);
   --table-border: rgba(255,255,255, 0.5);
+  --loader-bg: rgba(255, 255, 255, .2);
+  --link-sidebar-bg: #1d2c3c;
+
   input.date{
   background:var(--main-bg) url("../img/CalendarDateDark.svg")  97% 50% no-repeat!important;
+  }
+  .datepicker{
+    .v-text-field__slot {
+      &::after {
+        content: url("../img/CalendarDateDark.svg")!important;
+      }
+    }
   }
   input.search{
     background-color: var(--main-bg);
@@ -82,7 +109,9 @@ a {
 label {
   font-size: 13.5px !important;
 }
-
+.wrap{
+  background-color: var(--main-bg);
+}
 .main-title {
   font-size: 30px;
   font-weight: 400;
@@ -283,9 +312,20 @@ label {
   visibility: hidden;
 }
 .datepicker {
+  width: 100%;
+  *{
+    cursor: text!important;
+  }
   .v-input__slot {
     padding: 0 !important;
-    width: 200px;
+    width: 100%;
+    max-height: 30px!important;
+  }
+  .v-input__control{
+    max-height: 30px !important;
+  }
+  fieldset{
+    border-radius: 0;
   }
   &.admin-filter{
     .v-input__slot{
@@ -300,7 +340,7 @@ label {
   }
   .v-text-field__slot {
     position: relative;
-    max-height: 45px!important;
+    max-height: 50px!important;
     &::after {
       content: url("../img/CalendarDate.svg");
       position: absolute;
@@ -433,6 +473,7 @@ label {
 }
 .v-menu__content {
   z-index: 20002 !important;
+  max-width: 185px!important;
 }
 .disabled {
   .v-input__slot {
@@ -592,6 +633,56 @@ label {
     background-color: var(--main-bg);
     div{
       color: var(--text-color);
+    }
+  }
+}
+.link-type {
+  width: 84px!important;
+  max-width: 84px !important;
+  
+  .v-input__control{
+    width: 84px!important;
+  }
+  .v-input__slot {
+    border-radius: 0 !important;
+    margin-bottom: 0;
+    min-height: 50px !important;
+  }
+  fieldset {
+    border-radius: 0 !important;
+    transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1);
+
+  }
+
+  &.v-input--is-focused{
+    fieldset{
+      border: 1px solid $blue!important;
+      transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1);
+    }
+  }
+  .v-select__selection.v-select__selection--comma{
+    max-width: unset!important;
+    margin: 0!important;
+    width: 100%!important;
+    text-align: center!important;
+  }
+}
+.link-url{
+  fieldset{
+    transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1);
+
+  }
+  &.v-input--is-focused{
+    fieldset{
+      border: 1px solid $blue!important;
+      transition: all .3s cubic-bezier(0.215, 0.610, 0.355, 1);
+    }
+  }
+}
+.settings{
+  .custom-input{
+    @media (max-width:970px){
+      max-width: unset !important;
     }
   }
 }

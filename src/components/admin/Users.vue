@@ -276,7 +276,6 @@ export default {
       sortDirection: "",
       userStatus: "",
       timeOutQuery: null,
-
       filters: {
         id: "",
         username: "",
@@ -700,7 +699,7 @@ table {
   }
   &:first-child {
     input.search {
-      max-width: 35px !important;
+      max-width: 40px !important;
     }
   }
   input.search {

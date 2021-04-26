@@ -48,4 +48,18 @@ export default {
       }
     },
   },
+  getters: {
+    facultiesNames: (state) => {
+      return state.faculties?.map((faculty) => faculty.name);
+    },
+    specialitiesNames: (state) => {
+      return state.specialities?.map(
+        (speciality) =>
+          `${speciality.code}: ${speciality.profile || speciality.name}`
+      );
+    },
+    studyDurationNames: (state) => {
+      return state.duration && Object.values(state.duration);
+    },
+  },
 };
