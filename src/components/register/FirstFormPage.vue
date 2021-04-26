@@ -8,9 +8,11 @@
           placeholder="Фамилия"
           background-color="#fff"
           single-line
+          append-icon="mdi-account-box"
           required
           outlined
           type="text"
+          maxLength="255"
           :counter="255"
           class="custom-input mt-1"
           id="secondName"
@@ -27,8 +29,10 @@
           background-color="#fff"
           single-line
           outlined
+          append-icon="mdi-account-box-outline"
           type="text"
           required
+          maxLength="255"
           :counter="255"
           class="custom-input mt-1"
           :class="{ invalid: firstNameInvalid }"
@@ -44,7 +48,9 @@
           placeholder="Отчество"
           background-color="#fff"
           outlined
+          maxLength="255"
           :counter="255"
+          append-icon="mdi-account-box-multiple"
           type="text"
           class="custom-input mt-1"
           :class="{ invalid: middleNameInvalid }"
@@ -71,11 +77,12 @@
         <v-text-field
           id="date"
           v-model="birthDate"
-          class="custom-input mt-1 datepicker"
+          class="custom-input mt-1"
+          append-icon="mdi-calendar-account-outline"
           v-mask="'##.##.####'"
           background-color="#fff"
-          :error-messages="dateBirthError && [dateBirthError]"
-          :class="{ invalid: dateBirthError }"
+          :error-messages="invalidDate"
+          :class="{ invalid: invalidDate }"
           outlined
           placeholder="Дата рождения"
         ></v-text-field>
@@ -96,6 +103,7 @@ import { validationMixin } from "vuelidate";
 import formDataMixin from "@/mixins/formData.mixin";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { mapState } from "vuex";
+import validateDate from "validate-date";
 export default {
   mixins: [validationMixin, formDataMixin],
   props: {
@@ -108,6 +116,7 @@ export default {
       page: 0,
       genderType: "",
       birthDate: "",
+      dateInvalid: false,
     };
   },
   validations: {
@@ -139,6 +148,11 @@ export default {
         this.$v.formData.last_name.$invalid && this.$v.formData.last_name.$dirty
       );
     },
+    invalidDate() {
+      if (this.dateInvalid) {
+        return ["Неверный формат даты"];
+      }
+    },
     formatForServerBirthDate() {
       return this.birthDate?.split(".").reverse().join("-");
     },
@@ -163,7 +177,12 @@ export default {
     },
     continueHandler() {
       this.$v.$touch();
-      if (!this.$v.$invalid) {
+      this.dateInvalid = !validateDate(
+        this.formatForServerBirthDate,
+        "boolean",
+        "yyyy-mm-dd"
+      );
+      if (!this.$v.$invalid && !this.dateInvalid) {
         this.formData.date_birth = this.formatForServerBirthDate;
         this.$emit("updateUserState", this.formData, this.page + 1);
       }
@@ -177,9 +196,9 @@ export default {
     width: 400px;
   }
 }
-.required-line{ 
+.required-line {
   position: relative;
-  &::after{
+  &::after {
     position: absolute;
     content: "*";
     top: 50%;

@@ -107,9 +107,8 @@ export default {
         commit("setInfoChanging", false);
         if (error.response.status === 400) {
           commit("setError", error.response.data.error.errors);
-        } else {
-          throw error.response.status;
         }
+        throw error.response.status;
       }
     },
     async changeUserPassword(
@@ -133,9 +132,8 @@ export default {
         commit("setInfoChanging", false);
         if (error.response.status === 400) {
           commit("setError", error.response.data.error.errors);
-        } else {
-          throw error.response.status;
         }
+        throw error.response.status;
       }
     },
   },

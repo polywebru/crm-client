@@ -285,6 +285,9 @@ label {
   fieldset {
     border: 3px solid $borderInvalid !important;
   }
+  i{
+    color: #ff5252!important;
+  }
 }
 .v-application--wrap {
   justify-content: center;
@@ -455,7 +458,15 @@ label {
     }
   }
 }
-
+.v-input__control .v-input__append-inner{
+  margin: 0!important;
+}
+.v-input__append-inner{
+  height: 50px;
+  margin: 0!important;
+  display: flex;
+  align-items: center;
+}
 .custom-textarea {
   .v-input__control {
     max-height: unset !important;

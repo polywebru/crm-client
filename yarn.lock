@@ -900,6 +900,11 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@mdi/font@^5.9.55":
+  version "5.9.55"
+  resolved "https://registry.yarnpkg.com/@mdi/font/-/font-5.9.55.tgz#41acd50b88073ded7095fc3029d8712b6e12f38e"
+  integrity sha512-jswRF6q3eq8NWpWiqct6q+6Fg/I7nUhrxYJfiEM8JJpap0wVJLQdbKtyS65GdlK7S7Ytnx3TTi/bmw+tBhkGmg==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -8316,6 +8321,11 @@ v-mask@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/v-mask/-/v-mask-2.2.4.tgz#d7452982c8774478c0475f771e8d1367cb2b04e0"
   integrity sha512-d78Rhpz/cCwLsSJ50UJ+volzylU6Iq3O4La1Aj3WTYCM0txfL9chgnCC6FHwNKqfHHtMEjdDh7gmpnsPz6tO6A==
+
+validate-date@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/validate-date/-/validate-date-2.0.0.tgz#8abce0f72fb114ff676974843517e5a4528ded42"
+  integrity sha512-DmRIajI6qR/j3JibfDaQsar2IYIUdRUPRBgo/M/kcl6CR5aWb3CsNTX2tdgu2KD3oAMpfXfuJncP30Z3xNHAJg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"

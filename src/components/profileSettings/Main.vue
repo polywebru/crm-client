@@ -78,7 +78,7 @@
     </div>
     <div class="edit-photo">
       <h2 class="settings__photo-title">Фотография профиля</h2>
-      <div class="profile-avatar">
+      <div class="profile-avatar avatar-settings">
         <div
           class="photo-load"
           @click.stop="setShowLoadMenu(!IS_SHOW_LOAD_MENU)"
@@ -87,7 +87,10 @@
         </div>
         <img class="avatar" src="@/assets/img/no_avatar.png" alt="" />
       </div>
-      <photo-edit :showMenu="IS_SHOW_LOAD_MENU"></photo-edit>
+      <photo-edit
+        class="settings-load"
+        :showMenu="IS_SHOW_LOAD_MENU"
+      ></photo-edit>
     </div>
   </div>
 </template>
@@ -202,7 +205,7 @@ export default {
     }
   }
 }
-.profile-avatar {
+.profile-avatar.avatar-settings {
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -250,7 +253,7 @@ export default {
   bottom: 25px;
   left: 20px;
 }
-.photo-load-menu {
+.photo-load-menu.settings-load {
   top: 70% !important;
   @media (max-width: 970px) {
     left: 50% !important;
