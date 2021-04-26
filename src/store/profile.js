@@ -1,10 +1,12 @@
 import api from "../api";
+import { format } from "date-fns";
 export default {
   state: {
     userInfo: {},
     roles: [],
     permissions: [],
     isLoading: false,
+    infoChanging: false,
   },
   mutations: {
     setUserInfo(state, info) {
@@ -12,9 +14,6 @@ export default {
     },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
-    },
-    setLastModified(state, lastModified) {
-      state.lastModified = lastModified;
     },
     setRolesAndPermissions(state, { roles, permissions }) {
       state.roles = roles;
@@ -25,6 +24,18 @@ export default {
       state.roles = [];
       state.permissions = [];
       state.isLoading = false;
+    },
+    changeUserInfo(state, { type, data }) {
+      state.userInfo[type] = data;
+    },
+    setInfoChanging(state, infoChanging) {
+      state.infoChanging = infoChanging;
+    },
+    removeLink(state, index) {
+      state.userInfo.links.splice(index, 1);
+    },
+    removeSkill(state, index) {
+      state.userInfo.skills.splice(index, 1);
     },
   },
   actions: {
@@ -41,8 +52,12 @@ export default {
           (await api.viewProfiles(rootState.token, username));
         if (response.status === 200) {
           commit("setUserInfo", response.data.data);
-          commit("setLastModified", response.data.data.updated_at);
           if (isFirstView) {
+            commit(
+              "setFullName",
+              `${response.data.data.first_name} ${response.data.data.last_name}`
+            );
+            commit("setUsername", response.data.data.username);
             localStorage.setItem(
               "fullName",
               `${response.data.data.first_name} ${response.data.data.last_name}`
@@ -70,6 +85,59 @@ export default {
         commit("setError", error);
       }
     },
+    async changeUserInfo({ state, commit, rootState }, route) {
+      try {
+        commit("setInfoChanging", true);
+        const response = await api.changeUserInfo(
+          state.userInfo,
+          rootState.token,
+          route
+        );
+        if (response.status === 200) {
+          commit("setUserInfo", response.data.data);
+          commit("removeErrors");
+          commit(
+            "setFullName",
+            `${response.data.data.first_name} ${response.data.data.last_name}`
+          );
+          commit("setUsername", response.data.data.username);
+        }
+        commit("setInfoChanging", false);
+      } catch (error) {
+        commit("setInfoChanging", false);
+        if (error.response.status === 400) {
+          commit("setError", error.response.data.error.errors);
+        } else {
+          throw error.response.status;
+        }
+      }
+    },
+    async changeUserPassword(
+      { rootState, commit },
+      { oldPassword, newPassword, confirmPassword }
+    ) {
+      try {
+        commit("setInfoChanging", true);
+        await api.changeUserInfo(
+          {
+            old_password: oldPassword,
+            password: newPassword,
+            password_confirmation: confirmPassword,
+          },
+          rootState.token,
+          "password"
+        );
+        commit("setInfoChanging", false);
+        commit("removeErrors");
+      } catch (error) {
+        commit("setInfoChanging", false);
+        if (error.response.status === 400) {
+          commit("setError", error.response.data.error.errors);
+        } else {
+          throw error.response.status;
+        }
+      }
+    },
   },
   getters: {
     mainLayoutInfo: (state) => ({
@@ -81,5 +149,22 @@ export default {
       state.roles.length && state.permissions.length,
     hasAdminRole: (state) =>
       !!state.roles.find((role) => role.name === "admin"),
+    getUserInfo: (state) => {
+      const formatUserInfo = { ...state.userInfo };
+      if (Object.keys(formatUserInfo).length) {
+        formatUserInfo.date_birth = format(
+          new Date(formatUserInfo.date_birth),
+          "dd.MM.yyyy"
+        );
+        formatUserInfo.gender =
+          formatUserInfo.gender === "male"
+            ? "Мужской"
+            : formatUserInfo.gender === "female"
+            ? "Женский"
+            : "";
+        return formatUserInfo;
+      }
+      return {};
+    },
   },
 };

@@ -9,7 +9,7 @@ export default {
   specialities: `${mainPrefix}specialities`,
   user: `${mainPrefix}user`,
   specialitiesById(id) {
-    return this.faculties + id + "specialities";
+    return `${this.faculties}/${id}/specialities`;
   },
   rolesAndPermissions: `${mainPrefix}user/roles-and-permissions`,
   adminUsers: `${adminPrefix}users`,
@@ -19,5 +19,8 @@ export default {
   },
   viewUsersProfile(username) {
     return `${mainPrefix}users/${username}`;
+  },
+  profileSettings(route) {
+    return `${mainPrefix}user/${route}`;
   },
 };

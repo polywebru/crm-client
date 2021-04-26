@@ -4,6 +4,7 @@ import profile from "./profile";
 import logout from "./logout";
 import admin from "./admin";
 import usersProfiles from "./viewUsersProfile";
+import changeProfileInfo from "./profileSettings";
 export default {
   async login(user) {
     return await auth.login(user);
@@ -46,5 +47,8 @@ export default {
   },
   async viewProfiles(token, username) {
     return await usersProfiles.viewUsersProfile(token, username);
+  },
+  async changeUserInfo(user, token, route) {
+    return await changeProfileInfo(user, token, route);
   },
 };

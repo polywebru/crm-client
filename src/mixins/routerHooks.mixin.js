@@ -1,12 +1,14 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
-  beforeRouteUpdate(to, from, next) {
-    this.userInfo(to, from);
+  async beforeRouteUpdate(to, from, next) {
+    if (!from.path.includes("settings")) {
+      await this.userInfo(to, from);
+    }
     next();
   },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.userInfo(to, from);
+    next(async (vm) => {
+      await vm.userInfo(to, from);
     });
   },
   computed: mapGetters({
@@ -33,7 +35,7 @@ export default {
       } catch (e) {
         if (e === 401) {
           localStorage.clear();
-          this.$router.push("/");
+          await this.$router.push({ name: "Login" });
         } else if (e >= 500) {
           this.$emit("showAlert");
           this.setIsLoading(true);
