@@ -9,6 +9,8 @@ export default {
         commit("removeToken");
         commit("resetProfile");
         commit("resetSettings");
+        commit("removeErrors");
+        commit("resetHasAccess");
         commit("setFormPending", false);
       } catch (error) {
         commit("setFormPending", false);

@@ -66,7 +66,7 @@ export default {
     ...mapGetters(["error"]),
   },
   methods: {
-    ...mapMutations(["setUser", "setFormPending"]),
+    ...mapMutations(["setUser", "setFormPending", "removeErrors"]),
     ...mapActions(["register"]),
     isUserUpdated(user) {
       return JSON.stringify(user) !== JSON.stringify(this.USER_STATE);
@@ -82,6 +82,8 @@ export default {
         this.setFormPending(true);
         await this.register(user);
         this.setFormPending(false);
+        this.removeErrors();
+
         await this.$router.push(`/users/${user.username}`);
       } catch (error) {
         this.setFormPending(false);
