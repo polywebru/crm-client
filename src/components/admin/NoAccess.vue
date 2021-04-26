@@ -4,11 +4,19 @@
       <img src="@/assets/img/no_access.jpg" alt="Нет доступа" />
     </div>
     <h2 class="no-access__text">У вас нет доступа к этому разделу</h2>
-    <router-link class="no-access__link" to="/">На главную</router-link>
+    <a  class="no-access__link" @click="hasHistory() ? $router.go(-1) : $router.push('/') ">На главную</a>
   </div>
 </template>
 
-
+<script>
+export default {
+  methods: {
+    hasHistory(){
+      return window.history.length > 2
+    }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
