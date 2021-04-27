@@ -100,7 +100,7 @@ export default {
   namespaced: true,
   state: {
     users: [],
-
+    lastLink: null,
     tableSettings: cloneDeep(usersTable),
     recordsFiltered: null,
     page: 1,
@@ -108,6 +108,9 @@ export default {
   mutations: {
     setUsers(state, users) {
       state.users = users;
+    },
+    setlastLink(state, lastLink){
+      state.lastLink = lastLink;
     },
     updateUsers(state, user) {
       const userIndex = state.users.findIndex((el) => el.id === user.id);
@@ -144,6 +147,12 @@ export default {
     },
   },
   actions: {
+    async upLastLinc({commit}, link){
+      try {
+        commit("setlastLink", link)
+      }
+      catch(error){}
+    },
     async getUsers({ commit, rootState, state }) {
       try {
         const response = await api.getAdminUsers(

@@ -35,7 +35,7 @@ export default {
     };
   },
   components: { Users, UsersSkeleton },
-  beforeRouteEnter(_, __, next) {
+  beforeRouteEnter(_, from, next) {
     next(async (vm) => {
       vm.setAdminLoading(true);
       try {
@@ -45,7 +45,8 @@ export default {
         switch (e) {
           case 403:
             vm.setHasAccess(false);
-            break;
+            vm.upLastLinc(from);
+          break;
           case 401:
             localStorage.clear();
             vm.$router.push("/");
@@ -81,13 +82,14 @@ export default {
         throw e;
       }
     }, 400),
-    ...mapActions(["getUsers"]),
+    ...mapActions(["getUsers","upLastLinc"]),
     ...mapMutations([
       "setGlobalSearchValue",
       "setPage",
       "setHasAccess",
       "setAdminLoading",
       "users/resetTableSettings",
+      "users/setlastLink"
     ]),
   },
   watch: {

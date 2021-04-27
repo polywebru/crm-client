@@ -4,17 +4,19 @@
       <img src="@/assets/img/no_access.jpg" alt="Нет доступа" />
     </div>
     <h2 class="no-access__text">У вас нет доступа к этому разделу</h2>
-    <a  class="no-access__link" @click="hasHistory() ? $router.go(-1) : $router.push('/') ">Назад</a>
+    <router-link :to="`/`" class="no-access__link" >Назад</router-link>
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex"
+const {mapState} = createNamespacedHelpers("users")
 export default {
-  methods: {
-    hasHistory(){
-      return window.history.length > 2
-    }
-  },
+  computed: {
+    ...mapState({
+      LAST_LINK: (state) => state.lastLink.path
+      })
+  }
 }
 </script>
 
