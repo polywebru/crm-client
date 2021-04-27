@@ -33,10 +33,7 @@ export default {
       const response = await axios(request);
       return response;
     } catch (e) {
-      if (
-        (e.response.status >= 300 && e.response.status < 400) ||
-        e.response.data.error.code === "403.inactive"
-      )
+      if (e.response.status >= 300 && e.response.status < 400)
         return e.response;
       throw e;
     }

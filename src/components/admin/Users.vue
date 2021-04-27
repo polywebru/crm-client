@@ -384,6 +384,10 @@ export default {
         user.isActivating = false;
       } catch (error) {
         user.isActivating = false;
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        }
       }
     },
     async deActivate(user, dialog) {
@@ -394,6 +398,10 @@ export default {
         user.isActivating = false;
       } catch (error) {
         user.isActivating = false;
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        }
       }
     },
     async userDelete(user) {
@@ -403,6 +411,10 @@ export default {
         user.isDeleting = false;
       } catch (error) {
         user.isDeleting = false;
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        }
       }
     },
     async statusChange(dialog, user) {
@@ -414,6 +426,10 @@ export default {
         user.isChanging = false;
       } catch (error) {
         user.isChanging = false;
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        }
       }
     },
     updateItemsPerPage(perPage) {

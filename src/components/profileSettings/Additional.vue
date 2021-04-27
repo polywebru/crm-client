@@ -25,6 +25,7 @@
           outlined
           id="speciality"
           :value="currentSpeciality"
+          no-data-text="Сначала выберите факультет"
           :items="specialitiesNames"
           @change="changeSpeciality"
           class="custom-input settings__input"

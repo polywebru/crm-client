@@ -1,6 +1,7 @@
 <template>
   <div class="wrap-settings">
     <cat-loader v-if="IS_LOADING"></cat-loader>
+    <in-active-user v-else-if="!IS_LOADING && INACTIVE"></in-active-user>
     <div class="settings" v-else>
       <aside class="settings__sidebar">
         <h1 class="settings__title">Настройки профиля</h1>
@@ -44,9 +45,10 @@
 import routerHooksMixin from "@/mixins/routerHooks.mixin";
 import { mapActions, mapState } from "vuex";
 import CatLoader from "@/components/CatLoader.vue";
+import inActiveUser from "@/components/InActiveUser.vue";
 import MobileSidebar from "@/components/profileSettings/MobileSidebar.vue";
 export default {
-  components: { CatLoader, MobileSidebar },
+  components: { CatLoader, MobileSidebar, inActiveUser },
   mixins: [routerHooksMixin],
   data() {
     return {
@@ -71,6 +73,7 @@ export default {
     },
     ...mapState({
       IS_LOADING: (state) => state.profile.isLoading,
+      INACTIVE: (state) => state.inActiveUser,
     }),
   },
   methods: {
@@ -82,7 +85,10 @@ export default {
           this.settingsChanged = false;
         }, 1200);
       } catch (error) {
-        if (error >= 500) {
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
           this.$emit("showAlert");
         }
       }
@@ -95,7 +101,10 @@ export default {
           this.settingsChanged = false;
         }, 1200);
       } catch (error) {
-        if (error >= 500) {
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
           this.$emit("showAlert");
         }
       }
@@ -113,6 +122,9 @@ export default {
     @media (max-width: 970px) {
       max-width: 100% !important;
     }
+  }
+  input {
+    color: var(--text-color) !important;
   }
   max-width: calc(839px + 300px);
   &__changed {
@@ -173,7 +185,13 @@ export default {
   }
   label {
     color: var(--text-color);
+    &.v-label {
+      padding: 0 12px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
   }
+
   h2,
   h1 {
     color: var(--text-color);

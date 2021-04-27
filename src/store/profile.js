@@ -51,6 +51,8 @@ export default {
           // or waiting response after any query
           (await api.viewProfiles(rootState.token, username));
         if (response.status === 200) {
+          commit("setInActive", false);
+
           commit("setUserInfo", response.data.data);
           if (isFirstView) {
             commit(
@@ -69,10 +71,24 @@ export default {
       } catch (error) {
         if (error.response.status >= 500) {
           commit("setError", error.response.status);
-        } else {
-          commit("setIsLoading", false);
+        } else if (error.response.data.error.code === "403.inactive") {
+          commit("setInActive", true);
+
+          commit("setUserInfo", error.response.data.user);
+          commit(
+            "setFullName",
+            `${error.response.data.user.first_name} ${error.response.data.user.last_name}`
+          );
+          commit("setUsername", error.response.data.user.username);
+          localStorage.setItem(
+            "fullName",
+            `${error.response.data.user.first_name} ${error.response.data.user.last_name}`
+          );
+          localStorage.setItem("username", error.response.data.user.username);
         }
-        throw error.response.status;
+        commit("setIsLoading", false);
+        if (error.response.data.error.code !== "403.inactive")
+          throw error.response.status;
       }
     },
     async getRolesAndPermissions({ rootState, commit }) {
