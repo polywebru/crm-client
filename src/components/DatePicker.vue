@@ -14,7 +14,8 @@
         v-model="dateFormatted"
         outlined
         v-mask="'##.##.####'"
-        placeholder="дд.мм.гггг"
+        label="дд.мм.гггг"
+        single-line
         class="datepicker custom-input"
         v-bind="attrs"
         v-on="on"

@@ -16,11 +16,8 @@ export default {
         commit("setToken", response.headers.authorization);
         localStorage.setItem("auth", response.headers.authorization);
 
-        await dispatch("getUserInfo", response.headers.authorization);
-        await dispatch(
-          "getRolesAndPermissions",
-          response.headers.authorization
-        );
+        await dispatch("getUserInfo", {});
+        await dispatch("getRolesAndPermissions");
       } catch (e) {
         commit("setError", e.response.data.error.errors);
         throw e;

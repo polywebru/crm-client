@@ -177,11 +177,9 @@ export default {
     },
     continueHandler() {
       this.$v.$touch();
-      this.dateInvalid = !validateDate(
-        this.formatForServerBirthDate,
-        "boolean",
-        "yyyy-mm-dd"
-      );
+      this.dateInvalid =
+        !validateDate(this.formatForServerBirthDate, "boolean", "yyyy-mm-dd") &&
+        this.formatForServerBirthDate;
       if (!this.$v.$invalid && !this.dateInvalid) {
         this.formData.date_birth = this.formatForServerBirthDate;
         this.$emit("updateUserState", this.formData, this.page + 1);
