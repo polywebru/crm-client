@@ -4,9 +4,11 @@ import Vuex from "vuex";
 import auth from "./auth";
 import universityInfo from "./universityInfo";
 
+import avatar from "./avatar";
 import profile from "./profile";
 import logout from "./logout";
 import admin from "./admin";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
