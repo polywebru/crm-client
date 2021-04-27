@@ -3,23 +3,28 @@
     <label class="upload-photo" for="file">
       {{ photoChangeTitle }} фотографию
     </label>
-    <input type="file" class="file-input" id="file" ref="avatar" @change="handleAvatarUpload()"/>
+    <input
+      type="file"
+      class="file-input"
+      id="file"
+      ref="avatar"
+      @change="handleAvatarUpload()"
+    />
     <button class="delete-photo" v-if="USER_AVATAR">
       <span>Удалить фотографию</span>
     </button>
   </div>
 </template>
 <script>
-import {mapState, mapActions} from "vuex";
-
+import { mapState, mapActions } from "vuex";
 export default {
   props: {
     showMenu: Boolean,
   },
   data() {
     return {
-      file: ""
-    }
+      file: "",
+    };
   },
   computed: {
     photoChangeTitle() {
@@ -32,44 +37,39 @@ export default {
   methods: {
     ...mapActions(["uploadAvatar"]),
     async handleAvatarUpload() {
-      this.file = this.$refs.avatar.files[0]
+      this.file = this.$refs.avatar.files[0];
       try {
         await this.uploadAvatar({
-          avatar: this.file
-        })
+          avatar: this.file,
+        });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
-
 .upload-photo {
   cursor: pointer;
   font-weight: 600;
   font-size: 14px !important;
   color: var(--text-color);
 }
-
 .file-input {
   opacity: 0;
   position: absolute;
   z-index: -1;
   width: 0;
 }
-
 .delete-photo {
   margin-top: 15px;
 }
-
 .photo-load-menu {
   &.show {
     display: flex;
   }
-
   background-color: var(--menu-bg);
   position: absolute;
   z-index: 1000;
@@ -82,7 +82,6 @@ export default {
   border-radius: 10px;
   top: 100%;
   margin-top: 40px;
-
   span {
     font-weight: 600;
     font-size: 14px;
