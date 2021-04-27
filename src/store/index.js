@@ -17,6 +17,7 @@ export default new Vuex.Store({
     username: localStorage.getItem("username") || "",
     formPending: false,
     isShowLoadMenu: false,
+    inActiveUser: false,
     isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")) || false,
     validationErrors: {
       required: ["Это обязательное поле"],
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     removeErrors(state) {
       state.error = {};
+    },
+    setInActive(state, inactive) {
+      state.inActiveUser = inactive;
     },
     setToken(state, token) {
       state.token = token;

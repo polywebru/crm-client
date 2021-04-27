@@ -15,7 +15,7 @@
         <router-link class="header__logo" :to="'/'">
           <img src="@/assets/img/logo.png" alt="logo" />
         </router-link>
-        <nav class="header__nav">
+        <nav class="header__nav" v-if="!INACTIVE">
           <router-link
             class="header__link"
             v-for="(link, index) in headerLinks"
@@ -60,7 +60,7 @@
               <div class="header__name">{{ FULL_NAME }}</div>
               <div class="header__username">{{ USERNAME }}</div>
             </div>
-            <div>
+            <div v-if="!INACTIVE">
               <v-list-item v-for="(link, index) in menuLinks" :key="index">
                 <router-link
                   exact
@@ -139,6 +139,7 @@ export default {
       USERNAME: (state) => state.username,
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
       INFO_CHANGING: (state) => state.profile.infoChanging,
+      INACTIVE: (state) => state.inActiveUser,
     }),
   },
   methods: {
@@ -152,12 +153,9 @@ export default {
         await this.$router.push("/");
         this.isLogout = false;
       } catch (error) {
+        localStorage.clear();
+        await this.$router.push("/");
         this.isLogout = false;
-
-        if (error.response.status >= 500) {
-          this.visibleAlert();
-          this.$router.push("/");
-        }
       }
     },
     visibleAlert() {

@@ -1,7 +1,7 @@
 <template>
   <div class="profile-wrapper">
-    <skeleton-loader v-if="IS_LOADING && USER_INFO.is_active"></skeleton-loader>
-    <cat-loader v-else-if="IS_LOADING && !USER_INFO.is_active"></cat-loader>
+    <cat-loader v-if="IS_LOADING"></cat-loader>
+    <in-active-user v-else-if="!IS_LOADING && INACTIVE"></in-active-user>
     <div v-else class="profile-bg">
       <div class="profile-head">
         <div class="profile-avatar">
@@ -74,7 +74,7 @@ import UserActivity from "@/components/profile/UserActivity.vue";
 import Contacts from "@/components/profile/Contacts";
 import Links from "@/components/profile/UserLinks";
 import PhotoEdit from "@/components/PhotoEdit";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 import userDataMixin from "@/mixins/userData.mixin";
 import CatLoader from "@/components/CatLoader.vue";
 
@@ -150,22 +150,6 @@ export default {
       isGrid: false,
     };
   },
-
-  async created() {
-    try {
-      if (!this.HAS_ROLES_AND_PERMISSIONS) {
-        await this.getRolesAndPermissions();
-      }
-    } catch (e) {
-      if (e === 401) {
-        localStorage.clear();
-        this.$router.push("/");
-      } else if (e >= 500) {
-        this.$emit("showAlert");
-        await this.$router.push("/");
-      }
-    }
-  },
   computed: {
     getFullName() {
       if (Object.keys(this.USER_INFO).length) {
@@ -199,7 +183,9 @@ export default {
     getUserEmail() {
       return this.USER_INFO?.email;
     },
-
+    ...mapState({
+      INACTIVE: (state) => state.inActiveUser,
+    }),
     ...mapGetters({ HAS_ROLES_AND_PERMISSIONS: ["hasRolesAndPermissions"] }),
   },
   methods: {

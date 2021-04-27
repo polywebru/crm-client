@@ -161,26 +161,32 @@ export default {
         const response = await api.activate(rootState.token, uid);
         commit("updateUsers", response.data.data);
       } catch (error) {
-        console.log(error);
+        throw error.response.status;
       }
     },
     async deActivateUser({ commit, rootState }, uid) {
       try {
         const response = await api.deActivate(rootState.token, uid);
         commit("updateUsers", response.data.data);
-      } catch (error) {}
+      } catch (error) {
+        throw error.response.status;
+      }
     },
     async deleteUser({ rootState, dispatch }, uid) {
       try {
         await api.delete(rootState.token, uid, status);
         await dispatch("getUsers");
-      } catch (error) {}
+      } catch (error) {
+        throw error.response.status;
+      }
     },
     async changeStatus({ commit, rootState }, { id: uid, status }) {
       try {
         const response = await api.changeStatus(rootState.token, uid, status);
         commit("updateUsers", response.data.data);
-      } catch (error) {}
+      } catch (error) {
+        throw error.response.status;
+      }
     },
   },
   getters: {

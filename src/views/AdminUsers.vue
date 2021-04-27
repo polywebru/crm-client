@@ -79,7 +79,10 @@ export default {
         this.isLoadingUsers = false;
       } catch (error) {
         this.isLoadingUsers = false;
-        throw e;
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        }
       }
     }, 400),
     ...mapActions(["getUsers"]),

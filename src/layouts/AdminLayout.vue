@@ -58,7 +58,10 @@
       </div>
     </header>
 
-    <cat-loader v-if="ADMIN_LOADING || isLogout"></cat-loader>
+    <div class="loader-wrap" v-show="isLogout">
+      <cat-loader></cat-loader>
+    </div>
+    <cat-loader v-if="ADMIN_LOADING"></cat-loader>
     <div class="admin__inner" v-else>
       <div
         class="dashboard"
