@@ -4,7 +4,7 @@
       <img src="@/assets/img/no_access.jpg" alt="Нет доступа" />
     </div>
     <h2 class="no-access__text">У вас нет доступа к этому разделу</h2>
-    <router-link :to="`/`" class="no-access__link" >Назад</router-link>
+    <router-link :to="`${LAST_LINK}`" class="no-access__link" >Назад</router-link>
   </div>
 </template>
 
