@@ -8,9 +8,9 @@
       class="file-input"
       id="file"
       ref="avatar"
-      @change="handleAvatarUpload()"
+      @change="handleAvatarUpload"
     />
-    <button class="delete-photo" v-if="USER_AVATAR">
+    <button @click="handleAvatarDelete" class="delete-photo" v-if="USER_AVATAR">
       <span>Удалить фотографию</span>
     </button>
   </div>
@@ -31,19 +31,34 @@ export default {
       return this.USER_AVATAR ? "Изменить" : "Загрузить";
     },
     ...mapState({
-      USER_AVATAR: (state) => state.profile.userInfo.avatar,
+      USER_AVATAR: (state) => state.avatar.avatar,
     }),
   },
   methods: {
-    ...mapActions(["uploadAvatar"]),
+    ...mapActions(["uploadAvatar", "deleteAvatar"]),
     async handleAvatarUpload() {
       this.file = this.$refs.avatar.files[0];
+      let formData = new FormData();
+      formData.append("avatar", this.file);
       try {
-        await this.uploadAvatar({
-          avatar: this.file,
-        });
+        await this.uploadAvatar(formData);
       } catch (e) {
-        console.log(e);
+        if (e === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        } else {
+          this.$emit("showAlert");
+        }
+      }
+    },
+    async handleAvatarDelete() {
+      try {
+        await this.deleteAvatar();
+      } catch (error) {
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        }
       }
     },
   },

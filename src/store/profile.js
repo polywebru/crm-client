@@ -12,6 +12,9 @@ export default {
     setUserInfo(state, info) {
       state.userInfo = info;
     },
+    setProfileAvatar(state, avatar) {
+      state.userInfo = { ...state.userInfo, avatar };
+    },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
     },
@@ -55,6 +58,7 @@ export default {
 
           commit("setUserInfo", response.data.data);
           if (isFirstView) {
+            commit("setAvatar", response.data.data.avatar);
             commit(
               "setFullName",
               `${response.data.data.first_name} ${response.data.data.last_name}`
@@ -65,6 +69,10 @@ export default {
               `${response.data.data.first_name} ${response.data.data.last_name}`
             );
             localStorage.setItem("username", response.data.data.username);
+            localStorage.setItem(
+              "avatar",
+              JSON.stringify(response.data.data.avatar)
+            );
           }
         }
         commit("setIsLoading", false);

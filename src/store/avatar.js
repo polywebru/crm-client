@@ -1,27 +1,34 @@
 import api from "../api";
 
 export default {
-    state: {
-        avatar: null,
+  state: {
+    avatar: JSON.parse(localStorage.getItem("avatar")) || null,
+  },
+  mutations: {
+    setAvatar(state, avatar) {
+      state.avatar = avatar;
     },
-    mutations: {
+  },
+  actions: {
+    async uploadAvatar({ commit, rootState }, avatar) {
+      try {
+        const response = await api.uploadAvatar(rootState.token, avatar);
+        commit("setProfileAvatar", response.data);
+        commit("setAvatar", response.data);
+        localStorage.setItem("avatar", JSON.stringify(response.data));
+      } catch (e) {
+        throw e.response.status;
+      }
     },
-    actions: {
-        async uploadAvatar({commit, rootState}, avatar) {
-            try {
-                const response = await api.uploadAvatar(rootState.token, avatar);
-            } catch (e) {
-                commit("setError", e.response.data.error.errors);
-                throw e;
-            }
-        },
-        async deleteAvatar({commit, rootState}, avatar) {
-            try {
-                const response = await api.deleteAvatar(rootState.token, avatar);
-            } catch (e) {
-                commit("setError", e.response.data.error.errors);
-                throw e;
-            }
-        },
+    async deleteAvatar({ rootState, commit }) {
+      try {
+        await api.deleteAvatar(rootState.token);
+        commit("setProfileAvatar", null);
+        commit("setAvatar", null);
+        localStorage.removeItem("avatar");
+      } catch (e) {
+        throw e.response.status;
+      }
     },
+  },
 };
