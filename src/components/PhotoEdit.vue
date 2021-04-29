@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   props: {
     showMenu: Boolean,
@@ -36,20 +36,27 @@ export default {
   },
   methods: {
     ...mapActions(["uploadAvatar", "deleteAvatar"]),
+    ...mapMutations(["setErrorAlert"]),
     async handleAvatarUpload() {
       this.file = this.$refs.avatar.files[0];
-      let formData = new FormData();
-      formData.append("avatar", this.file);
-      try {
-        await this.uploadAvatar(formData);
-      } catch (e) {
-        if (e === 401) {
-          localStorage.clear();
-          await this.$router.push({ name: "Login" });
-        } else {
-          this.$emit("showAlert");
-        }
+      if (!file.type.includes("jpeg") || !file.type.includes("png")) {
+        this.setErrorAlert({ isShow: true, message: "Неверный тип файла" });
+        setTimeout(() => {
+          this.setErrorAlert({ isShow: false, message: null });
+        }, 1200);
       }
+      // let formData = new FormData();
+      // formData.append("avatar", this.file);
+      // try {
+      //   await this.uploadAvatar(formData);
+      // } catch (e) {
+      //   if (e === 401) {
+      //     localStorage.clear();
+      //     await this.$router.push({ name: "Login" });
+      //   } else {
+      //     this.$emit("showAlert");
+      //   }
+      // }
     },
     async handleAvatarDelete() {
       try {

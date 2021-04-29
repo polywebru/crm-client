@@ -85,7 +85,7 @@
         >
           <img src="@/assets/img/load_photo.svg" alt="Загрузить фото" />
         </div>
-        <img class="avatar" src="@/assets/img/no_avatar.png" alt="" />
+        <img class="avatar" :src="getUserAvatar" alt="" />
       </div>
       <photo-edit
         class="settings-load"
@@ -165,10 +165,17 @@ export default {
         return this.RESPONSE_ERROR.username;
       }
     },
+    getUserAvatar() {
+      if (this.USER_AVATAR) {
+        return `data:image/${this.USER_AVATAR.content_type};base64,${this.USER_AVATAR.base64}`;
+      }
+      return require("@/assets/img/no_avatar.png");
+    },
     ...mapState({
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
       VALIDATION_ERRORS: (state) => state.validationErrors,
       RESPONSE_ERROR: (state) => state.error,
+      USER_AVATAR: (state) => state.avatar.avatar,
     }),
     ...mapGetters(["getUserInfo"]),
   },
@@ -210,7 +217,6 @@ export default {
   height: 120px;
   border-radius: 50%;
   position: relative;
-  cursor: pointer;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -218,6 +224,7 @@ export default {
   &:hover {
     .photo-load {
       display: flex;
+      cursor: pointer;
     }
   }
   img.avatar {
@@ -234,7 +241,7 @@ export default {
     left: 0;
     bottom: 0;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
     display: none;
     justify-content: center;
     align-items: center;

@@ -194,11 +194,9 @@ export default {
       return require("@/assets/img/no_avatar.png");
     },
     ...mapState({
+      INACTIVE: (state) => state.inActiveUser,
       USER_AVATAR: (state) => state.avatar.avatar,
       USER_INFO: (state) => state.profile.userInfo,
-    }),
-    ...mapState({
-      INACTIVE: (state) => state.inActiveUser,
     }),
     ...mapGetters({ HAS_ROLES_AND_PERMISSIONS: ["hasRolesAndPermissions"] }),
   },

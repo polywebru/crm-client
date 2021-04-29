@@ -46,17 +46,18 @@ export default {
         switch (e) {
           case 403:
             vm.setHasAccess(false);
+            vm.setAdminLoading(false);
             break;
           case 401:
             localStorage.clear();
             vm.$router.push("/");
+            vm.setAdminLoading(false);
             break;
           default:
-            vm.$emit("showAlert");
-            vm.setIsLoading(true);
+            vm.setErrorAlert({ isShow: true });
+            vm.setAdminLoading(true);
             break;
         }
-        vm.setAdminLoading(false);
       }
     });
   },
@@ -90,7 +91,9 @@ export default {
       "setGlobalSearchValue",
       "setPage",
       "setHasAccess",
+      "setIsLoading",
       "setAdminLoading",
+      "setErrorAlert",
       "users/resetTableSettings",
     ]),
   },
