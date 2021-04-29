@@ -4,11 +4,21 @@
       <img src="@/assets/img/no_access.jpg" alt="Нет доступа" />
     </div>
     <h2 class="no-access__text">У вас нет доступа к этому разделу</h2>
-    <router-link class="no-access__link" to="/">На главную</router-link>
+    <router-link :to="`${LAST_LINK}`" class="no-access__link" >Назад</router-link>
   </div>
 </template>
 
-
+<script>
+import { createNamespacedHelpers } from "vuex"
+const {mapState} = createNamespacedHelpers("users")
+export default {
+  computed: {
+    ...mapState({
+      LAST_LINK: (state) => state.lastLink.path
+      })
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
