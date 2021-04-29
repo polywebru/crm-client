@@ -1,20 +1,20 @@
 <template>
   <v-alert
     type="error"
-    class="alert-custom"
+    class="alert-custom show"
     elevation="2"
-    :class="{ show: showAlert }"
+    v-show="ERROR_ALERT.isShow"
   >
-    <span>Упс! Кажется что-то пошло не так.</span>
+    <span>{{
+      ERROR_ALERT.message || "Упс! Кажется что-то пошло не так."
+    }}</span>
   </v-alert>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
-  props: {
-    showAlert: {
-      type: Boolean,
-      default: false,
-    },
+  computed: {
+    ...mapState({ ERROR_ALERT: (state) => state.errorAlert }),
   },
 };
 </script>

@@ -8,12 +8,11 @@
       <cat-loader></cat-loader>
     </div>
     <auth-loader v-show="INFO_CHANGING"></auth-loader>
-    <server-error-alert :showAlert="showAlert"></server-error-alert>
     <skeleton-loader v-if="IS_LOADING"></skeleton-loader>
     <header class="header" v-else>
       <div class="header__info">
         <router-link class="header__logo" :to="'/'">
-          <img src="@/assets/img/logo.png" alt="logo" />
+          <img src="@/assets/img/logo.svg" alt="logo" />
         </router-link>
         <nav class="header__nav" v-if="!INACTIVE">
           <router-link
@@ -37,7 +36,7 @@
           <template v-slot:activator="{ attrs, on }">
             <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
               <div class="menu-avatar">
-                <img src="@/assets/img/no_avatar.png" alt="" />
+                <img :src="getUserAvatar" alt="" />
               </div>
               <div class="arrow">
                 <svg
@@ -80,7 +79,7 @@
         </v-menu>
       </div>
     </header>
-    <router-view @showAlert="visibleAlert"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -88,14 +87,12 @@ import { mapMutations, mapGetters, mapState, mapActions } from "vuex";
 import BurgerMenu from "@/components/BurgerMenu.vue";
 import AuthLoader from "@/components/AuthLoader.vue";
 import SkeletonLoader from "./SkeletonLoader.vue";
-import ServerErrorAlert from "@/components/ServerErrorAlert.vue";
 import InActiveUser from "@/components/InActiveUser.vue";
 import CatLoader from "@/components/CatLoader.vue";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 export default {
   data() {
     return {
-      showAlert: false,
       isLogout: false,
       headerLinks: [
         { title: "Проекты", path: "/porjects" },
@@ -107,7 +104,6 @@ export default {
   components: {
     BurgerMenu,
     SkeletonLoader,
-    ServerErrorAlert,
     InActiveUser,
     CatLoader,
     ThemeSwitcher,
@@ -115,6 +111,12 @@ export default {
   },
 
   computed: {
+    getUserAvatar() {
+      if (this.USER_AVATAR) {
+        return `data:image/${this.USER_AVATAR.content_type};base64,${this.USER_AVATAR.base64}`;
+      }
+      return require("@/assets/img/no_avatar.png");
+    },
     menuLinks() {
       const links = [
         {
@@ -138,6 +140,7 @@ export default {
       FULL_NAME: (state) => state.fullName,
       USERNAME: (state) => state.username,
       IS_SHOW_LOAD_MENU: (state) => state.isShowLoadMenu,
+      USER_AVATAR: (state) => state.avatar.avatar,
       INFO_CHANGING: (state) => state.profile.infoChanging,
       INACTIVE: (state) => state.inActiveUser,
     }),
@@ -158,12 +161,7 @@ export default {
         this.isLogout = false;
       }
     },
-    visibleAlert() {
-      this.showAlert = true;
-      setTimeout(() => {
-        this.showAlert = false;
-      }, 1300);
-    },
+
     ...mapMutations(["setShowLoadMenu"]),
     ...mapActions(["logout"]),
   },
@@ -206,8 +204,7 @@ export default {
     padding: 5px 30px;
   }
   &__nav {
-    align-self: flex-start;
-    margin-top: 7px;
+    margin-bottom: 5px;
     @media (max-width: 540px) {
       display: none;
     }

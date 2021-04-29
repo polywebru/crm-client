@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header__info" v-once>
       <div class="header__logo">
-        <img src="@/assets/img/logo.png" alt="logo" />
+        <img src="@/assets/img/logo.svg" alt="logo" />
       </div>
       <div class="header__loaders">
         <v-skeleton-loader type="text"></v-skeleton-loader>

@@ -4,9 +4,11 @@ import Vuex from "vuex";
 import auth from "./auth";
 import universityInfo from "./universityInfo";
 
+import avatar from "./avatar";
 import profile from "./profile";
 import logout from "./logout";
 import admin from "./admin";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -18,7 +20,11 @@ export default new Vuex.Store({
     formPending: false,
     isShowLoadMenu: false,
     inActiveUser: false,
-    isThemeDark: JSON.parse(localStorage.getItem("isThemeDark")) || false,
+    errorAlert: {
+      isShow: false,
+      message: null,
+    },
+    isThemeDark: localStorage.getItem("isThemeDark") || false,
     validationErrors: {
       required: ["Это обязательное поле"],
       email: ["Неверный email"],
@@ -61,6 +67,9 @@ export default new Vuex.Store({
       localStorage.setItem("isThemeDark", isThemeDark);
       state.isThemeDark = isThemeDark;
     },
+    setErrorAlert(state, alert) {
+      state.errorAlert = { ...state.errorAlert, ...alert };
+    },
   },
   actions: {},
   getters: {
@@ -73,5 +82,6 @@ export default new Vuex.Store({
     profile,
     logout,
     admin,
+    avatar,
   },
 });

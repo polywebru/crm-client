@@ -5,6 +5,8 @@ import logout from "./logout";
 import admin from "./admin";
 import usersProfiles from "./viewUsersProfile";
 import changeProfileInfo from "./profileSettings";
+import userAvatar from "./userAvatar";
+
 export default {
   async login(user) {
     return await auth.login(user);
@@ -51,4 +53,10 @@ export default {
   async changeUserInfo(user, token, route) {
     return await changeProfileInfo(user, token, route);
   },
+    async uploadAvatar(token, avatar) {
+        return await userAvatar.uploadAvatar(token, avatar);
+    },
+    async deleteAvatar(token, avatar) {
+        return await userAvatar.deleteAvatar(token, avatar);
+    }
 };

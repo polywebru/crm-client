@@ -14,7 +14,7 @@
           <template v-slot:activator="{ attrs, on }">
             <div class="menu-opener" color="#414dbb" v-bind="attrs" v-on="on">
               <div class="menu-avatar">
-                <img src="@/assets/img/no_avatar.png" alt="" />
+                <img :src="getUserAvatar" alt="" />
               </div>
               <div class="arrow">
                 <svg
@@ -122,9 +122,16 @@ export default {
     getUsername() {
       return localStorage.getItem("username");
     },
+    getUserAvatar() {
+      if (this.USER_AVATAR) {
+        return `data:image/${this.USER_AVATAR.content_type};base64,${this.USER_AVATAR.base64}`;
+      }
+      return require("@/assets/img/no_avatar.png");
+    },
     ...mapState({
       HAS_ACCESS: (state) => state.admin.hasAccess,
       ADMIN_LOADING: (state) => state.admin.adminLoading,
+      USER_AVATAR: (state) => state.avatar.avatar,
     }),
   },
   methods: {
