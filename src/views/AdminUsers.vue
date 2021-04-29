@@ -55,6 +55,9 @@ export default {
             break;
           default:
             vm.setErrorAlert({ isShow: true });
+            setTimeout(() => {
+              this.setErrorAlert({ isShow: false });
+            }, 1200);
             vm.setAdminLoading(true);
             break;
         }
@@ -83,6 +86,11 @@ export default {
         if (error === 401) {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     }, 400),

@@ -70,6 +70,7 @@
 </template>
 <script>
 import Skill from "@/components/profile/Skill";
+
 import SkeletonLoader from "@/components/profile/SkeletonLoader";
 import UserActivity from "@/components/profile/UserActivity.vue";
 import Contacts from "@/components/profile/Contacts";
@@ -91,63 +92,8 @@ export default {
   mixins: [userDataMixin],
   data() {
     return {
-      projects: [
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-      ],
-      competences: [
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-      ],
+      projects: [],
+      competences: [],
       isGrid: false,
     };
   },
@@ -219,6 +165,9 @@ export default {
 @import "@/assets/styles/_variables.scss";
 .profile-bg {
   background-color: var(--main-bg);
+}
+.clip-loader {
+  z-index: 20000;
 }
 .v-spinner {
   position: absolute !important;

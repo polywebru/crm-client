@@ -39,24 +39,28 @@ export default {
     ...mapMutations(["setErrorAlert"]),
     async handleAvatarUpload() {
       this.file = this.$refs.avatar.files[0];
-      if (!file.type.includes("jpeg") || !file.type.includes("png")) {
+      if (!this.file.type.includes("jpeg") && !this.file.type.includes("png")) {
         this.setErrorAlert({ isShow: true, message: "Неверный тип файла" });
         setTimeout(() => {
           this.setErrorAlert({ isShow: false, message: null });
         }, 1200);
+      } else {
+        let formData = new FormData();
+        formData.append("avatar", this.file);
+        try {
+          await this.uploadAvatar(formData);
+        } catch (e) {
+          if (e === 401) {
+            localStorage.clear();
+            await this.$router.push({ name: "Login" });
+          } else if (e >= 401) {
+            this.setErrorAlert({ isShow: true });
+            setTimeout(() => {
+              this.setErrorAlert({ isShow: false });
+            }, 1200);
+          }
+        }
       }
-      // let formData = new FormData();
-      // formData.append("avatar", this.file);
-      // try {
-      //   await this.uploadAvatar(formData);
-      // } catch (e) {
-      //   if (e === 401) {
-      //     localStorage.clear();
-      //     await this.$router.push({ name: "Login" });
-      //   } else {
-      //     this.$emit("showAlert");
-      //   }
-      // }
     },
     async handleAvatarDelete() {
       try {
@@ -65,6 +69,11 @@ export default {
         if (error === 401) {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
