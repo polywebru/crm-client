@@ -4,7 +4,7 @@ export default {
     async logout({ rootState, commit }) {
       try {
         commit("setFormPending", true);
-        await api.logout(rootState.token );
+        await api.logout(rootState.token);
         localStorage.clear();
         commit("removeToken");
         commit("resetProfile");
@@ -12,6 +12,8 @@ export default {
         commit("removeErrors");
         commit("resetHasAccess");
         commit("setFormPending", false);
+        commit("setAvatar", null);
+        commit("setProfileAvatar", null);
       } catch (error) {
         commit("setFormPending", false);
         throw error;

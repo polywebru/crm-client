@@ -1,27 +1,82 @@
 <template>
   <div class="photo-load-menu" :class="{ show: showMenu }">
-    <label class="upload-photo" for="file-input">
+    <label class="upload-photo" for="file">
       {{ photoChangeTitle }} фотографию
     </label>
-    <input type="file" class="file-input" id="file-input" />
-    <button class="delete-photo" v-if="USER_AVATAR">
+    <input
+      type="file"
+      class="file-input"
+      id="file"
+      ref="avatar"
+      @change="handleAvatarUpload"
+    />
+    <button @click="handleAvatarDelete" class="delete-photo" v-if="USER_AVATAR">
       <span>Удалить фотографию</span>
     </button>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   props: {
     showMenu: Boolean,
+  },
+  data() {
+    return {
+      file: "",
+    };
   },
   computed: {
     photoChangeTitle() {
       return this.USER_AVATAR ? "Изменить" : "Загрузить";
     },
     ...mapState({
-      USER_AVATAR: (state) => state.profile.userInfo.avatar,
+      USER_AVATAR: (state) => state.avatar.avatar,
     }),
+  },
+  methods: {
+    ...mapActions(["uploadAvatar", "deleteAvatar"]),
+    ...mapMutations(["setErrorAlert"]),
+    async handleAvatarUpload() {
+      this.file = this.$refs.avatar.files[0];
+      if (!this.file.type.includes("jpeg") && !this.file.type.includes("png")) {
+        this.setErrorAlert({ isShow: true, message: "Неверный тип файла" });
+        setTimeout(() => {
+          this.setErrorAlert({ isShow: false, message: null });
+        }, 1200);
+      } else {
+        let formData = new FormData();
+        formData.append("avatar", this.file);
+        try {
+          await this.uploadAvatar(formData);
+        } catch (e) {
+          if (e === 401) {
+            localStorage.clear();
+            await this.$router.push({ name: "Login" });
+          } else if (e >= 401) {
+            this.setErrorAlert({ isShow: true });
+            setTimeout(() => {
+              this.setErrorAlert({ isShow: false });
+            }, 1200);
+          }
+        }
+      }
+    },
+    async handleAvatarDelete() {
+      try {
+        await this.deleteAvatar();
+      } catch (error) {
+        if (error === 401) {
+          localStorage.clear();
+          await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
+        }
+      }
+    },
   },
 };
 </script>

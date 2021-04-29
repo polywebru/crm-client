@@ -387,6 +387,11 @@ export default {
         if (error === 401) {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
@@ -401,6 +406,11 @@ export default {
         if (error === 401) {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
@@ -414,6 +424,11 @@ export default {
         if (error === 401) {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
@@ -429,6 +444,11 @@ export default {
         if (error === 401) {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
+        } else if (error >= 500) {
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
@@ -449,6 +469,7 @@ export default {
       "setOrderColumn",
       "setOrderDirection",
       "setColumnSearchValue",
+      "setErrorAlert",
     ]),
     ...mapActions([
       "activateUser",

@@ -89,7 +89,10 @@ export default {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
         } else if (error >= 500) {
-          this.$emit("showAlert");
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
@@ -105,7 +108,10 @@ export default {
           localStorage.clear();
           await this.$router.push({ name: "Login" });
         } else if (error >= 500) {
-          this.$emit("showAlert");
+          this.setErrorAlert({ isShow: true });
+          setTimeout(() => {
+            this.setErrorAlert({ isShow: false });
+          }, 1200);
         }
       }
     },
@@ -217,6 +223,11 @@ export default {
   span,
   i {
     color: var(--text-color) !important;
+  }
+  .delete-photo {
+    span {
+      color: #ff0000 !important;
+    }
   }
   &__sidebar {
     background-color: var(--main-bg) !important;

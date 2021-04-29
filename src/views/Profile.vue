@@ -7,11 +7,12 @@
         <div class="profile-avatar">
           <div
             class="photo-load"
+            v-if="isMe"
             @click.stop="setShowLoadMenu(!IS_SHOW_LOAD_MENU)"
           >
             <img src="@/assets/img/load_photo.svg" alt="Загрузить фото" />
           </div>
-          <img class="avatar" src="@/assets/img/no_avatar.png" alt="" />
+          <img class="avatar" :src="getUserAvatar" id="avatar" alt="" />
         </div>
         <photo-edit :showMenu="IS_SHOW_LOAD_MENU"></photo-edit>
       </div>
@@ -69,6 +70,7 @@
 </template>
 <script>
 import Skill from "@/components/profile/Skill";
+
 import SkeletonLoader from "@/components/profile/SkeletonLoader";
 import UserActivity from "@/components/profile/UserActivity.vue";
 import Contacts from "@/components/profile/Contacts";
@@ -90,63 +92,8 @@ export default {
   mixins: [userDataMixin],
   data() {
     return {
-      projects: [
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-        {
-          projectTitle: "Название проекта",
-          projectRole: "Роль в проекте",
-          duration: "21SP / 5H",
-        },
-      ],
-      competences: [
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-        {
-          competenceTitle: "Название",
-          competenceLevel: "Уровень",
-        },
-      ],
+      projects: [],
+      competences: [],
       isGrid: false,
     };
   },
@@ -174,6 +121,9 @@ export default {
     getUserPhone() {
       return this.hasUserPhone && this.USER_INFO?.phone;
     },
+    isMe() {
+      return localStorage.getItem("username") === this.$route.params.username;
+    },
     hasSkills() {
       if (this.USER_INFO?.skills) {
         return Object.keys(this.USER_INFO?.skills).length;
@@ -183,8 +133,16 @@ export default {
     getUserEmail() {
       return this.USER_INFO?.email;
     },
+    getUserAvatar() {
+      if (this.USER_INFO.avatar) {
+        return `data:image/${this.USER_INFO.avatar.content_type};base64,${this.USER_INFO.avatar.base64}`;
+      }
+      return require("@/assets/img/no_avatar.png");
+    },
     ...mapState({
       INACTIVE: (state) => state.inActiveUser,
+      USER_AVATAR: (state) => state.avatar.avatar,
+      USER_INFO: (state) => state.profile.userInfo,
     }),
     ...mapGetters({ HAS_ROLES_AND_PERMISSIONS: ["hasRolesAndPermissions"] }),
   },
@@ -207,6 +165,9 @@ export default {
 @import "@/assets/styles/_variables.scss";
 .profile-bg {
   background-color: var(--main-bg);
+}
+.clip-loader {
+  z-index: 20000;
 }
 .v-spinner {
   position: absolute !important;
@@ -241,7 +202,6 @@ export default {
   border-radius: 50%;
   position: relative;
   top: 55px;
-  cursor: pointer;
   &:hover {
     .photo-load {
       display: flex;
@@ -256,12 +216,13 @@ export default {
   }
   .photo-load {
     position: absolute;
+    cursor: pointer;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
     display: none;
     justify-content: center;
     align-items: center;

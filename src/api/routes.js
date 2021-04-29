@@ -4,6 +4,7 @@ export default {
   login: "login",
   register: "register",
   logout: "logout",
+  userAvatar: `${mainPrefix}user/avatar`,
   settings: `${mainPrefix}settings`,
   faculties: `${mainPrefix}faculties`,
   specialities: `${mainPrefix}specialities`,
